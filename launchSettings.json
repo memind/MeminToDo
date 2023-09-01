@@ -1,0 +1,18 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "healthcheck": "StartDebugging",
+        "workout.api": "StartDebugging",
+        "user.api": "StartDebugging",
+        "skill.api": "StartDebugging",
+        "log.api": "StartDebugging",
+        "entertainment.api": "StartDebugging",
+        "dashboard.api": "StartDebugging",
+        "ocelotapigateway": "StartDebugging"
+      }
+    }
+  }
+}

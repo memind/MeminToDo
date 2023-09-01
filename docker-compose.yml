@@ -1,0 +1,57 @@
+version: '3.4'
+
+services:
+  healthcheck:
+    image: ${DOCKER_REGISTRY-}healthcheck
+    build:
+      context: .
+      dockerfile: src/WebApps/WebStatus/HealthCheck/Dockerfile
+
+  workout.api:
+    image: ${DOCKER_REGISTRY-}workoutapi
+    build:
+      context: .
+      dockerfile: src/Services/WorkoutService/Presentation/Workout.API/Dockerfile
+
+
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: src/Services/UserService/Presentation/User.API/Dockerfile
+
+
+  skill.api:
+    image: ${DOCKER_REGISTRY-}skillapi
+    build:
+      context: .
+      dockerfile: src/Services/SkillService/Presentation/Skill.API/Dockerfile
+
+
+  log.api:
+    image: ${DOCKER_REGISTRY-}logapi
+    build:
+      context: .
+      dockerfile: src/Services/LogService/Presentation/Log.API/Dockerfile
+
+
+  entertainment.api:
+    image: ${DOCKER_REGISTRY-}entertainmentapi
+    build:
+      context: .
+      dockerfile: src/Services/EntertainmentService/Presentation/Entertainment.API/Dockerfile
+
+
+  dashboard.api:
+    image: ${DOCKER_REGISTRY-}dashboardapi
+    build:
+      context: .
+      dockerfile: src/Services/DashboardService/Presentation/Dashboard.API/Dockerfile
+
+
+  ocelotapigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: src/ApiGateways/OcelotAPIGateway/Dockerfile
+
