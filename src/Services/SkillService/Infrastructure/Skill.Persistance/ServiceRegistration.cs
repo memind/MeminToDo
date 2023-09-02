@@ -23,15 +23,6 @@ namespace Skill.Persistance
                 opt.Database = cfg.GetSection("MongoConnection:Database").Value;
             });
 
-            //services.AddScoped<IArtReadRepository, ArtReadRepository>();
-            //services.AddScoped<IArtWriteRepository, ArtWriteRepository>();
-
-            //services.AddScoped<ISongReadRepository, SongReadRepository>();
-            //services.AddScoped<ISongWriteRepository, SongWriteRepository>();
-
-            //services.AddScoped<ISongService, SongService>();
-            //services.AddScoped<IArtService, ArtService>();
-
             return services;
         }
     }

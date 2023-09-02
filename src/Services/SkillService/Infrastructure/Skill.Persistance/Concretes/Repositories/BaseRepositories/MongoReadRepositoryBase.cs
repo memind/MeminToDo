@@ -25,7 +25,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 var data = _collection.Find(filter).ToList();
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {
@@ -43,7 +47,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 var data = await _collection.Find(filter).ToListAsync();
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {
@@ -61,7 +69,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 var data = _collection.AsQueryable().ToList();
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {
@@ -79,7 +91,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 var data = await _collection.AsQueryable().ToListAsync();
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {
@@ -104,7 +120,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
                 var filter = Builders<T>.Filter.Eq("_id", objectId);
                 var data = _collection.Find(filter).FirstOrDefault();
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {
@@ -129,7 +149,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
                 var filter = Builders<T>.Filter.Eq("_id", objectId);
                 var data = await _collection.Find(filter).FirstOrDefaultAsync();
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {

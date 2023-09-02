@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Skill.Application.Features.Queries.ArtQueries.GetAllArts;
 using System.Reflection;
 
 namespace Skill.Application
@@ -9,6 +10,7 @@ namespace Skill.Application
         {
             var assembly = Assembly.GetExecutingAssembly();
             services.AddAutoMapper(assembly);
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllArtsQueryRequest>());
 
             return services;
         }

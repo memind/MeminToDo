@@ -27,7 +27,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
                 var filter = Builders<T>.Filter.Eq("_id", objectId);
                 var data = _collection.FindOneAndDelete(filter);
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {
@@ -47,7 +51,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
                 var filter = Builders<T>.Filter.Eq("_id", objectId);
                 var data = await _collection.FindOneAndDeleteAsync(filter);
                 if (data != null)
+                {
                     result.Data = data;
+                    result.Success = true;
+                    result.Message = "Success";
+                }
             }
             catch (Exception ex)
             {
@@ -75,6 +83,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 var deleteDocument = _collection.FindOneAndDelete(filter);
                 result.Data = deleteDocument;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {
@@ -92,6 +102,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 var deleteDocument = await _collection.FindOneAndDeleteAsync(filter);
                 result.Data = deleteDocument;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {
@@ -109,6 +121,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 _collection.InsertMany(entities);
                 result.Data = entities;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {
@@ -126,6 +140,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 await _collection.InsertManyAsync(entities);
                 result.Data = entities;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {
@@ -143,6 +159,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 _collection.InsertOne(entity);
                 result.Data = entity;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {
@@ -160,6 +178,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
             {
                 await _collection.InsertOneAsync(entity);
                 result.Data = entity;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {
@@ -184,6 +204,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
                 var filter = Builders<T>.Filter.Eq("_id", objectId);
                 var updatedDocument = _collection.ReplaceOne(filter, entity);
                 result.Data = entity;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {
@@ -208,6 +230,8 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
                 var filter = Builders<T>.Filter.Eq("_id", objectId);
                 var updatedDocument = await _collection.ReplaceOneAsync(filter, entity);
                 result.Data = entity;
+                result.Success = true;
+                result.Message = "Success";
             }
             catch (Exception ex)
             {

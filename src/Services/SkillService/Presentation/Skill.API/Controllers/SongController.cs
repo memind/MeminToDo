@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Skill.Application.Abstractions.Services;
 using Skill.Application.DTOs.SongDTOs;
 using Skill.Domain.Entities.Common;
 using Skill.Domain.Entities;
+using Skill.Application.Features.Queries.SongQueries.GetAllSongs;
+using Skill.Application.Features.Queries.SongQueries.GetSongById;
+using Skill.Application.Features.Queries.SongQueries.GetUsersAllSongs;
+using Skill.Application.Features.Commands.SongCommands.CreateSong;
+using Skill.Application.Features.Commands.SongCommands.UpdateSong;
+using Skill.Application.Features.Commands.SongCommands.DeleteSong;
 
 namespace Skill.API.Controllers
 {
@@ -12,40 +19,48 @@ namespace Skill.API.Controllers
     public class SongController : ControllerBase
     {
         private ISongService _service;
+        private IMediator _mediator;
 
-        public SongController(ISongService service)
+        public SongController(ISongService service, IMediator mediator)
         {
             _service = service;
+            _mediator = mediator;
         }
 
         [HttpGet("/getOneSong")]
-        public GetOneResult<Song> GetById(string id)
+        public async Task<GetSongByIdQueryResponse> GetById([FromQuery] GetSongByIdQueryRequest request)
         {
-            return _service.GetSongById(id);
+            return await _mediator.Send(request);
         }
 
         [HttpGet("/getAllSongs")]
-        public GetManyResult<Song> GetAll()
+        public async Task<GetAllSongsQueryResponse> GetAll([FromQuery] GetAllSongsQueryRequest request)
         {
-            return _service.GetAllSongs();
+            return await _mediator.Send(request);
+        }
+
+        [HttpGet("/getUsersAllSongs")]
+        public async Task<GetUsersAllSongsQueryResponse> GetUsersAll([FromQuery] GetUsersAllSongsQueryRequest request)
+        {
+            return await _mediator.Send(request);
         }
 
         [HttpPost]
-        public GetOneResult<Song> Create(SongDto dto)
+        public async Task<CreateSongCommandResponse> Create([FromQuery] CreateSongCommandRequest request)
         {
-            return _service.CreateSong(dto);
+            return await _mediator.Send(request);
         }
 
         [HttpPut]
-        public GetOneResult<Song> Update(string id, SongDto dto)
+        public async Task<UpdateSongCommandResponse> Update([FromQuery] UpdateSongCommandRequest request)
         {
-            return _service.UpdateSong(id, dto);
+            return await _mediator.Send(request);
         }
 
         [HttpDelete]
-        public void Delete(string id)
+        public async Task<DeleteSongCommandResponse> Delete([FromQuery] DeleteSongCommandRequest request)
         {
-            _service.DeleteSong(id);
+            return await _mediator.Send(request);
         }
     }
 }

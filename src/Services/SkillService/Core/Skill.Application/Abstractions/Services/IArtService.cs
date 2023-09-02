@@ -1,6 +1,7 @@
 ﻿using Skill.Application.DTOs.ArtDTOs;
 using Skill.Domain.Entities;
 using Skill.Domain.Entities.Common;
+using System.Threading;
 
 namespace Skill.Application.Abstractions.Services
 {
@@ -12,8 +13,11 @@ namespace Skill.Application.Abstractions.Services
         public GetOneResult<Art> GetArtById(string id);
         public Task<GetOneResult<Art>> GetArtByIdAsync(string id);
 
-        public GetOneResult<Art> CreateArt(ArtDto newArt);
-        public Task<GetOneResult<Art>> CreateArtAsync(ArtDto newArt);
+        public GetManyResult<Art> GetUsersAllArts(Guid id);
+        public Task<GetManyResult<Art>> GetAllUsersArtsAsync(Guid id);
+
+        public GetOneResult<Art> CreateArt(ArtDto newArt, string id);
+        public Task<GetOneResult<Art>> CreateArtAsync(ArtDto newArt, string id);
 
         public void DeleteArt(string id);
         public Task DeleteArtAsync(string id);

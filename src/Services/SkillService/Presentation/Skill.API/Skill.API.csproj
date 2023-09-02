@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Skill.Application\Skill.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Skill.Infrastructure\Skill.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Skill.Persistance\Skill.Persistance.csproj" />
   </ItemGroup>

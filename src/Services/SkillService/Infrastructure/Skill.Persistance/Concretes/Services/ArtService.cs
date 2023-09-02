@@ -21,17 +21,20 @@ namespace Skill.Persistance.Concretes.Services
             _mapper = mapper;
         }
 
-        public GetOneResult<Art> CreateArt(ArtDto newArt)
+        public GetOneResult<Art> CreateArt(ArtDto newArt, string id)
         {
             newArt.Id = ObjectId.GenerateNewId();
+            newArt.UserId = Guid.Parse(id);
             var map = _mapper.Map<Art>(newArt);
             var result = _write.InsertOne(map);
 
             return result;
         }
 
-        public async Task<GetOneResult<Art>> CreateArtAsync(ArtDto newArt)
+        public async Task<GetOneResult<Art>> CreateArtAsync(ArtDto newArt, string id)
         {
+            newArt.Id = ObjectId.GenerateNewId();
+            newArt.UserId = Guid.Parse(id);
             var map = _mapper.Map<Art>(newArt);
             var result = await _write.InsertOneAsync(map);
 
@@ -56,6 +59,16 @@ namespace Skill.Persistance.Concretes.Services
         public async Task<GetManyResult<Art>> GetAllArtsAsync()
         {
             return await _read.GetAllAsync();
+        }
+
+        public GetManyResult<Art> GetUsersAllArts(Guid id)
+        {
+            return _read.GetFiltered(x => x.UserId == id);
+        }
+
+        public async Task<GetManyResult<Art>> GetAllUsersArtsAsync(Guid id)
+        {
+            return await _read.GetFilteredAsync(x => x.UserId == id);
         }
 
         public GetOneResult<Art> GetArtById(string id)

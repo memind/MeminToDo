@@ -21,17 +21,20 @@ namespace Skill.Persistance.Concretes.Services
             _mapper = mapper;
         }
 
-        public GetOneResult<Song> CreateSong(SongDto newSong)
+        public GetOneResult<Song> CreateSong(SongDto newSong, string id)
         {
             newSong.Id = ObjectId.GenerateNewId();
+            newSong.UserId = Guid.Parse(id);
             var map = _mapper.Map<Song>(newSong);
             var result = _write.InsertOne(map);
 
             return result;
         }
 
-        public async Task<GetOneResult<Song>> CreateSongAsync(SongDto newSong)
+        public async Task<GetOneResult<Song>> CreateSongAsync(SongDto newSong, string id)
         {
+            newSong.Id = ObjectId.GenerateNewId();
+            newSong.UserId = Guid.Parse(id);
             var map = _mapper.Map<Song>(newSong);
             var result = await _write.InsertOneAsync(map);
 
@@ -58,6 +61,16 @@ namespace Skill.Persistance.Concretes.Services
             return await _read.GetAllAsync();
         }
 
+        public GetManyResult<Song> GetUsersAllSongs(Guid id)
+        {
+            return _read.GetFiltered(x => x.UserId == id);
+        }
+
+        public async Task<GetManyResult<Song>> GetUsersAllSongsAsync(Guid id)
+        {
+            return await _read.GetFilteredAsync(x => x.UserId == id);
+        }
+
         public GetOneResult<Song> GetSongById(string id)
         {
             return _read.GetById(id);
@@ -70,16 +83,16 @@ namespace Skill.Persistance.Concretes.Services
 
         public GetOneResult<Song> UpdateSong(string id, SongDto dto)
         {
+            dto.Id = ObjectId.Parse(id);
             var map = _mapper.Map<Song>(dto);
-            map.Id = ObjectId.Parse(id);
             var result = _write.ReplaceOne(map, id);
             return result;
         }
 
         public async Task<GetOneResult<Song>> UpdateSongAsync(string id, SongDto dto)
         {
+            dto.Id = ObjectId.Parse(id);
             var map = _mapper.Map<Song>(dto);
-            map.Id = ObjectId.Parse(id);
             var result = await _write.ReplaceOneAsync(map, id);
             return result;
         }
