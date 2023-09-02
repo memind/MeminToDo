@@ -18,8 +18,8 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterModule(new AutofacDependencyResolver());
-
 });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

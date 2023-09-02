@@ -14,11 +14,11 @@ namespace Skill.Persistance.Concretes.Repositories.ArtRepositories
 {
     public class ArtReadRepository : MongoReadRepositoryBase<Art>, IArtReadRepository
     {
-        private readonly MongoDbContext _context;
+        private readonly SkillDbContext _context;
         private readonly IMongoCollection<Art> _collection;
         public ArtReadRepository(IOptions<MongoSettings> settings) : base(settings)
         {
-            _context = new MongoDbContext(settings);
+            _context = new SkillDbContext(settings);
             _collection = _context.GetCollection<Art>();
         }
     }

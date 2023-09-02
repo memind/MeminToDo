@@ -10,11 +10,11 @@ namespace Skill.Persistance.Concretes.Repositories.BaseRepositories
 {
     public class MongoReadRepositoryBase<T> : IReadRepository<T> where T : SkillBase, new()
     {
-        private readonly MongoDbContext _context;
+        private readonly SkillDbContext _context;
         private readonly IMongoCollection<T> _collection;
         public MongoReadRepositoryBase(IOptions<MongoSettings> settings)
         {
-            _context = new MongoDbContext(settings);
+            _context = new SkillDbContext(settings);
             _collection = _context.GetCollection<T>();
         }
 

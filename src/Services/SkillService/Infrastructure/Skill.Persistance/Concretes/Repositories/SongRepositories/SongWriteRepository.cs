@@ -9,11 +9,11 @@ namespace Skill.Persistance.Concretes.Repositories.SongRepositories
 {
     public class SongWriteRepository : MongoWriteRepositoryBase<Song>, ISongWriteRepository
     {
-        private readonly MongoDbContext _context;
+        private readonly SkillDbContext _context;
         private readonly IMongoCollection<Song> _collection;
         public SongWriteRepository(IOptions<MongoSettings> settings) : base(settings)
         {
-            _context = new MongoDbContext(settings);
+            _context = new SkillDbContext(settings);
             _collection = _context.GetCollection<Song>();
         }
     }

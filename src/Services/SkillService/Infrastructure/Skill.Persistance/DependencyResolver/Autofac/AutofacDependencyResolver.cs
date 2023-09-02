@@ -1,5 +1,4 @@
-﻿
-using Autofac;
+﻿using Autofac;
 using Autofac.Core;
 using AutoMapper;
 using Skill.Application.Abstractions.Services;
