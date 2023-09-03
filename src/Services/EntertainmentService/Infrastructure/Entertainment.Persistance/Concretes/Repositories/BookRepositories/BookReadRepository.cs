@@ -8,46 +8,46 @@ namespace Entertainment.Persistance.Concretes.Repositories.BookRepositories
 {
     public class BookReadRepository : IBookReadRepository
     {
-        private readonly IDapperBaseReadService _service;
+        private readonly IDapperBaseReadRepository _service;
 
-        public BookReadRepository(IDapperBaseReadService service)
+        public BookReadRepository(IDapperBaseReadRepository service)
         {
             _service = service;
         }
 
         public List<Book> GetAll()
         {
-            var bookList = _service.GetAll<Book>("SELECT * FROM \"Books\"", new { });
+            var bookList = _service.GetAll<Book>("SELECT * FROM \"Books\"");
             return bookList;
         }
 
         public async Task<List<Book>> GetAllAsync()
         {
-            var bookList = await _service.GetAllAsync<Book>("SELECT * FROM \"Books\"", new { });
+            var bookList = await _service.GetAllAsync<Book>("SELECT * FROM \"Books\"");
             return bookList;
         }
 
         public Book GetById(string id)
         {
-            var book = _service.Get<Book>("SELECT * FROM \"Books\" WHERE Id = @id", new { id });
+            var book = _service.Get<Book>($"SELECT * FROM \"Books\" WHERE \"Id\" = '{id}'");
             return book;
         }
 
         public async Task<Book> GetByIdAsync(string id)
         {
-            var book = await _service.GetAsync<Book>("SELECT * FROM \"Books\" WHERE Id = @id", new { id });
+            var book = await _service.GetAsync<Book>($"SELECT * FROM \"Books\" WHERE \"Id\" = '{id}'");
             return book;
         }
 
         public List<Book> GetUsersAll(string userId)
         {
-            var bookList = _service.GetAll<Book>("SELECT * FROM \"Books\" WHERE UserId = @userId", new { userId });
+            var bookList = _service.GetAll<Book>($"SELECT * FROM \"Books\" WHERE \"UserId\" = '{userId}'");
             return bookList;
         }
 
         public async Task<List<Book>> GetUsersAllAsync(string userId)
         {
-            var bookList = await _service.GetAllAsync<Book>("SELECT * FROM \"Books\" WHERE UserId = @userId", new { userId });
+            var bookList = await _service.GetAllAsync<Book>($"SELECT * FROM \"Books\" WHERE \"UserId\" = '{userId}'");
             return bookList;
         }
     }

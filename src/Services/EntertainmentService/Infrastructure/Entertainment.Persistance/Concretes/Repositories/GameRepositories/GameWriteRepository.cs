@@ -6,41 +6,41 @@ namespace Entertainment.Persistance.Concretes.Repositories.GameRepositories
 {
     public class GameWriteRepository : IGameWriteRepository
     {
-        private readonly IDapperBaseWriteService _service;
+        private readonly IDapperBaseWriteRepository _service;
 
-        public GameWriteRepository(IDapperBaseWriteService service)
+        public GameWriteRepository(IDapperBaseWriteRepository service)
         {
             _service = service;
         }
 
         public int Create(Game entity)
         {
-            return _service.EditData("INSERT INTO \"Games\" (Id, GameName, Games.Genres, Studio, IsCompleted, UserId, CreatedDate, UpdatedDate ) VALUES (@Id, @GameName, @Genres, @Studio, @IsCompleted, @UserId, @CreatedDate, @UpdatedDate)", entity);
+            return _service.EditData($"INSERT INTO \"Games\" (\"Id\", \"GameName\"  , \"Studio\", \"IsCompleted\", \"UserId\" , \"CreatedDate\") VALUES ('{entity.Id}', '{entity.GameName}', '{entity.Studio}', '{entity.IsCompleted}', '{entity.UserId}', '{entity.CreatedDate}')\r\n");
         }
 
         public async Task<int> CreateAsync(Game entity)
         {
-            return await _service.EditDataAsync("INSERT INTO \"Games\" (Id, GameName, Games.Genres, Studio, IsCompleted, UserId, CreatedDate, UpdatedDate ) VALUES (@Id, @GameName, @Genres, @Studio, @IsCompleted, @UserId, @CreatedDate, @UpdatedDate)", entity);
+            return await _service.EditDataAsync($"INSERT INTO \"Games\" (\"Id\", \"GameName\"  , \"Studio\", \"IsCompleted\", \"UserId\" , \"CreatedDate\") VALUES ('{entity.Id}', '{entity.GameName}', '{entity.Studio}', '{entity.IsCompleted}', '{entity.UserId}', '{entity.CreatedDate}')\r\n");
         }
 
         public int Delete(string id)
         {
-            return _service.EditData("DELETE FROM \"Games\" WHERE Id=@Id", new { id });
+            return _service.EditData($"DELETE FROM \"Games\" WHERE \"Id\"='{id}'");
         }
 
         public async Task<int> DeleteAsync(string id)
         {
-            return await _service.EditDataAsync("DELETE FROM \"Games\" WHERE Id=@Id", new { id });
+            return await _service.EditDataAsync($"DELETE FROM \"Games\" WHERE \"Id\"='{id}'");
         }
 
         public int Update(Game entity)
         {
-            return _service.EditData("Update \"Games\" SET Id=@Id, GameName=@GameName, Games.Genres=@Genres, Studio=@Studio, IsCompleted=@IsCompleted UserId=@UserId, CreatedDate=@CreatedDate, UpdatedDate=@UpdatedDate WHERE Id=@Id", entity);
+            return _service.EditData($"UPDATE \"Games\" SET \"GameName\" ='{entity.GameName}', \"Studio\" ='{entity.Studio}', \"IsCompleted\" ='{entity.IsCompleted}', \"UpdatedDate\" ='{DateTime.Now}' WHERE \"Id\"='{entity.Id}'");
         }
 
         public async Task<int> UpdateAsync(Game entity)
         {
-            return await _service.EditDataAsync("Update \"Games\" SET Id=@Id, GameName=@GameName, Games.Genres=@Genres, Studio=@Studio, IsCompleted=@IsCompleted UserId=@UserId, CreatedDate=@CreatedDate, UpdatedDate=@UpdatedDate WHERE Id=@Id", entity);
+            return await _service.EditDataAsync($"UPDATE \"Games\" SET \"GameName\" ='{entity.GameName}', \"Studio\" ='{entity.Studio}', \"IsCompleted\" ='{entity.IsCompleted}', \"UpdatedDate\" ='{DateTime.Now}' WHERE \"Id\"='{entity.Id}'");
         }
     }
 }

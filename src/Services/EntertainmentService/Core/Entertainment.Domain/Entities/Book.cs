@@ -1,5 +1,4 @@
 ﻿using Entertainment.Domain.Entities.Common;
-using Entertainment.Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -9,7 +8,6 @@ namespace Entertainment.Domain.Entities
     {
         public Book()
         {
-            Genres = new List<BookGenre>();
             BookNotes = new List<BookNote>();
         }
 
@@ -17,7 +15,6 @@ namespace Entertainment.Domain.Entities
         public string AuthorName { get; set; }
         public int PageCount { get; set; }
         public bool IsFinished { get; set; } = false;
-        public List<BookGenre> Genres{ get; set; }
 
         [NotMapped]
         [JsonIgnore]

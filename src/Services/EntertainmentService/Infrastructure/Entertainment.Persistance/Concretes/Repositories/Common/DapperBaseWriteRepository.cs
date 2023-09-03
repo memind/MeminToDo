@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Entertainment.Persistance.Concretes.Repositories.Common
 {
-    public class DapperBaseWriteRepository : IDapperBaseWriteService
+    public class DapperBaseWriteRepository : IDapperBaseWriteRepository
     {
         private readonly IDbConnection _db;
 
@@ -15,20 +15,20 @@ namespace Entertainment.Persistance.Concretes.Repositories.Common
             _db = new NpgsqlConnection(configuration.GetConnectionString("PostgreSql"));
         }
 
-        public int EditData(string command, object parms)
+        public int EditData(string command)
         {
             int result;
 
-            result = _db.Execute(command, parms);
+            result = _db.Execute(command);
 
             return result;
         }
 
-        public async Task<int> EditDataAsync(string command, object parms)
+        public async Task<int> EditDataAsync(string command)
         {
             int result;
 
-            result = await _db.ExecuteAsync(command, parms);
+            result = await _db.ExecuteAsync(command);
 
             return result;
         }

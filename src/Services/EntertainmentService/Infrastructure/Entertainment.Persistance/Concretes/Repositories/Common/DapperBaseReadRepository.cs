@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Entertainment.Persistance.Concretes.Repositories.Common
 {
-    public class DapperBaseReadRepository : IDapperBaseReadService
+    public class DapperBaseReadRepository : IDapperBaseReadRepository
     {
         private readonly IDbConnection _db;
 
@@ -15,36 +15,36 @@ namespace Entertainment.Persistance.Concretes.Repositories.Common
             _db = new NpgsqlConnection(configuration.GetConnectionString("PostgreSql"));
         }
 
-        public T Get<T>(string command, object parms)
+        public T Get<T>(string command)
         {
             T result;
-            result = _db.Query<T>(command, parms).FirstOrDefault();
+            result = _db.Query<T>(command).FirstOrDefault();
 
             return result;
         }
 
-        public async Task<T> GetAsync<T>(string command, object parms)
+        public async Task<T> GetAsync<T>(string command)
         {
             T result;
 
-            result = (await _db.QueryAsync<T>(command, parms).ConfigureAwait(false)).FirstOrDefault();
+            result = (await _db.QueryAsync<T>(command).ConfigureAwait(false)).FirstOrDefault();
 
             return result;
         }
 
-        public List<T> GetAll<T>(string command, object parms)
+        public List<T> GetAll<T>(string command)
         {
             List<T> result = new List<T>();
 
-            result = _db.Query<T>(command, parms).ToList();
+            result = _db.Query<T>(command).ToList();
             return result;
         }
 
-        public async Task<List<T>> GetAllAsync<T>(string command, object parms)
+        public async Task<List<T>> GetAllAsync<T>(string command)
         {
             List<T> result = new List<T>();
 
-            result = (await _db.QueryAsync<T>(command, parms)).ToList();
+            result = (await _db.QueryAsync<T>(command)).ToList();
             return result;
         }
     }

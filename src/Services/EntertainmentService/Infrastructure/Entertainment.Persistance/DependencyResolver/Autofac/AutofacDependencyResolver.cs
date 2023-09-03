@@ -22,8 +22,8 @@ namespace Entertainment.Persistance.DependencyResolver.Autofac
             builder.RegisterType<GameReadRepository>().As<IGameReadRepository>().InstancePerLifetimeScope();
             builder.RegisterType<GameWriteRepository>().As<IGameWriteRepository>().InstancePerLifetimeScope();
 
-            builder.RegisterType<DapperBaseReadRepository>().As<IDapperBaseReadService>().InstancePerLifetimeScope();
-            builder.RegisterType<DapperBaseWriteRepository>().As<IDapperBaseWriteService>().InstancePerLifetimeScope();
+            builder.RegisterType<DapperBaseReadRepository>().As<IDapperBaseReadRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<DapperBaseWriteRepository>().As<IDapperBaseWriteRepository>().InstancePerLifetimeScope();
 
             builder.RegisterType<BookNoteReadRepository>().As<IBookNoteReadRepository>().InstancePerLifetimeScope();
             builder.RegisterType<BookNoteWriteRepository>().As<IBookNoteWriteRepository>().InstancePerLifetimeScope();
