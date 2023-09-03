@@ -17,7 +17,6 @@ namespace Entertainment.Domain.Entities
         public bool IsFinished { get; set; } = false;
 
         [NotMapped]
-        [JsonIgnore]
         public List<BookNote>? BookNotes { get; set; }
     }
 }

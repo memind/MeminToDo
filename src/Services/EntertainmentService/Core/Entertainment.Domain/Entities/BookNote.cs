@@ -8,11 +8,6 @@ namespace Entertainment.Domain.Entities
     {
         public string NoteHeader { get; set; }
         public string NoteContent { get; set; }
-
         public Guid BookId { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
-        public Book? Book { get; set; }
     }
 }

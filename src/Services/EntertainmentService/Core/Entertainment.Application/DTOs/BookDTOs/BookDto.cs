@@ -1,4 +1,5 @@
-﻿using Entertainment.Domain.Entities;
+﻿using Entertainment.Application.DTOs.BookNoteDTOs;
+using Entertainment.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -8,10 +9,9 @@ namespace Entertainment.Application.DTOs.BookDTOs
     {
         public BookDto()
         {
-            BookNotes = new List<BookNote>();
+            BookNotes = new List<BookNoteDto>();
         }
 
-        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
@@ -22,7 +22,6 @@ namespace Entertainment.Application.DTOs.BookDTOs
         public bool IsFinished { get; set; } = false;
 
         [NotMapped]
-        [JsonIgnore]
-        public List<BookNote>? BookNotes { get; set; }
+        public List<BookNoteDto>? BookNotes { get; set; }
     }
 }

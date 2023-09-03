@@ -6,7 +6,6 @@ namespace Entertainment.Application.DTOs.BookNoteDTOs
 {
     public class BookNoteDto
     {
-        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
