@@ -2,7 +2,6 @@
 using Workout.Application.Abstractions.UnitOfWork;
 using Workout.Domain.Entities.Common;
 using Workout.Persistance.Concretes.Repositories;
-using Workout.Persistance.Concretes.Repositories.WorkoutRepositories;
 using Workout.Persistance.Context;
 
 namespace Workout.Persistance.Concretes.UnitOfWork

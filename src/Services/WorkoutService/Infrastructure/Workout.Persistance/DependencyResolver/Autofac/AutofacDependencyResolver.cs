@@ -1,13 +1,7 @@
-﻿
-
-using Autofac;
+﻿using Autofac;
 using Autofac.Core;
 using Workout.Application.Abstractions.Services;
 using Workout.Application.Abstractions.UnitOfWork;
-using Workout.Application.Repositories.ExerciseRepositories;
-using Workout.Application.Repositories.WorkoutRepositories;
-using Workout.Persistance.Concretes.Repositories.ExerciseRepositories;
-using Workout.Persistance.Concretes.Repositories.WorkoutRepositories;
 using Workout.Persistance.Concretes.Repositories;
 using Workout.Persistance.Concretes.Services;
 using Workout.Persistance.Concretes.UnitOfWork;
@@ -19,12 +13,6 @@ namespace Workout.Persistance.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterType<WorkoutReadRepository>().As<IWorkoutReadRepository>().InstancePerLifetimeScope();
-            //builder.RegisterType<WorkoutWriteRepository>().As<IWorkoutWriteRepository>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<ExerciseReadRepository>().As<IExerciseReadRepository>().InstancePerLifetimeScope();
-            //builder.RegisterType<ExerciseWriteRepository>().As<IExerciseWriteRepository>().InstancePerLifetimeScope();
-
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<WorkoutService>().As<IWorkoutService>().InstancePerLifetimeScope();
             builder.RegisterType<ExerciseService>().As<IExerciseService>().InstancePerLifetimeScope();
