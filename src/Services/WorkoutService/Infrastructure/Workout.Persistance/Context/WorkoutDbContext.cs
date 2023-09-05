@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 using p = Workout.Domain.Entities;
 
 namespace Workout.Persistance.Context
@@ -11,10 +13,6 @@ namespace Workout.Persistance.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseCosmos(
-                            "https://memind2112.documents.azure.com:443/",
-                            "HcK7NUP8b0Unn8jyVKcgbaPpsw7sEP12GQ1kv4T4mNvetyVUzSUAuTfBf3V2jsn9FVlL5R2rbrgAACDbmqgQYQ==",
-                            databaseName: "MeminToDo.WorkoutDB");
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -22,6 +20,9 @@ namespace Workout.Persistance.Context
         {
             modelBuilder.Entity<p.Exercise>().ToContainer("Exercises").HasPartitionKey(e => e.Id);
             modelBuilder.Entity<p.Workout>().ToContainer("Workouts").HasPartitionKey(w => w.Id);
+
+            modelBuilder.Entity<p.Workout>().HasMany<p.Exercise>(w => w.Exercises);
+            modelBuilder.Entity<p.Exercise>().HasOne<p.Workout>(e => e.Workout).WithMany(w => w.Exercises).HasForeignKey(e => e.WorkoutId);
 
             base.OnModelCreating(modelBuilder);
         }

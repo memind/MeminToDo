@@ -28,12 +28,12 @@ namespace Workout.Persistance.Concretes.Repositories
 
         public T? GetById(string id)
         {
-            return _table.Find(id);
+            return _table.ToList().Find(x => x.Id == id);
         }
 
         public async Task<T?> GetByIdAsync(string id)
         {
-            return await _table.FindAsync(id);
+            return (await _table.ToListAsync()).Find(x => x.Id == id);
         }
 
         public List<T> GetUsersAll(string userId)

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
+using Microsoft.Azure.Cosmos;
 using Workout.Application.Abstractions.Services;
 using Workout.Application.Abstractions.UnitOfWork;
 using Workout.Application.DTOs.WorkoutDTOs;
-using Workout.Domain.Entities;
 using w = Workout.Domain.Entities;
 
 namespace Workout.Persistance.Concretes.Services
@@ -47,49 +48,77 @@ namespace Workout.Persistance.Concretes.Services
         public List<WorkoutDto> GetAllWorkouts()
         {
             var result = _uow.GetReadRepository<w.Workout>().GetAll();
+            var exercises = _uow.GetReadRepository<w.Exercise>().GetAll();
+
             return _mapper.Map<List<WorkoutDto>>(result);
         }
 
         public async Task<List<WorkoutDto>> GetAllWorkoutsAsync()
         {
             var result = await _uow.GetReadRepository<w.Workout>().GetAllAsync();
+            var exercises = await _uow.GetReadRepository<w.Exercise>().GetAllAsync();
+
             return _mapper.Map<List<WorkoutDto>>(result);
         }
 
         public List<WorkoutDto> GetUsersAllWorkouts(string userId)
         {
             var result = _uow.GetReadRepository<w.Workout>().GetUsersAll(userId);
+            var exercises = _uow.GetReadRepository<w.Exercise>().GetAll();
+
             return _mapper.Map<List<WorkoutDto>>(result);
         }
 
         public async Task<List<WorkoutDto>> GetUsersAllWorkoutsAsync(string userId)
         {
             var result = await _uow.GetReadRepository<w.Workout>().GetUsersAllAsync(userId);
+            var exercises = await _uow.GetReadRepository<w.Exercise>().GetAllAsync();
+
             return _mapper.Map<List<WorkoutDto>>(result);
         }
 
         public WorkoutDto GetWorkoutById(string workoutId)
         {
             var result = _uow.GetReadRepository<w.Workout>().GetById(workoutId);
+            var exercises = _uow.GetReadRepository<w.Exercise>().GetAll();
+
             return _mapper.Map<WorkoutDto>(result);
         }
 
         public async Task<WorkoutDto> GetWorkoutByIdAsync(string workoutId)
         {
             var result = await _uow.GetReadRepository<w.Workout>().GetByIdAsync(workoutId);
+            var exercises = (await _uow.GetReadRepository<w.Exercise>().GetAllAsync());
+
             return _mapper.Map<WorkoutDto>(result);
         }
 
-        public WorkoutDto UpdateWorkout(WorkoutDto model)
+        public WorkoutDto UpdateWorkout(WorkoutDto model, string id)
         {
-            var result = _uow.GetWriteRepository<w.Workout>().Update(_mapper.Map<w.Workout>(model));
-            return model;
+            var result = _uow.GetReadRepository<w.Workout>().GetById(id);
+            var exercises =  _uow.GetReadRepository<w.Exercise>().GetAll();
+
+            result.Exercises = _mapper.Map<List<w.Exercise>>(model.Exercises);
+
+            var map = _mapper.Map(model, result);
+            result.UpdatedDate = DateTime.UtcNow;
+
+            _uow.Save();
+            return _mapper.Map<WorkoutDto>(map);
         }
 
-        public async Task<WorkoutDto> UpdateWorkoutAsync(WorkoutDto model)
+        public async Task<WorkoutDto> UpdateWorkoutAsync(WorkoutDto model, string id)
         {
-            var result = await _uow.GetWriteRepository<w.Workout>().UpdateAsync(_mapper.Map<w.Workout>(model));
-            return model;
+            var result = await _uow.GetReadRepository<w.Workout>().GetByIdAsync(id);
+            var exercises = await _uow.GetReadRepository<w.Exercise>().GetAllAsync();
+
+            result.Exercises = _mapper.Map<List<w.Exercise>>(model.Exercises);
+
+            var map = _mapper.Map(model, result);
+            result.UpdatedDate = DateTime.UtcNow;
+
+            await _uow.SaveAsync();
+            return _mapper.Map<WorkoutDto>(map);
         }
     }
 }

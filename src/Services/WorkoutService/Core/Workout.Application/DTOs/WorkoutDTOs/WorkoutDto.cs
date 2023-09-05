@@ -8,6 +8,8 @@ namespace Workout.Application.DTOs.WorkoutDTOs
         {
             Exercises = new List<ExerciseDto>();
         }
+
+        public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid UserId { get; set; }
 

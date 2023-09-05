@@ -13,7 +13,6 @@ namespace Workout.Domain.Entities
 
         public string WorkoutId { get; set; }
 
-        [NotMapped]
         public Workout? Workout { get; set; }
     }
 }

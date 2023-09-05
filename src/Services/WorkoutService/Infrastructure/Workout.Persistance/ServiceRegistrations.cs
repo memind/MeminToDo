@@ -11,10 +11,9 @@ namespace Workout.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services)
         {
-            services.AddDbContext<WorkoutDbContext>(options => options.UseCosmos(
-                            "",
-                            "",
-                            databaseName: ""));
+            services.AddDbContext<WorkoutDbContext>(options => options.UseCosmos("",""));
+
+            
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
 

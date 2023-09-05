@@ -24,7 +24,7 @@ namespace Workout.Application.Abstractions.Services
         public void DeleteExercise(string exerciseId);
         public Task DeleteExerciseAsync(string exerciseId);
 
-        public ExerciseDto UpdateExercise(ExerciseDto model);
-        public Task<ExerciseDto> UpdateExerciseAsync(ExerciseDto model);
+        public ExerciseDto UpdateExercise(ExerciseDto model, string id);
+        public Task<ExerciseDto> UpdateExerciseAsync(ExerciseDto model, string id);
     }
 }

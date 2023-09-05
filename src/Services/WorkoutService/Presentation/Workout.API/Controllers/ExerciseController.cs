@@ -29,15 +29,21 @@ namespace Workout.API.Controllers
         }
 
         [HttpGet("/getAllExercises")]
-        public List<ExerciseDto> GetAllExercises(string id)
+        public List<ExerciseDto> GetAllExercises()
         {
             return _service.GetAllExercises();
         }
 
-        [HttpPut("/updateExercise")]
-        public ExerciseDto UpdateExercise(ExerciseDto model)
+        [HttpGet("/getUsersAllExercises")]
+        public List<ExerciseDto> GetUsersAllExercises(string id)
         {
-            return _service.UpdateExercise(model);
+            return _service.GetUsersAllExercises(id);
+        }
+
+        [HttpPut("/updateExercise")]
+        public ExerciseDto UpdateExercise(ExerciseDto model, string id)
+        {
+            return _service.UpdateExercise(model, id);
         }
 
         [HttpDelete("/deleteExercise")]

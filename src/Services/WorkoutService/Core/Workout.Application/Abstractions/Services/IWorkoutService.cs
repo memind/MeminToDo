@@ -22,7 +22,7 @@ namespace Workout.Application.Abstractions.Services
         public void DeleteWorkout(string id);
         public Task DeleteWorkoutAsync(string id);
 
-        public WorkoutDto UpdateWorkout(WorkoutDto model);
-        public Task<WorkoutDto> UpdateWorkoutAsync(WorkoutDto model);
+        public WorkoutDto UpdateWorkout(WorkoutDto model, string id);
+        public Task<WorkoutDto> UpdateWorkoutAsync(WorkoutDto model, string id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
 using Workout.Application.Abstractions.Services;
 using Workout.Application.DTOs.WorkoutDTOs;
 
@@ -29,15 +30,21 @@ namespace Workout.API.Controllers
         }
 
         [HttpGet("/getAllWorkouts")]
-        public List<WorkoutDto> GetAllWorkouts(string id)
+        public List<WorkoutDto> GetAllWorkouts()
         {
             return _service.GetAllWorkouts();
         }
 
-        [HttpPut("/updateWorkout")]
-        public WorkoutDto UpdateWorkout(WorkoutDto model)
+        [HttpGet("/getUsersAllWorkouts")]
+        public List<WorkoutDto> GetUsersAllWorkouts(string id)
         {
-            return _service.UpdateWorkout(model);
+            return _service.GetUsersAllWorkouts(id);
+        }
+
+        [HttpPut("/updateWorkout")]
+        public WorkoutDto UpdateWorkout(WorkoutDto model, string id)
+        {
+            return _service.UpdateWorkout(model, id);
         }
 
         [HttpDelete("/deleteWorkout")]
