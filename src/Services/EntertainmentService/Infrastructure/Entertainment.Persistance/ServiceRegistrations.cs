@@ -7,6 +7,7 @@ namespace Entertainment.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration cfg)
         {
+            services.AddHealthChecks().AddNpgSql(cfg.GetConnectionString("PostgreSql"));
             return services;
         }
     }

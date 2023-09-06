@@ -1,7 +1,10 @@
-﻿using Autofac;
+﻿using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MongoDB.Driver;
 using Skill.Application.Abstractions.Services;
 using Skill.Application.Repositories.ArtRepositories;
 using Skill.Application.Repositories.SongRepositories;
@@ -22,6 +25,8 @@ namespace Skill.Persistance
                 opt.ConnectionString = cfg.GetSection("MongoConnection:ConnectionString").Value;
                 opt.Database = cfg.GetSection("MongoConnection:Database").Value;
             });
+
+            services.AddHealthChecks().AddMongoDb(mongodbConnectionString: cfg.GetSection("MongoConnection:ConnectionString").Value, mongoDatabaseName: cfg.GetSection("MongoConnection:Database").Value);
 
             return services;
         }
