@@ -4,29 +4,35 @@ services:
   consul:
     image: consul:1.15.4
 
-  #healthcheck:
-  #  image: ${DOCKER_REGISTRY-}healthcheck
-  #  build:
-  #    context: .
-  #    dockerfile: src/WebApps/WebStatus/HealthCheck/Dockerfile
+  prometheus:
+    image: ubuntu/prometheus
 
-  #workout.api:
-  #  image: ${DOCKER_REGISTRY-}workoutapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/WorkoutService/Presentation/Workout.API/Dockerfile
+  grafana:
+    image: grafana/grafana
 
-  #skill.api:
-  #  image: ${DOCKER_REGISTRY-}skillapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/SkillService/Presentation/Skill.API/Dockerfile
+  healthcheck:
+    image: ${DOCKER_REGISTRY-}healthcheck
+    build:
+      context: .
+      dockerfile: src/WebApps/WebStatus/HealthCheck/Dockerfile
 
-  #entertainment.api:
-  #  image: ${DOCKER_REGISTRY-}entertainmentapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/EntertainmentService/Presentation/Entertainment.API/Dockerfile
+  workout.api:
+    image: ${DOCKER_REGISTRY-}workoutapi
+    build:
+      context: .
+      dockerfile: src/Services/WorkoutService/Presentation/Workout.API/Dockerfile
+
+  skill.api:
+    image: ${DOCKER_REGISTRY-}skillapi
+    build:
+      context: .
+      dockerfile: src/Services/SkillService/Presentation/Skill.API/Dockerfile
+
+  entertainment.api:
+    image: ${DOCKER_REGISTRY-}entertainmentapi
+    build:
+      context: .
+      dockerfile: src/Services/EntertainmentService/Presentation/Entertainment.API/Dockerfile
 
   #user.api:
   #  image: ${DOCKER_REGISTRY-}userapi

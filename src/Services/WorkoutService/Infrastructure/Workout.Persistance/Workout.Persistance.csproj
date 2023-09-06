@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -12,6 +12,12 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="7.1.0" />
+	<PackageReference Include="App.Metrics.AspNetCore" Version="4.3.0" />
+	<PackageReference Include="App.Metrics.AspNetCore.Endpoints" Version="4.3.0" />
+	<PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="4.3.0" />
+	<PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="4.3.0" />
+	<PackageReference Include="App.Metrics.Formatters.Prometheus" Version="4.3.0" />
+	<PackageReference Include="prometheus-net.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Autofac" Version="7.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.3" />

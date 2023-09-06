@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Prometheus;
 using Workout.Application;
 using Workout.Persistance;
 using Workout.Persistance.DependencyResolver.Autofac;
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 builder.Services.AddApplicationServices();
-builder.Services.AddPersistanceServices();
+builder.Services.AddPersistanceServices(builder.Host);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -37,7 +38,9 @@ app.MapHealthChecks("/hc", new HealthCheckOptions()
 });
 
 app.UseCors();
-app.UseHttpsRedirection();
+app.UseRouting();
+app.UseHttpMetrics();
+app.MapMetrics();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

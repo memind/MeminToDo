@@ -5,12 +5,13 @@ using Skill.Persistance;
 using Skill.Persistance.DependencyResolver.Autofac;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 builder.Services.AddApplicationServices();
-builder.Services.AddPersistanceServices(builder.Configuration);
+builder.Services.AddPersistanceServices(builder.Configuration, builder.Host);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -37,7 +38,9 @@ app.MapHealthChecks("/hc", new HealthCheckOptions()
 });
 
 app.UseCors();
-app.UseHttpsRedirection();
+app.UseRouting();
+app.UseHttpMetrics();
+app.MapMetrics();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

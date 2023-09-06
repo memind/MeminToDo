@@ -1,16 +1,10 @@
 version: '3.4'
 
 services:
-  #healthcheck:
-  #  container_name: MeminToDo.HealthCheck
-  #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Development
-  #  ports:
-  #    - "5010:80"
-  
   consul:
     container_name: MeminToDo.Consul
     restart: always
+    hostname: "localhost"
     ports:
       - "8500:8500"
       - "8600:8600/tcp"
@@ -19,29 +13,73 @@ services:
       - consul
     command: ["consul", "agent", "-server", "-ui", "-bind", "0.0.0.0", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-bootstrap", "-datacenter", "docker", ]
 
-  #workout.api:
-  #  container_name: MeminToDo.Workout.API
-  #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Development
-  #  ports:
-  #    - "5001:80"
+  healthcheck:
+    container_name: MeminToDo.HealthCheck
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - HealthChecksUI__HealthChecks__0__Name=Workout API Health Check
+      - HealthChecksUI__HealthChecks__0__Uri=http://memintodo.workout.api/hc
+      - HealthChecksUI__HealthChecks__1__Name=Skill API Health Check
+      - HealthChecksUI__HealthChecks__1__Uri=http://memintodo.skill.api/hc
+      - HealthChecksUI__HealthChecks__2__Name=Entertainment API Health Check
+      - HealthChecksUI__HealthChecks__2__Uri=http://memintodo.entertainment.api/hc
+      - WorkoutService__Url=http://memintodo.workout.api
+      - WorkoutService__ServiceName=Entertainment Service
+      - WorkoutService__ServiceId=Entertainment
+      - SkillService__Url=http://memintodo.skill.api
+      - SkillService__ServiceName=Entertainment Service
+      - SkillService__ServiceId=Entertainment
+      - EntertainmentService__Url=http://memintodo.entertainment.api
+      - EntertainmentService__ServiceName=Entertainment Service
+      - EntertainmentService__ServiceId=Entertainment
+      - Consul__Host=http://localhost:8500
+    ports:
+      - "8010:80"
+    depends_on:
+      - consul
 
-  #skill.api:
-  #  container_name: MeminToDo.Skill.API
-  #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Development   
-  #    - "MongoConnection:ConnectionString=" 
-  #    - "MongoConnection:Database=" 
-  #  ports:
-  #    - "5002:80"
+  prometheus:
+    container_name: MeminToDo.Prometheus
+    ports:
+      - "30090:9090"
+    environment:
+      - TZ=UTC+3
+    volumes:
+      #- /../src/WebApps/WebStatus/HealthCheck/Prometheus/Prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
-  #entertainment.api:
-  #  container_name: MeminToDo.Entertainment.API
-  #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Development  
-  #    - "PostgreSql=" 
-  #  ports:
-  #    - "5003:80"
+  grafana:
+    image: grafana/grafana
+    container_name: MeminToDo.Grafana
+    ports:
+      - "30091:3000"
+    volumes:
+      - ./grafana-data/data:/var/lib/grafana 
+
+
+  workout.api:
+    container_name: MeminToDo.Workout.API
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8001:80"
+
+  skill.api:
+    container_name: MeminToDo.Skill.API
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development   
+      - "MongoConnection:ConnectionString=" 
+      - "MongoConnection:Database=" 
+    ports:
+      - "8002:80"
+
+  entertainment.api:
+    container_name: MeminToDo.Entertainment.API
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development  
+      - "PostgreSql=" 
+    ports:
+      - "8003:80"
 
   #user.api:
   #  environment:
