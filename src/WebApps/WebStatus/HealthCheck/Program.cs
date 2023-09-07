@@ -15,19 +15,19 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
 #region Consul
-//builder.Services.AddSingleton<IConsulClient>(consul => new ConsulClient(cfg =>
-//{
-//    cfg.Address = new Uri(builder.Configuration["Consul:Host"]);
-//}, null, handlerOverride =>
-//{
-//    handlerOverride.Proxy = null;
-//    handlerOverride.UseProxy = false;
-//}));
+builder.Services.AddSingleton<IConsulClient>(consul => new ConsulClient(cfg =>
+{
+    cfg.Address = new Uri(builder.Configuration["Consul:Host"]);
+}, null, handlerOverride =>
+{
+    handlerOverride.Proxy = null;
+    handlerOverride.UseProxy = false;
+}));
 
-//builder.Services.Configure<WorkoutConfiguration>(builder.Configuration.GetSection("WorkoutService"));
-//builder.Services.Configure<EntertainmentConfiguration>(builder.Configuration.GetSection("EntertainmentService"));
-//builder.Services.Configure<SkillConfiguration>(builder.Configuration.GetSection("SkillService"));
-//builder.Services.AddSingleton<IHostedService, ConsulRegisterServices>();
+builder.Services.Configure<WorkoutConfiguration>(builder.Configuration.GetSection("WorkoutService"));
+builder.Services.Configure<EntertainmentConfiguration>(builder.Configuration.GetSection("EntertainmentService"));
+builder.Services.Configure<SkillConfiguration>(builder.Configuration.GetSection("SkillService"));
+builder.Services.AddSingleton<IHostedService, ConsulRegisterServices>();
 #endregion
 
 #region Appmetrics - Prometheus - Grafana

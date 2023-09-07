@@ -9,6 +9,9 @@ services:
 
   grafana:
     image: grafana/grafana
+  
+  jaeger:
+    image: jaegertracing/all-in-one:1.22
 
   healthcheck:
     image: ${DOCKER_REGISTRY-}healthcheck
