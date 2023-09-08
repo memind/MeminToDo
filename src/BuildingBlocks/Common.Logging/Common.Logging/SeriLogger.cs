@@ -24,6 +24,7 @@ namespace Common.Logging
                             NumberOfShards = 2,
                             NumberOfReplicas = 1
                         })
+                    .WriteTo.Seq(context.Configuration["Seq:ServerUrl"])
                     .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
                     .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
                     .ReadFrom.Configuration(context.Configuration);
