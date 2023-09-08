@@ -21,6 +21,8 @@ using Workout.Persistance.Concretes.Repositories;
 using Workout.Persistance.Context;
 using Autofac.Core;
 using OpenTracing.Util;
+using Common.Logging;
+using Serilog;
 
 namespace Workout.Persistance
 {
@@ -93,6 +95,10 @@ namespace Workout.Persistance
             #endregion
 
             services.AddHealthChecks().AddDbContextCheck<WorkoutDbContext>("WorkoutDB Health Check", HealthStatus.Degraded, customTestQuery: PerformCosmosHealthCheck());
+
+            host.UseSerilog(SeriLogger.Configure);
+            services.AddTransient<LoggingDelegatingHandler>();
+
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
 

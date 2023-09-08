@@ -28,6 +28,8 @@ using Skill.Persistance.Concretes.Services;
 using Skill.Persistance.Context;
 using Skill.Persistance.DependencyResolver.Autofac;
 using Microsoft.Extensions.Logging;
+using Common.Logging;
+using Serilog;
 
 namespace Skill.Persistance
 {
@@ -102,6 +104,9 @@ namespace Skill.Persistance
                 options.Hosting.IgnorePatterns.Add(context => context.Request.Path.Value.StartsWith("/metrics"));
             });
             #endregion
+
+            host.UseSerilog(SeriLogger.Configure);
+            services.AddTransient<LoggingDelegatingHandler>();
 
             services.AddHealthChecks().AddMongoDb(mongodbConnectionString: cfg.GetSection("MongoConnection:ConnectionString").Value, mongoDatabaseName: cfg.GetSection("MongoConnection:Database").Value);
 

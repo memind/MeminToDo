@@ -3,6 +3,9 @@ version: '3.4'
 services:
   consul:
     image: consul:1.15.4
+    
+  portainer:
+    image: portainer/portainer-ce
 
   prometheus:
     image: ubuntu/prometheus
@@ -12,6 +15,12 @@ services:
   
   jaeger:
     image: jaegertracing/all-in-one:1.22
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.2
 
   healthcheck:
     image: ${DOCKER_REGISTRY-}healthcheck
@@ -61,3 +70,8 @@ services:
   #  build:
   #    context: .
   #    dockerfile: src/ApiGateways/OcelotAPIGateway/Dockerfile
+
+  
+volumes:
+  portainer_data:
+  elasticsearch-data:

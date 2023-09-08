@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Skill.Application.Abstractions.Services;
 using Skill.Application.DTOs.ArtDTOs;
@@ -13,88 +14,146 @@ namespace Skill.Persistance.Concretes.Services
         private readonly IArtReadRepository _read;
         private readonly IArtWriteRepository _write;
         private readonly IMapper _mapper;
+        private readonly ILogger<ArtService> _logger;
 
-        public ArtService(IArtWriteRepository write, IArtReadRepository read, IMapper mapper)
+        public ArtService(IArtWriteRepository write, IArtReadRepository read, IMapper mapper, ILogger<ArtService> logger)
         {
             _write = write;
             _read = read;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public GetOneResult<Art> CreateArt(ArtDto newArt, string id)
         {
-            newArt.Id = ObjectId.GenerateNewId();
-            newArt.UserId = Guid.Parse(id);
-            var map = _mapper.Map<Art>(newArt);
-            var result = _write.InsertOne(map);
+            try
+            {
+                newArt.Id = ObjectId.GenerateNewId();
+                newArt.UserId = Guid.Parse(id);
 
-            return result;
+                var map = _mapper.Map<Art>(newArt);
+                var result = _write.InsertOne(map);
+
+                _logger.LogInformation($"Created Art: {newArt.Name}");
+
+                return result;
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<GetOneResult<Art>> CreateArtAsync(ArtDto newArt, string id)
         {
-            newArt.Id = ObjectId.GenerateNewId();
-            newArt.UserId = Guid.Parse(id);
-            var map = _mapper.Map<Art>(newArt);
-            var result = await _write.InsertOneAsync(map);
+            try
+            {
+                newArt.Id = ObjectId.GenerateNewId();
+                newArt.UserId = Guid.Parse(id);
 
-            return result;
+                var map = _mapper.Map<Art>(newArt);
+                var result = await _write.InsertOneAsync(map);
+
+                _logger.LogInformation($"Created Art: {newArt.Name}");
+
+                return result;
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public void DeleteArt(string id)
         {
-            _write.DeleteById(id);
+            try
+            {
+                _write.DeleteById(id);
+                _logger.LogInformation($"Deleted Art: {id}");
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task DeleteArtAsync(string id)
         {
-            await _write.DeleteByIdAsync(id);
+            try
+            {
+                await _write.DeleteByIdAsync(id);
+                _logger.LogInformation($"Deleted Art: {id}");
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public GetManyResult<Art> GetAllArts()
         {
-            return _read.GetAll();
+            try
+            {
+                _logger.LogInformation("Getting All Arts");
+                return _read.GetAll();
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<GetManyResult<Art>> GetAllArtsAsync()
         {
-            return await _read.GetAllAsync();
+            try
+            {
+                _logger.LogInformation("Getting All Arts");
+                return await _read.GetAllAsync();
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public GetManyResult<Art> GetUsersAllArts(Guid id)
         {
-            return _read.GetFiltered(x => x.UserId == id);
+            try
+            {
+                _logger.LogInformation("Getting Users All Arts");
+                return _read.GetFiltered(x => x.UserId == id);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<GetManyResult<Art>> GetAllUsersArtsAsync(Guid id)
         {
-            return await _read.GetFilteredAsync(x => x.UserId == id);
+            try
+            {
+                _logger.LogInformation("Getting Users All Arts");
+                return await _read.GetFilteredAsync(x => x.UserId == id);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public GetOneResult<Art> GetArtById(string id)
         {
-            return _read.GetById(id);
+            try
+            {
+                _logger.LogInformation($"Getting Art: {id}");
+                return _read.GetById(id);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<GetOneResult<Art>> GetArtByIdAsync(string id)
         {
-            return await _read.GetByIdAsync(id);
+            try
+            {
+                _logger.LogInformation($"Getting Art: {id}");
+                return await _read.GetByIdAsync(id);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public GetOneResult<Art> UpdateArt(string id, ArtDto dto)
         {
-            var map = _mapper.Map<Art>(dto);
-            map.Id = ObjectId.Parse(id);
-            var result = _write.ReplaceOne(map, id);
-            return result;
+            try
+            {
+                var map = _mapper.Map<Art>(dto);
+                map.Id = ObjectId.Parse(id);
+                var result = _write.ReplaceOne(map, id);
+
+                _logger.LogInformation($"Updated Art: {id}");
+
+                return result;
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<GetOneResult<Art>> UpdateArtAsync(string id, ArtDto dto)
         {
-            var map = _mapper.Map<Art>(dto);
-            map.Id = ObjectId.Parse(id);
-            var result = await _write.ReplaceOneAsync(map, id);
-            return result;
+            try
+            {
+                var map = _mapper.Map<Art>(dto);
+                map.Id = ObjectId.Parse(id);
+                var result = await _write.ReplaceOneAsync(map, id);
+
+                _logger.LogInformation($"Updated Art: {id}");
+
+                return result;
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
     }
 }

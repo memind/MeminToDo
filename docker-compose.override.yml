@@ -1,6 +1,41 @@
 version: '3.4'
 
 services:
+  portainer:
+    container_name: MeminToDo.Portainer
+    restart: always
+    ports:
+      - "8080:8000"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+      
+  elasticsearch:
+    container_name: MeminToDo.ElasticSearch
+    environment:
+        - xpack.monitoring.enabled=true
+        - xpack.watcher.enabled=false
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        - discovery.type=single-node
+    ports:
+        - "8012:9200"
+    volumes:
+        - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - MeminToDo.ElasticNetwork
+
+  kibana:
+    container_name: MeminToDo.Kibana
+    environment:
+        - ELASTICSEARCH_URL=http://localhost:8012
+    depends_on:
+        - elasticsearch
+    ports:
+        - "8011:5601" 
+    networks:
+      - MeminToDo.ElasticNetwork
+
   consul:
     container_name: MeminToDo.Consul
     restart: always
@@ -12,7 +47,7 @@ services:
     networks:
       - MeminToDo.ConsulNetwork
     #command: ["consul", "agent", "-server", "-ui", "-bind", "0.0.0.0", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-bootstrap", "-datacenter", "docker", ]
-    command: ["consul", "agent", "-server", "-ui", "-bind", "0.0.0.0", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-datacenter", "docker", ]
+    command: ["consul", "agent", "-server", "-ui", "-bind", "0.0.0.0", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-bootstrap", "-datacenter", "docker", ]
  
   jaeger:
     container_name: MeminToDo.Jaeger
@@ -44,16 +79,21 @@ services:
       - "30091:3000"
     volumes:
       - ./grafana-data/data:/var/lib/grafana 
+    depends_on:
+      - prometheus
 
 
   workout.api:
     container_name: MeminToDo.Workout.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - "ElasticConfiguration:Uri=http://localhost:8012"
     ports:
       - "8001:80"
     networks:
       - MeminToDo.ConsulNetwork
+    depends_on:
+      - kibana
 
   skill.api:
     container_name: MeminToDo.Skill.API
@@ -61,20 +101,26 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development   
       - "MongoConnection:ConnectionString=" 
       - "MongoConnection:Database=" 
+      - "ElasticConfiguration:Uri=http://localhost:8012"
     ports:
       - "8002:80"
     networks:
       - MeminToDo.ConsulNetwork
+    depends_on:
+      - kibana
 
   entertainment.api:
     container_name: MeminToDo.Entertainment.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development  
       - "PostgreSql=" 
+      - "ElasticConfiguration:Uri=http://localhost:8012"
     ports:
       - "8003:80"
     networks:
       - MeminToDo.ConsulNetwork
+    depends_on:
+      - kibana
 
   healthcheck:
     container_name: MeminToDo.HealthCheck
@@ -95,12 +141,13 @@ services:
       - EntertainmentService__Url=http://memintodo.entertainment.api
       - EntertainmentService__ServiceName=Entertainment Service
       - EntertainmentService__ServiceId=Entertainment
-      - Consul__Host=http://192.168.16.2:8500
+      - Consul__Host=http://192.168.112.2:8500
     ports:
       - "8010:80"
     depends_on:
       - consul
       - grafana
+      - kibana
       - prometheus
       - jaeger
       - entertainment.api
@@ -156,9 +203,14 @@ services:
   #    - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
   #    - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   
+volumes:
+  portainer_data:
+  elasticsearch-data:
+
 networks:
   MeminToDo.JaegerNetwork:
-    name: JaegerNetwork
     driver: bridge
   MeminToDo.ConsulNetwork:
+    driver: bridge
+  MeminToDo.ElasticNetwork:
     driver: bridge

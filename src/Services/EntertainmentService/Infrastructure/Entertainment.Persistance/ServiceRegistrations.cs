@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using OpenTracing.Contrib.NetCore.Configuration;
 using OpenTracing.Util;
 using OpenTracing;
+using Common.Logging;
+using Serilog;
 
 namespace Entertainment.Persistance
 {
@@ -83,6 +85,9 @@ namespace Entertainment.Persistance
                 options.Hosting.IgnorePatterns.Add(context => context.Request.Path.Value.StartsWith("/metrics"));
             });
             #endregion
+
+            host.UseSerilog(SeriLogger.Configure);
+            services.AddTransient<LoggingDelegatingHandler>();
 
             services.AddHealthChecks().AddNpgSql(cfg.GetConnectionString("PostgreSql"));
             return services;

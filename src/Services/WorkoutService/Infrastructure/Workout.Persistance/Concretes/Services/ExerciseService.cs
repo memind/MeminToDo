@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using Workout.Application.Abstractions.Services;
 using Workout.Application.Abstractions.UnitOfWork;
 using Workout.Application.DTOs.ExerciseDTOs;
 using Workout.Application.DTOs.WorkoutDTOs;
+using Workout.Domain.Entities;
 using w = Workout.Domain.Entities;
 
 namespace Workout.Persistance.Concretes.Services
@@ -11,108 +13,193 @@ namespace Workout.Persistance.Concretes.Services
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<ExerciseService> _logger;
 
-        public ExerciseService(IMapper mapper, IUnitOfWork uow)
+        public ExerciseService(IMapper mapper, IUnitOfWork uow, ILogger<ExerciseService> logger)
         {
             _mapper = mapper;
             _uow = uow;
+            _logger = logger;
+            _logger.LogInformation("Exercise Service Is On");
         }
 
         public ExerciseDto CreateExercise(ExerciseDto model)
         {
-            _uow.GetWriteRepository<w.Exercise>().Create(_mapper.Map<w.Exercise>(model));
-            _uow.Save();
-            return model;
+            try
+            {
+                _uow.GetWriteRepository<w.Exercise>().Create(_mapper.Map<w.Exercise>(model));
+                _uow.Save();
+
+                _logger.LogInformation($"Created Exercise: {model.Name}");
+
+                return model;
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<ExerciseDto> CreateExerciseAsync(ExerciseDto model)
         {
-            await _uow.GetWriteRepository<w.Exercise>().CreateAsync(_mapper.Map<w.Exercise>(model));
-            await _uow.SaveAsync();
-            return model;
+            try
+            {
+                await _uow.GetWriteRepository<w.Exercise>().CreateAsync(_mapper.Map<w.Exercise>(model));
+                await _uow.SaveAsync();
+
+                _logger.LogInformation($"Created Exercise: {model.Name}");
+
+                return model;
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public void DeleteExercise(string exerciseId)
         {
-            _uow.GetWriteRepository<w.Exercise>().DeleteById(exerciseId);
-            _uow.Save();
+            try
+            {
+                _uow.GetWriteRepository<w.Exercise>().DeleteById(exerciseId);
+                _uow.Save();
+
+                _logger.LogInformation($"Deleted Exercise: {exerciseId}");
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task DeleteExerciseAsync(string exerciseId)
         {
-            await _uow.GetWriteRepository<w.Exercise>().DeleteByIdAsync(exerciseId);
-            await _uow.SaveAsync();
+            try
+            {
+                await _uow.GetWriteRepository<w.Exercise>().DeleteByIdAsync(exerciseId);
+                await _uow.SaveAsync();
+
+                _logger.LogInformation($"Deleted Exercise: {exerciseId}");
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public List<ExerciseDto> GetAllExercises()
         {
-            var result = _uow.GetReadRepository<w.Exercise>().GetAll();
-            return _mapper.Map<List<ExerciseDto>>(result);
+            try
+            {
+                var result = _uow.GetReadRepository<w.Exercise>().GetAll();
+
+                _logger.LogInformation("Getting All Exercises");
+
+                return _mapper.Map<List<ExerciseDto>>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<List<ExerciseDto>> GetAllExercisesAsync()
         {
-            var result = await _uow.GetReadRepository<w.Exercise>().GetAllAsync();
-            return _mapper.Map<List<ExerciseDto>>(result);
+            try
+            {
+                var result = await _uow.GetReadRepository<w.Exercise>().GetAllAsync();
+
+                _logger.LogInformation("Getting All Exercises");
+
+                return _mapper.Map<List<ExerciseDto>>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public List<ExerciseDto> GetAllExercisesInWorkout(string workoutId)
         {
-            var result = _uow.GetReadRepository<w.Exercise>().GetAll().Where(e => e.WorkoutId == workoutId).ToList();
-            return _mapper.Map<List<ExerciseDto>>(result);
+            try
+            {
+                var result = _uow.GetReadRepository<w.Exercise>().GetAll().Where(e => e.WorkoutId == workoutId).ToList();
+
+                _logger.LogInformation($"Getting All Exercises In Workout: {workoutId}");
+
+                return _mapper.Map<List<ExerciseDto>>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<List<ExerciseDto>> GetAllExercisesInWorkoutAsync(string workoutId)
         {
-            var result = (await _uow.GetReadRepository<w.Exercise>().GetAllAsync()).Where(e => e.WorkoutId == workoutId).ToList();
-            return _mapper.Map<List<ExerciseDto>>(result);
+            try
+            {
+                var result = (await _uow.GetReadRepository<w.Exercise>().GetAllAsync()).Where(e => e.WorkoutId == workoutId).ToList();
+
+                _logger.LogInformation($"Getting All Exercises In Workout: {workoutId}");
+
+                return _mapper.Map<List<ExerciseDto>>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public ExerciseDto GetExerciseById(string exerciseId)
         {
-            var result = _uow.GetReadRepository<w.Exercise>().GetById(exerciseId);
-            result.Workout = _uow.GetReadRepository<w.Workout>().GetById(result.WorkoutId);
-            return _mapper.Map<ExerciseDto>(result);
+            try
+            {
+                var result = _uow.GetReadRepository<w.Exercise>().GetById(exerciseId);
+                result.Workout = _uow.GetReadRepository<w.Workout>().GetById(result.WorkoutId);
+
+                _logger.LogInformation($"Getting Exercise: {exerciseId}");
+
+                return _mapper.Map<ExerciseDto>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<ExerciseDto> GetExerciseByIdAsync(string exerciseId)
         {
-            var result = await _uow.GetReadRepository<w.Exercise>().GetByIdAsync(exerciseId);
-            return _mapper.Map<ExerciseDto>(result);
+            try
+            {
+
+                var result = await _uow.GetReadRepository<w.Exercise>().GetByIdAsync(exerciseId);
+                result.Workout = await _uow.GetReadRepository<w.Workout>().GetByIdAsync(result.WorkoutId);
+
+                _logger.LogInformation($"Getting Exercise: {exerciseId}");
+
+                return _mapper.Map<ExerciseDto>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public List<ExerciseDto> GetUsersAllExercises(string userId)
         {
-            var result = _uow.GetReadRepository<w.Exercise>().GetUsersAll(userId);
-            return _mapper.Map<List<ExerciseDto>>(result);
+            try
+            {
+                var result = _uow.GetReadRepository<w.Exercise>().GetUsersAll(userId);
+
+                _logger.LogInformation($"Getting Users All Exercises: {userId}");
+
+                return _mapper.Map<List<ExerciseDto>>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<List<ExerciseDto>> GetUsersAllExercisesAsync(string userId)
         {
-            var result = await _uow.GetReadRepository<w.Exercise>().GetUsersAllAsync(userId);
-            return _mapper.Map<List<ExerciseDto>>(result);
+            try
+            {
+                var result = await _uow.GetReadRepository<w.Exercise>().GetUsersAllAsync(userId);
+
+                _logger.LogInformation($"Getting Users All Exercises: {userId}");
+
+                return _mapper.Map<List<ExerciseDto>>(result);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public ExerciseDto UpdateExercise(ExerciseDto model, string id)
         {
-            var result = _uow.GetReadRepository<w.Exercise>().GetById(id);
+            try
+            {
+                var result = _uow.GetReadRepository<w.Exercise>().GetById(id);
 
-            var map = _mapper.Map(model, result);
-            result.UpdatedDate = DateTime.UtcNow;
+                var map = _mapper.Map(model, result);
+                result.UpdatedDate = DateTime.UtcNow;
 
-            _uow.Save();
-            return _mapper.Map<ExerciseDto>(map);
+                _uow.Save();
+                _logger.LogInformation($"Updated Exercise: {id}");
+
+                return _mapper.Map<ExerciseDto>(map);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<ExerciseDto> UpdateExerciseAsync(ExerciseDto model, string id)
         {
-            var result = await _uow.GetReadRepository<w.Exercise>().GetByIdAsync(id);
+            try
+            {
+                var result = await _uow.GetReadRepository<w.Exercise>().GetByIdAsync(id);
 
-            var map = _mapper.Map(model, result);
-            result.UpdatedDate = DateTime.UtcNow;
+                var map = _mapper.Map(model, result);
+                result.UpdatedDate = DateTime.UtcNow;
 
-            await _uow.SaveAsync();
-            return _mapper.Map<ExerciseDto>(map);
+                await _uow.SaveAsync();
+                _logger.LogInformation($"Updated Exercise: {id}");
+
+                return _mapper.Map<ExerciseDto>(map);
+            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
     }
 }

@@ -12,6 +12,7 @@ COPY ["src/Services/EntertainmentService/Infrastructure/Entertainment.Infrastruc
 COPY ["src/Services/EntertainmentService/Core/Entertainment.Application/Entertainment.Application.csproj", "src/Services/EntertainmentService/Core/Entertainment.Application/"]
 COPY ["src/Services/EntertainmentService/Core/Entertainment.Domain/Entertainment.Domain.csproj", "src/Services/EntertainmentService/Core/Entertainment.Domain/"]
 COPY ["src/Services/EntertainmentService/Infrastructure/Entertainment.Persistance/Entertainment.Persistance.csproj", "src/Services/EntertainmentService/Infrastructure/Entertainment.Persistance/"]
+COPY ["src/BuildingBlocks/Common.Logging/Common.Logging/Common.Logging.csproj", "src/BuildingBlocks/Common.Logging/Common.Logging/"]
 RUN dotnet restore "src/Services/EntertainmentService/Presentation/Entertainment.API/Entertainment.API.csproj"
 COPY . .
 WORKDIR "/src/src/Services/EntertainmentService/Presentation/Entertainment.API"

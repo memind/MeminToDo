@@ -12,6 +12,7 @@ COPY ["src/Services/WorkoutService/Infrastructure/Workout.Infrastructure/Workout
 COPY ["src/Services/WorkoutService/Core/Workout.Application/Workout.Application.csproj", "src/Services/WorkoutService/Core/Workout.Application/"]
 COPY ["src/Services/WorkoutService/Core/Workout.Domain/Workout.Domain.csproj", "src/Services/WorkoutService/Core/Workout.Domain/"]
 COPY ["src/Services/WorkoutService/Infrastructure/Workout.Persistance/Workout.Persistance.csproj", "src/Services/WorkoutService/Infrastructure/Workout.Persistance/"]
+COPY ["src/BuildingBlocks/Common.Logging/Common.Logging/Common.Logging.csproj", "src/BuildingBlocks/Common.Logging/Common.Logging/"]
 RUN dotnet restore "src/Services/WorkoutService/Presentation/Workout.API/Workout.API.csproj"
 COPY . .
 WORKDIR "/src/src/Services/WorkoutService/Presentation/Workout.API"

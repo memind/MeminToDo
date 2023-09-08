@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Workout.Application\Workout.Application.csproj" />
+	<ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Logging\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
