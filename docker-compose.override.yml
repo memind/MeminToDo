@@ -17,26 +17,27 @@ services:
         - ACCEPT_EULA=Y
     ports:
         - "5341:80"
+    networks:
+      - MeminToDo.SeqNetwork
       
   elasticsearch:
     container_name: MeminToDo.ElasticSearch
     environment:
-        - xpack.monitoring.enabled=true
-        - xpack.watcher.enabled=false
-        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-        - discovery.type=single-node
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
     ports:
-        - "8012:9200"
+      - "8012:9200"
     volumes:
-        - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-data:/usr/share/elasticsearch/data
     networks:
       - MeminToDo.ElasticNetwork
 
   kibana:
     container_name: MeminToDo.Kibana
     environment:
-      - ELASTICSEARCH_URL=http://localhost:8012
-      - Seq__ServerUrl=http://memintodo.seq:5341
+      - ELASTICSEARCH_URL=http://memintodo.elasticsearch:8012
     depends_on:
       - elasticsearch
     ports:
@@ -54,7 +55,7 @@ services:
       - "8600:8600/udp"
     networks:
       - MeminToDo.ConsulNetwork
-    command: ["consul", "agent", "-server", "-ui", "-bind", "0.0.0.0", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-bootstrap", "-datacenter", "docker", ]
+    command: ["consul", "agent", "-server", "-ui", "-bind", "172.23.0.2", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-bootstrap", "-datacenter", "docker", ]
  
   jaeger:
     container_name: MeminToDo.Jaeger
@@ -94,12 +95,14 @@ services:
     container_name: MeminToDo.Workout.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ElasticConfiguration:Uri=http://localhost:8012"
-      - Seq:ServerUrl=http://memintodo.seq:5341
+      - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
+      - "Seq:ServerUrl=http://MeminToDo.Seq:5341"
     ports:
       - "8001:80"
     networks:
       - MeminToDo.ConsulNetwork
+      - MeminToDo.SeqNetwork
+      - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
 
@@ -107,14 +110,16 @@ services:
     container_name: MeminToDo.Skill.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development   
-      - "MongoConnection:" 
-      - "MongoConnection:Database=" 
-      - "ElasticConfiguration:Uri=http://localhost:8012"
-      - Seq:ServerUrl=http://memintodo.seq:5341
+      - MongoConnection:ConnectionString=
+      - MongoConnection:Database=
+      - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
+      - "Seq:ServerUrl=http://memintodo.seq:5341"
     ports:
       - "8002:80"
     networks:
       - MeminToDo.ConsulNetwork
+      - MeminToDo.SeqNetwork
+      - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
 
@@ -122,13 +127,15 @@ services:
     container_name: MeminToDo.Entertainment.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development  
-      - "PostgreSql=" 
-      - "ElasticConfiguration:Uri=http://localhost:8012"
-      - Seq:ServerUrl=http://memintodo.seq:5341
+      - PostgreSql=
+      - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
+      - "Seq:ServerUrl=http://memintodo.seq:5341"
     ports:
       - "8003:80"
     networks:
       - MeminToDo.ConsulNetwork
+      - MeminToDo.SeqNetwork
+      - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
 
@@ -151,7 +158,7 @@ services:
       - EntertainmentService__Url=http://memintodo.entertainment.api
       - EntertainmentService__ServiceName=Entertainment Service
       - EntertainmentService__ServiceId=Entertainment
-      - Consul__Host=http://192.168.112.2:8500
+      - Consul__Host=http://172.23.0.2:8500
     ports:
       - "8010:80"
     depends_on:
@@ -218,6 +225,8 @@ volumes:
   elasticsearch-data:
 
 networks:
+  MeminToDo.SeqNetwork:
+    driver: bridge
   MeminToDo.JaegerNetwork:
     driver: bridge
   MeminToDo.ConsulNetwork:

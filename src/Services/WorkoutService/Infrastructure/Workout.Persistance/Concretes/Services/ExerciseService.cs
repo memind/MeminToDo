@@ -20,7 +20,6 @@ namespace Workout.Persistance.Concretes.Services
             _mapper = mapper;
             _uow = uow;
             _logger = logger;
-            _logger.LogInformation("Exercise Service Is On");
         }
 
         public ExerciseDto CreateExercise(ExerciseDto model)

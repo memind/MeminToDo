@@ -17,13 +17,14 @@ namespace Common.Logging
                     .WriteTo.Debug()
                     .WriteTo.Console()
                     .WriteTo.Elasticsearch(
-                        new ElasticsearchSinkOptions()
+                        new ElasticsearchSinkOptions(new Uri(elasticUri))
                         {
-                            IndexFormat = $"memintodo-logs-{context.HostingEnvironment.ApplicationName?.ToLower().Replace(".", "-")}-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
+                            IndexFormat = $"memintodo-logs-{context.HostingEnvironment.ApplicationName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
                             AutoRegisterTemplate = true,
+                            DetectElasticsearchVersion = false,
                             NumberOfShards = 2,
                             NumberOfReplicas = 1
-                        })
+                        }).MinimumLevel.Verbose()
                     .WriteTo.Seq(context.Configuration["Seq:ServerUrl"])
                     .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
                     .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
