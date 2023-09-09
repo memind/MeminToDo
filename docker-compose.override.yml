@@ -1,6 +1,19 @@
 version: '3.4'
 
 services:
+  ocelotapigateway:
+    container_name: MeminToDo.Ocelot.API
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - workout.api
+      - entertainment.api
+      - skill.api
+    ports:
+      - "8020:80"
+    networks:
+      - MeminToDo.OcelotNetwork
+
   portainer:
     container_name: MeminToDo.Portainer
     restart: always
@@ -55,7 +68,7 @@ services:
       - "8600:8600/udp"
     networks:
       - MeminToDo.ConsulNetwork
-    command: ["consul", "agent", "-server", "-ui", "-bind", "172.23.0.2", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-bootstrap", "-datacenter", "docker", ]
+    command: ["consul", "agent", "-server", "-ui", "-bind", "0.0.0.0", "-client", "0.0.0.0", "-data-dir", "/consul/data", "-config-dir", "/consul/config", "-bootstrap", "-datacenter", "docker", ]
  
   jaeger:
     container_name: MeminToDo.Jaeger
@@ -102,6 +115,7 @@ services:
     networks:
       - MeminToDo.ConsulNetwork
       - MeminToDo.SeqNetwork
+      - MeminToDo.OcelotNetwork
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
@@ -119,6 +133,7 @@ services:
     networks:
       - MeminToDo.ConsulNetwork
       - MeminToDo.SeqNetwork
+      - MeminToDo.OcelotNetwork
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
@@ -135,6 +150,7 @@ services:
     networks:
       - MeminToDo.ConsulNetwork
       - MeminToDo.SeqNetwork
+      - MeminToDo.OcelotNetwork
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
@@ -158,7 +174,7 @@ services:
       - EntertainmentService__Url=http://memintodo.entertainment.api
       - EntertainmentService__ServiceName=Entertainment Service
       - EntertainmentService__ServiceId=Entertainment
-      - Consul__Host=http://172.23.0.2:8500
+      - Consul__Host=http://192.168.16.2:8500
     ports:
       - "8010:80"
     depends_on:
@@ -232,4 +248,6 @@ networks:
   MeminToDo.ConsulNetwork:
     driver: bridge
   MeminToDo.ElasticNetwork:
+    driver: bridge
+  MeminToDo.OcelotNetwork:
     driver: bridge
