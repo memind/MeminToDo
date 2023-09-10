@@ -1,7 +1,6 @@
-﻿
-namespace Workout.Application.DTOs.ExerciseDTOs
+﻿namespace Dashboard.Aggregator.Models.WorkoutModels
 {
-    public class ExerciseDto
+    public class ExerciseModel
     {
         public DateTime CreatedDate { get; set; }
 

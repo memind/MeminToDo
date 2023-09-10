@@ -9,13 +9,15 @@ namespace HealthCheck.Consul
         private WorkoutConfiguration _workoutConfig;
         private SkillConfiguration _skillConfig;
         private EntertainmentConfiguration _entertainmentConfig;
+        private DashboardConfiguration _dashboardConfig;
 
-        public ConsulRegisterServices(IOptions<WorkoutConfiguration> workoutConfiguration, IOptions<SkillConfiguration> skillConfiguration, IConsulClient client, IOptions<EntertainmentConfiguration> entertainmentConfiguration)
+        public ConsulRegisterServices(IOptions<WorkoutConfiguration> workoutConfiguration, IOptions<SkillConfiguration> skillConfiguration, IConsulClient client, IOptions<EntertainmentConfiguration> entertainmentConfiguration, IOptions<DashboardConfiguration> dashboardConfig)
         {
             _client = client;
             _workoutConfig = workoutConfiguration.Value;
             _skillConfig = skillConfiguration.Value;
             _entertainmentConfig = entertainmentConfiguration.Value;
+            _dashboardConfig = dashboardConfig.Value;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -53,13 +55,26 @@ namespace HealthCheck.Consul
                 Tags = new[] { _entertainmentConfig.ServiceName }
             };
 
+            var dashboardUri = new Uri(_dashboardConfig.Url);
+
+            var dashboardRegistration = new AgentServiceRegistration()
+            {
+                Address = dashboardUri.Host,
+                Name = _dashboardConfig.ServiceName,
+                ID = _dashboardConfig.ServiceId,
+                Port = dashboardUri.Port,
+                Tags = new[] { _dashboardConfig.ServiceName }
+            };
+
             await _client.Agent.ServiceDeregister(_workoutConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_skillConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_entertainmentConfig.ServiceId, cancellationToken);
+            await _client.Agent.ServiceDeregister(_dashboardConfig.ServiceId, cancellationToken);
 
             await _client.Agent.ServiceRegister(workoutRegistration, cancellationToken);
             await _client.Agent.ServiceRegister(skillRegistration, cancellationToken);
             await _client.Agent.ServiceRegister(entertainmentRegistration, cancellationToken);
+            await _client.Agent.ServiceRegister(dashboardRegistration, cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -67,6 +82,7 @@ namespace HealthCheck.Consul
             await _client.Agent.ServiceDeregister(_workoutConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_skillConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_entertainmentConfig.ServiceId, cancellationToken);
+            await _client.Agent.ServiceDeregister(_dashboardConfig.ServiceId, cancellationToken);
         }
     }
 }

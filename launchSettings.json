@@ -11,7 +11,8 @@
         "log.api": "StartDebugging",
         "entertainment.api": "StartDebugging",
         "dashboard.api": "StartDebugging",
-        "ocelotapigateway": "StartDebugging"
+        "ocelotapigateway": "StartDebugging",
+        "dashboard.aggregator": "StartDebugging"
       }
     }
   }

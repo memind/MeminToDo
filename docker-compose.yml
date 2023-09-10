@@ -54,6 +54,14 @@ services:
     build:
       context: .
       dockerfile: src/ApiGateways/OcelotAPIGateway/Dockerfile
+
+  dashboard.aggregator:
+    image: ${DOCKER_REGISTRY-}dashboardaggregator
+    build:
+      context: .
+      dockerfile: src/Services/DashboardService/Dashboard.Aggregator/Dockerfile
+
+
   #user.api:
   #  image: ${DOCKER_REGISTRY-}userapi
   #  build:
@@ -65,14 +73,6 @@ services:
   #  build:
   #    context: .
   #    dockerfile: src/Services/LogService/Presentation/Log.API/Dockerfile
-
-
-  #dashboard.api:
-  #  image: ${DOCKER_REGISTRY-}dashboardapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/DashboardService/Presentation/Dashboard.API/Dockerfile
-
   
 volumes:
   portainer_data:

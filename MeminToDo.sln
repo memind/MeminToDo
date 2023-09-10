@@ -35,12 +35,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserService", "UserService"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkoutService", "WorkoutService", "{B1E50BCC-85CB-4581-8A3B-612114F45403}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7769CBBB-701F-45E8-BB74-EFAEED2ABDAC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3FDC1979-FD6D-497F-8C5E-832B952E1442}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B523ADCA-2A4C-477D-A3BE-ED44866BDFBF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9AE8C2A1-91BE-437D-8439-862DB3B1AE57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{90CE088D-A6A8-4BEF-B072-6028AFCA10F9}"
@@ -71,79 +65,71 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D535E143-6CDE-4256-A3B4-A5F2A224981B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.Domain", "src\Services\DashboardService\Core\Dashboard.Domain\Dashboard.Domain.csproj", "{7777E689-1DB9-4942-AF36-89897197FABE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entertainment.Domain", "src\Services\EntertainmentService\Core\Entertainment.Domain\Entertainment.Domain.csproj", "{CA0E34C8-365F-4D60-B6F9-383906828579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.Application", "src\Services\DashboardService\Core\Dashboard.Application\Dashboard.Application.csproj", "{6ADC3069-6D66-4431-B1E4-5F0D1558E149}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entertainment.Application", "src\Services\EntertainmentService\Core\Entertainment.Application\Entertainment.Application.csproj", "{A2783199-FAD0-42C2-A1B6-8BADD96D0C7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.Infrastructure", "src\Services\DashboardService\Infrastructure\Dashboard.Infrastructure\Dashboard.Infrastructure.csproj", "{5E7A16EA-2961-4663-A423-1FA823F7040F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entertainment.Infrastructure", "src\Services\EntertainmentService\Infrastructure\Entertainment.Infrastructure\Entertainment.Infrastructure.csproj", "{53EDFA3A-BF33-4D7D-8FA5-5BDB0DEA24C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.Persistance", "src\Services\DashboardService\Infrastructure\Dashboard.Persistance\Dashboard.Persistance.csproj", "{D1415586-149B-4241-9AB8-04FDE843AFDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entertainment.Persistance", "src\Services\EntertainmentService\Infrastructure\Entertainment.Persistance\Entertainment.Persistance.csproj", "{6AAD7B20-126A-42FD-A765-20916420494E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.API", "src\Services\DashboardService\Presentation\Dashboard.API\Dashboard.API.csproj", "{BA07FED0-BEAA-4EA7-AC0F-49480E8F08D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entertainment.API", "src\Services\EntertainmentService\Presentation\Entertainment.API\Entertainment.API.csproj", "{EDDFBBC1-E362-425F-8271-841B824DF80C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entertainment.Domain", "src\Services\EntertainmentService\Core\Entertainment.Domain\Entertainment.Domain.csproj", "{CA0E34C8-365F-4D60-B6F9-383906828579}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log.Domain", "src\Services\LogService\Core\Log.Domain\Log.Domain.csproj", "{A212AA5F-19FD-4F7C-B6FD-0A53946CFE68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entertainment.Application", "src\Services\EntertainmentService\Core\Entertainment.Application\Entertainment.Application.csproj", "{A2783199-FAD0-42C2-A1B6-8BADD96D0C7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log.Application", "src\Services\LogService\Core\Log.Application\Log.Application.csproj", "{CBBE9C03-06E1-4A87-BC09-354882722BC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entertainment.Infrastructure", "src\Services\EntertainmentService\Infrastructure\Entertainment.Infrastructure\Entertainment.Infrastructure.csproj", "{53EDFA3A-BF33-4D7D-8FA5-5BDB0DEA24C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log.Infrastructure", "src\Services\LogService\Infrastructure\Log.Infrastructure\Log.Infrastructure.csproj", "{D24B6E87-B68A-4AC5-A566-2E2BA3DA38E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entertainment.Persistance", "src\Services\EntertainmentService\Infrastructure\Entertainment.Persistance\Entertainment.Persistance.csproj", "{6AAD7B20-126A-42FD-A765-20916420494E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log.Persistance", "src\Services\LogService\Infrastructure\Log.Persistance\Log.Persistance.csproj", "{3BE6A36E-E7D8-474F-9CEF-FE863AFEB6B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entertainment.API", "src\Services\EntertainmentService\Presentation\Entertainment.API\Entertainment.API.csproj", "{EDDFBBC1-E362-425F-8271-841B824DF80C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log.API", "src\Services\LogService\Presentation\Log.API\Log.API.csproj", "{65F651D2-5FDC-4F98-9C60-77951FCDBC13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Domain", "src\Services\LogService\Core\Log.Domain\Log.Domain.csproj", "{A212AA5F-19FD-4F7C-B6FD-0A53946CFE68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skill.Domain", "src\Services\SkillService\Core\Skill.Domain\Skill.Domain.csproj", "{97C50686-B54A-45E9-B6A0-CCA9B2343F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Application", "src\Services\LogService\Core\Log.Application\Log.Application.csproj", "{CBBE9C03-06E1-4A87-BC09-354882722BC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skill.Application", "src\Services\SkillService\Core\Skill.Application\Skill.Application.csproj", "{79310804-82FE-4525-A553-559DFC6BBBC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Infrastructure", "src\Services\LogService\Infrastructure\Log.Infrastructure\Log.Infrastructure.csproj", "{D24B6E87-B68A-4AC5-A566-2E2BA3DA38E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skill.Infrastructure", "src\Services\SkillService\Infrastructure\Skill.Infrastructure\Skill.Infrastructure.csproj", "{E250CB92-5175-49E8-B753-9BDF723C7758}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Persistance", "src\Services\LogService\Infrastructure\Log.Persistance\Log.Persistance.csproj", "{3BE6A36E-E7D8-474F-9CEF-FE863AFEB6B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skill.Persistance", "src\Services\SkillService\Infrastructure\Skill.Persistance\Skill.Persistance.csproj", "{57F1ACF9-8A1C-493D-A0F1-48C3784BBD6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.API", "src\Services\LogService\Presentation\Log.API\Log.API.csproj", "{65F651D2-5FDC-4F98-9C60-77951FCDBC13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skill.API", "src\Services\SkillService\Presentation\Skill.API\Skill.API.csproj", "{9ACD144A-5596-4A25-B4E2-F637752B37CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skill.Domain", "src\Services\SkillService\Core\Skill.Domain\Skill.Domain.csproj", "{97C50686-B54A-45E9-B6A0-CCA9B2343F1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Domain", "src\Services\UserService\Core\User.Domain\User.Domain.csproj", "{E5812CB1-BCD0-4A12-ACB0-BD0B522AC4AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skill.Application", "src\Services\SkillService\Core\Skill.Application\Skill.Application.csproj", "{79310804-82FE-4525-A553-559DFC6BBBC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Application", "src\Services\UserService\Core\User.Application\User.Application.csproj", "{C064F4D8-2F52-452E-8462-1348C3D0E842}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skill.Infrastructure", "src\Services\SkillService\Infrastructure\Skill.Infrastructure\Skill.Infrastructure.csproj", "{E250CB92-5175-49E8-B753-9BDF723C7758}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Infrastructure", "src\Services\UserService\Infrastructure\User.Infrastructure\User.Infrastructure.csproj", "{C6903BE7-533E-4106-B609-1CD873D5BBFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skill.Persistance", "src\Services\SkillService\Infrastructure\Skill.Persistance\Skill.Persistance.csproj", "{57F1ACF9-8A1C-493D-A0F1-48C3784BBD6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Persistance", "src\Services\UserService\Infrastructure\User.Persistance\User.Persistance.csproj", "{EBB633DF-4CCD-4DB0-9E50-4B808F921C2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skill.API", "src\Services\SkillService\Presentation\Skill.API\Skill.API.csproj", "{9ACD144A-5596-4A25-B4E2-F637752B37CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.API", "src\Services\UserService\Presentation\User.API\User.API.csproj", "{F0C1D9B7-C230-4ADB-B9D2-8D966AE9E003}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Domain", "src\Services\UserService\Core\User.Domain\User.Domain.csproj", "{E5812CB1-BCD0-4A12-ACB0-BD0B522AC4AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.Domain", "src\Services\WorkoutService\Core\Workout.Domain\Workout.Domain.csproj", "{3C5EEF32-9541-440E-A174-EF3D2A140D3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Application", "src\Services\UserService\Core\User.Application\User.Application.csproj", "{C064F4D8-2F52-452E-8462-1348C3D0E842}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.Application", "src\Services\WorkoutService\Core\Workout.Application\Workout.Application.csproj", "{2D198AC7-3B35-4619-97D7-1DCAE4B4B70C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Infrastructure", "src\Services\UserService\Infrastructure\User.Infrastructure\User.Infrastructure.csproj", "{C6903BE7-533E-4106-B609-1CD873D5BBFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.Infrastructure", "src\Services\WorkoutService\Infrastructure\Workout.Infrastructure\Workout.Infrastructure.csproj", "{2C8416AD-F7EF-4540-8E65-62CB86F05352}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Persistance", "src\Services\UserService\Infrastructure\User.Persistance\User.Persistance.csproj", "{EBB633DF-4CCD-4DB0-9E50-4B808F921C2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.Persistance", "src\Services\WorkoutService\Infrastructure\Workout.Persistance\Workout.Persistance.csproj", "{BF599224-5E97-424E-BCCC-2B2C50B03FE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.API", "src\Services\UserService\Presentation\User.API\User.API.csproj", "{F0C1D9B7-C230-4ADB-B9D2-8D966AE9E003}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.API", "src\Services\WorkoutService\Presentation\Workout.API\Workout.API.csproj", "{72FD7929-5155-47EF-B930-FEB88D2F126B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Domain", "src\Services\WorkoutService\Core\Workout.Domain\Workout.Domain.csproj", "{3C5EEF32-9541-440E-A174-EF3D2A140D3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Logging", "src\BuildingBlocks\Common.Logging\Common.Logging\Common.Logging.csproj", "{6BF6AC71-11B2-4305-9E9F-B0524F7BC918}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Application", "src\Services\WorkoutService\Core\Workout.Application\Workout.Application.csproj", "{2D198AC7-3B35-4619-97D7-1DCAE4B4B70C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.SignalR", "src\BuildingBlocks\Common.SignalR\Common.SignalR\Common.SignalR.csproj", "{EEA23434-4A8D-4B7B-BF53-53BD90B8A4FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Infrastructure", "src\Services\WorkoutService\Infrastructure\Workout.Infrastructure\Workout.Infrastructure.csproj", "{2C8416AD-F7EF-4540-8E65-62CB86F05352}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Persistance", "src\Services\WorkoutService\Infrastructure\Workout.Persistance\Workout.Persistance.csproj", "{BF599224-5E97-424E-BCCC-2B2C50B03FE5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.API", "src\Services\WorkoutService\Presentation\Workout.API\Workout.API.csproj", "{72FD7929-5155-47EF-B930-FEB88D2F126B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Logging", "src\BuildingBlocks\Common.Logging\Common.Logging\Common.Logging.csproj", "{6BF6AC71-11B2-4305-9E9F-B0524F7BC918}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.SignalR", "src\BuildingBlocks\Common.SignalR\Common.SignalR\Common.SignalR.csproj", "{EEA23434-4A8D-4B7B-BF53-53BD90B8A4FC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotAPIGateway", "src\ApiGateways\OcelotAPIGateway\OcelotAPIGateway.csproj", "{D816A850-119A-47F2-9090-2A0FDEB32FB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotAPIGateway", "src\ApiGateways\OcelotAPIGateway\OcelotAPIGateway.csproj", "{D816A850-119A-47F2-9090-2A0FDEB32FB2}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "AdminClient", "src\WebApps\Angular\AdminClient\AdminClient.esproj", "{E5432CB5-93B2-429F-A24D-DA907F13D133}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "userclient", "src\WebApps\React\UserClient\userclient.esproj", "{C3D3D0A0-B0EE-432C-A797-3B2FBAEF37E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthCheck", "src\WebApps\WebStatus\HealthCheck\HealthCheck.csproj", "{7EBF1456-15DC-4ACB-93B5-232F105E3C7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthCheck", "src\WebApps\WebStatus\HealthCheck\HealthCheck.csproj", "{7EBF1456-15DC-4ACB-93B5-232F105E3C7E}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2EF19092-5AC5-4AF7-9DE4-2D755D0061E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.Aggregator", "src\Services\DashboardService\Dashboard.Aggregator\Dashboard.Aggregator.csproj", "{9D162B45-A52E-47AA-AB3E-915F7F1F0E4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,26 +137,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7777E689-1DB9-4942-AF36-89897197FABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7777E689-1DB9-4942-AF36-89897197FABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7777E689-1DB9-4942-AF36-89897197FABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7777E689-1DB9-4942-AF36-89897197FABE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6ADC3069-6D66-4431-B1E4-5F0D1558E149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6ADC3069-6D66-4431-B1E4-5F0D1558E149}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6ADC3069-6D66-4431-B1E4-5F0D1558E149}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6ADC3069-6D66-4431-B1E4-5F0D1558E149}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E7A16EA-2961-4663-A423-1FA823F7040F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E7A16EA-2961-4663-A423-1FA823F7040F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E7A16EA-2961-4663-A423-1FA823F7040F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E7A16EA-2961-4663-A423-1FA823F7040F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1415586-149B-4241-9AB8-04FDE843AFDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1415586-149B-4241-9AB8-04FDE843AFDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1415586-149B-4241-9AB8-04FDE843AFDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1415586-149B-4241-9AB8-04FDE843AFDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA07FED0-BEAA-4EA7-AC0F-49480E8F08D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA07FED0-BEAA-4EA7-AC0F-49480E8F08D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA07FED0-BEAA-4EA7-AC0F-49480E8F08D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA07FED0-BEAA-4EA7-AC0F-49480E8F08D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA0E34C8-365F-4D60-B6F9-383906828579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA0E34C8-365F-4D60-B6F9-383906828579}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA0E34C8-365F-4D60-B6F9-383906828579}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -303,6 +269,10 @@ Global
 		{2EF19092-5AC5-4AF7-9DE4-2D755D0061E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EF19092-5AC5-4AF7-9DE4-2D755D0061E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EF19092-5AC5-4AF7-9DE4-2D755D0061E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D162B45-A52E-47AA-AB3E-915F7F1F0E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D162B45-A52E-47AA-AB3E-915F7F1F0E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D162B45-A52E-47AA-AB3E-915F7F1F0E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D162B45-A52E-47AA-AB3E-915F7F1F0E4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -323,9 +293,6 @@ Global
 		{D74DCF3D-9624-4C47-A115-3A00EE4D108D} = {01339D26-706C-4679-9C62-4401237B8D36}
 		{3148C820-7DB6-4042-9B73-17FF7E378522} = {01339D26-706C-4679-9C62-4401237B8D36}
 		{B1E50BCC-85CB-4581-8A3B-612114F45403} = {01339D26-706C-4679-9C62-4401237B8D36}
-		{7769CBBB-701F-45E8-BB74-EFAEED2ABDAC} = {AD0B3AD8-C4EB-44E1-8F89-2EAC70D23F6F}
-		{3FDC1979-FD6D-497F-8C5E-832B952E1442} = {AD0B3AD8-C4EB-44E1-8F89-2EAC70D23F6F}
-		{B523ADCA-2A4C-477D-A3BE-ED44866BDFBF} = {AD0B3AD8-C4EB-44E1-8F89-2EAC70D23F6F}
 		{9AE8C2A1-91BE-437D-8439-862DB3B1AE57} = {9A9891B7-C625-4C24-B4D7-08249DFD10AF}
 		{90CE088D-A6A8-4BEF-B072-6028AFCA10F9} = {9A9891B7-C625-4C24-B4D7-08249DFD10AF}
 		{4D0DC0D8-A086-40BF-A71A-086A1489D72D} = {9A9891B7-C625-4C24-B4D7-08249DFD10AF}
@@ -341,11 +308,6 @@ Global
 		{2759AB80-D3BB-48C5-8416-199ECADF2954} = {B1E50BCC-85CB-4581-8A3B-612114F45403}
 		{C7B410BC-AEA1-42ED-B5B3-7CF91DA516FD} = {B1E50BCC-85CB-4581-8A3B-612114F45403}
 		{D535E143-6CDE-4256-A3B4-A5F2A224981B} = {B1E50BCC-85CB-4581-8A3B-612114F45403}
-		{7777E689-1DB9-4942-AF36-89897197FABE} = {7769CBBB-701F-45E8-BB74-EFAEED2ABDAC}
-		{6ADC3069-6D66-4431-B1E4-5F0D1558E149} = {7769CBBB-701F-45E8-BB74-EFAEED2ABDAC}
-		{5E7A16EA-2961-4663-A423-1FA823F7040F} = {3FDC1979-FD6D-497F-8C5E-832B952E1442}
-		{D1415586-149B-4241-9AB8-04FDE843AFDD} = {3FDC1979-FD6D-497F-8C5E-832B952E1442}
-		{BA07FED0-BEAA-4EA7-AC0F-49480E8F08D5} = {B523ADCA-2A4C-477D-A3BE-ED44866BDFBF}
 		{CA0E34C8-365F-4D60-B6F9-383906828579} = {9AE8C2A1-91BE-437D-8439-862DB3B1AE57}
 		{A2783199-FAD0-42C2-A1B6-8BADD96D0C7D} = {9AE8C2A1-91BE-437D-8439-862DB3B1AE57}
 		{53EDFA3A-BF33-4D7D-8FA5-5BDB0DEA24C8} = {90CE088D-A6A8-4BEF-B072-6028AFCA10F9}
@@ -377,6 +339,7 @@ Global
 		{E5432CB5-93B2-429F-A24D-DA907F13D133} = {4BE0A962-AC15-44C0-A284-CA62BF7242EE}
 		{C3D3D0A0-B0EE-432C-A797-3B2FBAEF37E2} = {E1AA3AFF-0656-4B29-9575-C730F03FE513}
 		{7EBF1456-15DC-4ACB-93B5-232F105E3C7E} = {EC0F6A64-E2B4-4A24-B732-178EACCA41FA}
+		{9D162B45-A52E-47AA-AB3E-915F7F1F0E4C} = {AD0B3AD8-C4EB-44E1-8F89-2EAC70D23F6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1DD50095-EA3E-4D3F-91EA-36656FC10020}

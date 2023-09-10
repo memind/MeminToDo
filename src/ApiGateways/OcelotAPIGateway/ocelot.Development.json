@@ -962,6 +962,47 @@
         "PeriodTimespan": 1,
         "Limit": 1
       }
+    },
+    /////////////////////// DASHBOARD SERVICE ///////////////////////
+    {
+      "DownstreamPathTemplate": "/GetAdminDashboardInfos",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "MeminToDo.Dashboard.Aggregator",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Dashboard",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetUserDashboardInfos?id={id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "MeminToDo.Dashboard.Aggregator",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Dashboard?id={id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
     }
   ],
   "GlobalConfiguration": {
