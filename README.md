@@ -2,6 +2,11 @@
 ASP.Net Core Microservices
 
 - Containerization: Docker
+- Container Management: Portainer
+- API Gateway: Ocelot
+- Logging: ElasticSearch, SeriLog, Kibana
+- Log Monitoring: Seq
+- Tracing: Jaeger
 
 Skill Service
 - ASP.NET Core Web API application
