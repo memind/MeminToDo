@@ -11,11 +11,13 @@ using Skill.Application.Features.Queries.SongQueries.GetUsersAllSongs;
 using Skill.Application.Features.Commands.SongCommands.CreateSong;
 using Skill.Application.Features.Commands.SongCommands.UpdateSong;
 using Skill.Application.Features.Commands.SongCommands.DeleteSong;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Skill.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SongController : ControllerBase
     {
         private ISongService _service;

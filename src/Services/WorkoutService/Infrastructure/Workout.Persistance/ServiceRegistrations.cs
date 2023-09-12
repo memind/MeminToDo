@@ -23,6 +23,7 @@ using Autofac.Core;
 using OpenTracing.Util;
 using Common.Logging;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Workout.Persistance
 {
@@ -30,6 +31,16 @@ namespace Workout.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IHostBuilder host)
         {
+            #region IdentityServer
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.Authority = "http://localhost:8005";
+                    options.Audience = "Workout";
+                    options.RequireHttpsMetadata = false;
+                });
+            #endregion
+
             services.AddDbContext<WorkoutDbContext>(options => options.UseCosmos("", databaseName: ""));
 
             #region Appmetrics - Prometheus - Grafana

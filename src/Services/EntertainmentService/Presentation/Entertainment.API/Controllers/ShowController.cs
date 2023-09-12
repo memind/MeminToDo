@@ -1,5 +1,6 @@
 ﻿using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.ShowDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
@@ -8,6 +9,7 @@ namespace Entertainment.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ShowController : ControllerBase
     {
         private readonly IShowService _service;

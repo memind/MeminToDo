@@ -1,4 +1,8 @@
+using User.Persistance;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddPersistanceServices(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -12,7 +16,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); 
+app.UseIdentityServer();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

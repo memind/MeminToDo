@@ -1,6 +1,7 @@
 ﻿using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.GameDTOs;
 using Entertainment.Application.DTOs.ShowDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Entertainment.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GameController : ControllerBase
     {
         private readonly IGameService _service;

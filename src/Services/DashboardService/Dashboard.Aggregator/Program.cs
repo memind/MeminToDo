@@ -9,6 +9,7 @@ using Jaeger;
 using Jaeger.Reporters;
 using Jaeger.Samplers;
 using Jaeger.Senders.Thrift;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -26,6 +27,17 @@ builder.Services.AddCors(opt => opt.AddDefaultPolicy(policy => policy.AllowAnyHe
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+#region IdentityServer
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.Authority = "http://localhost:8005";
+        options.Audience = "Dashboard";
+        options.RequireHttpsMetadata = false;
+    });
+#endregion
 
 #region SeriLog
 builder.Host.ConfigureLogging(loggingBuilder =>

@@ -30,6 +30,7 @@ using Skill.Persistance.DependencyResolver.Autofac;
 using Microsoft.Extensions.Logging;
 using Common.Logging;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Skill.Persistance
 {
@@ -37,6 +38,16 @@ namespace Skill.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration cfg, IHostBuilder host)
         {
+            #region IdentityServer
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.Authority = "http://localhost:8005";
+                    options.Audience = "Skill";
+                    options.RequireHttpsMetadata = false;
+                });
+            #endregion
+
             services.Configure<MongoSettings>(opt =>
             {
                 opt.ConnectionString = cfg.GetSection("MongoConnection:ConnectionString").Value;

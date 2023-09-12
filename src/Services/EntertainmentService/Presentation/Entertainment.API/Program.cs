@@ -41,6 +41,7 @@ app.UseCors();
 app.UseRouting();
 app.UseHttpMetrics();
 app.MapMetrics();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

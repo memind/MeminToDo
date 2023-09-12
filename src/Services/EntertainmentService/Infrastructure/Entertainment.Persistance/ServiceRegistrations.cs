@@ -17,6 +17,7 @@ using OpenTracing.Util;
 using OpenTracing;
 using Common.Logging;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Entertainment.Persistance
 {
@@ -24,6 +25,16 @@ namespace Entertainment.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration cfg, IHostBuilder host)
         {
+            #region IdentityServer
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.Authority = "http://localhost:8005";
+                    options.Audience = "Entertainment";
+                    options.RequireHttpsMetadata = false;
+                });
+            #endregion
+
             #region Appmetrics - Prometheus - Grafana
             services.Configure<KestrelServerOptions>(options =>
             {

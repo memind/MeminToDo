@@ -44,6 +44,7 @@ app.UseHttpMetrics();
 app.MapMetrics();
 app.UseHttpLogging();
 app.UseSerilogRequestLogging();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
