@@ -46,6 +46,11 @@ Dashboard Service
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
 - Resiliency implementations were made with Polly
+
+IdentityServer
+- ASP.NET Core Web API application
+- IdentityServer4 implementations
+- MSSQL database connection
   
 HealthCheck
 - ASP.NET Core MVC application
