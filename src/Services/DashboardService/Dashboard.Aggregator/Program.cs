@@ -37,6 +37,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.Audience = "Dashboard";
         options.RequireHttpsMetadata = false;
     });
+
+builder.Services.AddAuthorization(authOption =>
+{
+    authOption.AddPolicy("DashboardRead", policy => policy.RequireClaim("scope", "Dashboard.Read"));
+});
 #endregion
 
 #region SeriLog

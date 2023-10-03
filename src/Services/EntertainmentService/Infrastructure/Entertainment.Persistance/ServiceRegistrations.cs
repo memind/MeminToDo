@@ -33,6 +33,12 @@ namespace Entertainment.Persistance
                     options.Audience = "Entertainment";
                     options.RequireHttpsMetadata = false;
                 });
+
+            services.AddAuthorization(authOption =>
+            {
+                authOption.AddPolicy("EntertainmentRead", policy => policy.RequireClaim("scope", "Entertainment.Read"));
+                authOption.AddPolicy("EntertainmentWrite", policy => policy.RequireClaim("scope", "Entertainment.Write"));
+            });
             #endregion
 
             #region Appmetrics - Prometheus - Grafana

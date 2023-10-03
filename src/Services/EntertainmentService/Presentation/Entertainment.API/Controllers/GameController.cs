@@ -20,36 +20,42 @@ namespace Entertainment.API.Controllers
         }
 
         [HttpGet("/getGame")]
+        [Authorize(Policy = "EntertainmentRead")]
         public GameDto GetGame(string id)
         {
             return _service.GetGameById(id);
         }
 
         [HttpGet("/getGames")]
+        [Authorize(Policy = "EntertainmentRead")]
         public List<GameDto> GetAllGames()
         {
             return _service.GetAllGames();
         }
 
         [HttpGet("/getUsersGames")]
+        [Authorize(Policy = "EntertainmentRead")]
         public List<GameDto> GetUsersAllGames(string id)
         {
             return _service.GetUsersAllGames(id);
         }
 
         [HttpPost("/createGame")]
+        [Authorize(Policy = "EntertainmentWrite")]
         public int CreateGame(GameDto model)
         {
             return _service.CreateGame(model);
         }
 
         [HttpPut("/updateGame")]
+        [Authorize(Policy = "EntertainmentWrite")]
         public int UpdateGame(GameDto model)
         {
             return _service.UpdateGame(model);
         }
 
         [HttpDelete("/deleteGame")]
+        [Authorize(Policy = "EntertainmentWrite")]
         public int DeleteGame(string id)
         {
             return _service.DeleteGame(id);

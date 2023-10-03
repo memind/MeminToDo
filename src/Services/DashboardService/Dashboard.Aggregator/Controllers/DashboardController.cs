@@ -19,12 +19,14 @@ namespace Dashboard.Aggregator.Controllers
         }
 
         [HttpGet("GetAdminDashboardInfos")]
+        [Authorize(Policy = "DashboardRead")]
         public async Task<AdminDashboardModel> GetAdmin()
         {
             return await _dashboardService.GetAdminDashboardInfos();
         }
 
         [HttpGet("GetUserDashboardInfos")]
+        [Authorize(Policy = "DashboardRead")]
         public async Task<UserDashboardModel> GetUser(string id)
         {
             return await _dashboardService.GetUserDashboardInfos(id);

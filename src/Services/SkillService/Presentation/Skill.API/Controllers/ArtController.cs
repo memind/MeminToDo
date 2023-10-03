@@ -30,6 +30,7 @@ namespace Skill.API.Controllers
         }
 
         [HttpGet("/getOneArt")]
+        [Authorize(Policy = "SkillRead")]
         public async Task<GetArtByIdQueryResponse> GetById([FromQuery] GetArtByIdQueryRequest request)
         {
             GetArtByIdQueryResponse response = await _mediator.Send(request);
@@ -37,30 +38,35 @@ namespace Skill.API.Controllers
         }
 
         [HttpGet("/getAllArts")]
+        [Authorize(Policy = "SkillRead")]
         public async Task<GetAllArtsQueryResponse> GetAll([FromQuery] GetAllArtsQueryRequest request)
         {
             return await _mediator.Send(request);
         }
 
         [HttpGet("/getUsersAllArts")]
+        [Authorize(Policy = "SkillRead")]
         public async Task<GetUsersAllArtsQueryResponse> GetUsersAll([FromQuery] GetUsersAllArtsQueryRequest request)
         {
             return await _mediator.Send(request);
         }
 
         [HttpPost]
+        [Authorize(Policy = "SkillWrite")]
         public async Task<CreateArtCommandResponse> Create([FromQuery] CreateArtCommandRequest request)
         {
             return await _mediator.Send(request);
         }
 
         [HttpPut]
+        [Authorize(Policy = "SkillWrite")]
         public async Task<UpdateArtCommandResponse> Update([FromQuery] UpdateArtCommandRequest request)
         {
             return await _mediator.Send(request);
         }
 
         [HttpDelete]
+        [Authorize(Policy = "SkillWrite")]
         public async Task<DeleteArtCommandResponse> Delete([FromQuery] DeleteArtCommandRequest request)
         {
             return await _mediator.Send(request);

@@ -46,6 +46,12 @@ namespace Skill.Persistance
                     options.Audience = "Skill";
                     options.RequireHttpsMetadata = false;
                 });
+
+            services.AddAuthorization(authOption =>
+            {
+                authOption.AddPolicy("SkillRead", policy => policy.RequireClaim("scope", "Skill.Read"));
+                authOption.AddPolicy("SkillWrite", policy => policy.RequireClaim("scope", "Skill.Write"));
+            });
             #endregion
 
             services.Configure<MongoSettings>(opt =>

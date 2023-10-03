@@ -39,6 +39,12 @@ namespace Workout.Persistance
                     options.Audience = "Workout";
                     options.RequireHttpsMetadata = false;
                 });
+
+            services.AddAuthorization(authOption =>
+            {
+                authOption.AddPolicy("WorkoutRead", policy => policy.RequireClaim("scope", "Workout.Read"));
+                authOption.AddPolicy("WorkoutWrite", policy => policy.RequireClaim("scope", "Workout.Write"));
+            });
             #endregion
 
             services.AddDbContext<WorkoutDbContext>(options => options.UseCosmos("", databaseName: ""));

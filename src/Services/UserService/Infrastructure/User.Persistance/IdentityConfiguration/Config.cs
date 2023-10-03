@@ -32,10 +32,22 @@ namespace User.Persistance.IdentityConfiguration
         {
             return new List<ApiResource>
         {
-            new ApiResource("Workout"){ Scopes = { "Workout.Write", "Workout.Read" } },
-            new ApiResource("Entertainment"){ Scopes = { "Entertainment.Write", "Entertainment.Read" } },
-            new ApiResource("Skill"){ Scopes = { "Skill.Write", "Skill.Read" } },
-            new ApiResource("Dashboard"){ Scopes = { "Dashboard.Read" } }
+            new ApiResource("Workout"){ 
+                ApiSecrets = {new Secret("workoutsecret".Sha256()) },
+                Scopes = { "Workout.Write", "Workout.Read" } 
+            },
+            new ApiResource("Entertainment"){
+                ApiSecrets = {new Secret("entertainmentsecret".Sha256()) },
+                Scopes = { "Entertainment.Write", "Entertainment.Read" }
+            },
+            new ApiResource("Skill"){
+                ApiSecrets = {new Secret("skillsecret".Sha256()) },
+                Scopes = { "Skill.Write", "Skill.Read" }
+            },
+            new ApiResource("Dashboard"){
+                ApiSecrets = {new Secret("dashboardsecret".Sha256()) },
+                Scopes = { "Dashboard.Read" }
+            }
         };
         }
         #endregion

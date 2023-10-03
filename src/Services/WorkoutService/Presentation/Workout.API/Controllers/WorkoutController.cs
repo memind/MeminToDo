@@ -20,36 +20,42 @@ namespace Workout.API.Controllers
         }
 
         [HttpPost("/createWorkout")]
+        [Authorize(Policy = "WorkoutWrite")]
         public WorkoutDto CreateWorkout(WorkoutDto model)
         {
             return _service.CreateWorkout(model);
         }
 
         [HttpGet("/getWorkout")]
+        [Authorize(Policy = "WorkoutRead")]
         public WorkoutDto GetWorkout(string id)
         {
             return _service.GetWorkoutById(id);
         }
 
         [HttpGet("/getAllWorkouts")]
+        [Authorize(Policy = "WorkoutRead")]
         public List<WorkoutDto> GetAllWorkouts()
         {
             return _service.GetAllWorkouts();
         }
 
         [HttpGet("/getUsersAllWorkouts")]
+        [Authorize(Policy = "WorkoutRead")]
         public List<WorkoutDto> GetUsersAllWorkouts(string id)
         {
             return _service.GetUsersAllWorkouts(id);
         }
 
         [HttpPut("/updateWorkout")]
+        [Authorize(Policy = "WorkoutWrite")]
         public WorkoutDto UpdateWorkout(WorkoutDto model, string id)
         {
             return _service.UpdateWorkout(model, id);
         }
 
         [HttpDelete("/deleteWorkout")]
+        [Authorize(Policy = "WorkoutWrite")]
         public void DeleteWorkout(string id)
         {
             _service.DeleteWorkout(id);
