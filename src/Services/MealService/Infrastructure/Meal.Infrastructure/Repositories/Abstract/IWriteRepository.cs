@@ -13,7 +13,7 @@ namespace Meal.Infrastructure.Repositories.Abstract
         void SoftDelete(T entity);
         Task SoftDeleteAsync(T entity);
 
-        void HardDelete(T entity);
-        Task HardDeleteAsync(T entity);
+        void HardDelete(Guid id);
+        Task HardDeleteAsync(Guid id);
     }
 }

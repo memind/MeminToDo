@@ -26,7 +26,6 @@ namespace Meal.Infrastructure.Context
         {
             modelBuilder.ApplyConfiguration(new FoodConfiguration());
             modelBuilder.ApplyConfiguration(new MealConfiguration());
-            modelBuilder.ApplyConfiguration(new MealFoodConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -42,14 +41,27 @@ namespace Meal.Infrastructure.Context
 
                 foreach (var data in datas)
                 {
+
                     if (data.State == EntityState.Added)
-                        data.Entity.CreatedDate = DateTime.UtcNow;
+                        data.Entity.CreatedDate = DateTime.Now;
 
                     if (data.State == EntityState.Modified)
-                        data.Entity.UpdatedDate = DateTime.UtcNow;
+                    {
+                        if(data.Entity.Status == Domain.Enums.Status.Deleted)
+                        {
+                            data.Entity.DeletedDate = DateTime.Now;
+                            continue;
+                        }
+                        
+                        data.Entity.UpdatedDate = DateTime.Now;
+                        data.Entity.Status = Domain.Enums.Status.Modified;
+                    }
 
                     if (data.State == EntityState.Deleted)
-                        data.Entity.DeletedDate = DateTime.UtcNow;
+                    {
+                        data.Entity.DeletedDate = DateTime.Now;
+                        data.Entity.Status = Domain.Enums.Status.Deleted;
+                    }
                 }
 
                 changes = base.SaveChanges(false);
@@ -80,13 +92,19 @@ namespace Meal.Infrastructure.Context
                 foreach (var data in datas)
                 {
                     if (data.State == EntityState.Added)
-                        data.Entity.CreatedDate = DateTime.UtcNow;
+                        data.Entity.CreatedDate = DateTime.Now;
 
                     if (data.State == EntityState.Modified)
-                        data.Entity.UpdatedDate = DateTime.UtcNow;
+                    {
+                        data.Entity.UpdatedDate = DateTime.Now;
+                        data.Entity.Status = Domain.Enums.Status.Modified;
+                    }
 
                     if (data.State == EntityState.Deleted)
-                        data.Entity.DeletedDate = DateTime.UtcNow;
+                    {
+                        data.Entity.DeletedDate = DateTime.Now;
+                        data.Entity.Status = Domain.Enums.Status.Deleted;
+                    }
                 }
 
                 changes = await base.SaveChangesAsync(false, cancellationToken);

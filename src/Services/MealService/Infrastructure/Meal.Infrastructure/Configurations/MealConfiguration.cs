@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Meal.Domain.Enums;
+using Meal.Domain.Entities;
 
 namespace Meal.Infrastructure.Configurations
 {
@@ -13,6 +14,9 @@ namespace Meal.Infrastructure.Configurations
 
             builder.HasKey(x => x.Id);
 
+            builder.HasMany(m => m.Foods)
+               .WithMany(f => f.Meals);
+
             builder.Property(x => x.Id)
                 .HasColumnType("uniqueidentifier")
                 .HasColumnOrder(1)
@@ -20,7 +24,7 @@ namespace Meal.Infrastructure.Configurations
 
             builder.Property(x => x.UserId)
                 .HasMaxLength(128)
-                .HasColumnName("User")
+                .HasColumnName("MealsUser")
                 .HasColumnType("uniqueidentifier")
                 .HasColumnOrder(2)
                 .IsRequired(true);

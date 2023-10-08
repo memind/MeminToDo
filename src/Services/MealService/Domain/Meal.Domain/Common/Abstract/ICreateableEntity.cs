@@ -2,6 +2,6 @@
 {
     public interface ICreateableEntity
     {
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

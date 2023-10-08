@@ -7,12 +7,12 @@ namespace Meal.Domain.Entities
     {
         public Food()
         {
-            Meals = new List<MealFood>();
+            Meals = new List<Meal>();
         }
         public required string Name { get; set; }
         public int CalorieByServing { get; set; }
         public FoodCategory Category { get; set; }
 
-        public ICollection<MealFood> Meals { get; set; }
+        public ICollection<Meal> Meals { get; set; }
     }
 }
