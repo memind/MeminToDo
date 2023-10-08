@@ -39,7 +39,7 @@ namespace Meal.API.Controllers
         [HttpPost("/create")]
         public void CreateFood(FoodCreateDto model)
         {
-            _foodService.CreateFood(model);
+            _foodService.CreateFood(model, Guid.Parse("9a59c403-a6e6-4a82-1536-08dbc8415801"), Guid.Parse("00000000-3333-0000-0000-000000000000"));
         }
 
 
@@ -69,7 +69,7 @@ namespace Meal.API.Controllers
         [HttpPost("/createMeal")]
         public void CreateMeal(MealCreateDto model)
         {
-            _mealService.CreateMeal(model);
+            _mealService.CreateMeal(model, Guid.Parse("00000000-3333-0000-0000-000000000000"));
         }
 
 

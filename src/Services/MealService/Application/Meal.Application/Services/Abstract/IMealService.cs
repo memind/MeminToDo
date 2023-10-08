@@ -18,7 +18,7 @@ namespace Meal.Application.Services.Abstract
 
 
 
-        void CreateMeal(MealCreateDto meal);
+        void CreateMeal(MealCreateDto meal, Guid userId);
 
         MealDto UpdateMeal(MealUpdateDto meal);
 
@@ -40,7 +40,7 @@ namespace Meal.Application.Services.Abstract
 
 
 
-        Task CreateMealAsync(MealCreateDto meal);
+        Task CreateMealAsync(MealCreateDto meal, Guid userId);
 
         Task<MealDto> UpdateMealAsync(MealUpdateDto meal);
 

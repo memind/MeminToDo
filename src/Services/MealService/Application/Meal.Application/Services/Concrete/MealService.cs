@@ -19,17 +19,23 @@ namespace Meal.Application.Services.Concrete
             _mapper = mapper;
         }
 
-        public void CreateMeal(MealCreateDto meal)
+        public void CreateMeal(MealCreateDto meal, Guid userId)
         {
             var map = _mapper.Map<m.Meal, MealCreateDto>(meal);
+            map.UserId = userId;
+
             _unitOfWork.GetWriteRepository<m.Meal>().Create(map);
+
             _unitOfWork.Save();
         }
 
-        public async Task CreateMealAsync(MealCreateDto meal)
+        public async Task CreateMealAsync(MealCreateDto meal, Guid userId)
         {
             var map = _mapper.Map<m.Meal, MealCreateDto>(meal);
+            map.UserId = userId;
+
             await _unitOfWork.GetWriteRepository<m.Meal>().CreateAsync(map);
+
             await _unitOfWork.SaveAsync();
         }
 

@@ -14,7 +14,7 @@ namespace Meal.Application.Services.Abstract
 
         List<FoodDto> GetUsersAllFoods(Guid userId);
 
-        void CreateFood(FoodCreateDto food);
+        void CreateFood(FoodCreateDto food, Guid mealId, Guid userId);
 
         FoodDto UpdateFood(FoodUpdateDto food);
 
@@ -33,7 +33,7 @@ namespace Meal.Application.Services.Abstract
 
         Task<List<FoodDto>> GetUsersAllFoodsAsync(Guid userId);
 
-        Task CreateFoodAsync(FoodCreateDto food);
+        Task CreateFoodAsync(FoodCreateDto food, Guid mealId, Guid userId);
 
         Task<FoodDto> UpdateFoodAsync(FoodUpdateDto food);
 
