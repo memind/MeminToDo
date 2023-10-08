@@ -11,6 +11,17 @@ ASP.Net Core Microservices
 - Service Discovery: Consul
 - Resiliency: Polly
 
+Meal Service
+- ASP.NET Core Web API application
+- REST API principles, CRUD operations
+- MSSQL database connection
+- Customized Entity Framework Core DBContext and ChangeTracker behaviors
+- Generic Repository Pattern, Unit of Work Pattern
+- Custom AutoMapper class
+- Logging was done by SeriLog
+- Monitoring was done by AppMetrics/Prometheus/Grafana
+- Tracing was done by OpenTracing/JaegerUI
+
 Skill Service
 - ASP.NET Core Web API application
 - REST API principles, CRUD operations
