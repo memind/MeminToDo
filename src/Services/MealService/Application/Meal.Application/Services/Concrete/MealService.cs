@@ -5,6 +5,7 @@ using Meal.Infrastructure.UnitOfWork;
 using Meal.Mapper;
 using Meal.Domain.Enums;
 using Meal.Domain.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace Meal.Application.Services.Concrete
 {
@@ -12,160 +13,270 @@ namespace Meal.Application.Services.Concrete
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICustomMapper _mapper;
+        private readonly ILogger<MealService> _logger;
 
-        public MealService(IUnitOfWork unitOfWork, ICustomMapper mapper)
+        public MealService(IUnitOfWork unitOfWork, ICustomMapper mapper, ILogger<MealService> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public void CreateMeal(MealCreateDto meal, Guid userId)
         {
-            var map = _mapper.Map<m.Meal, MealCreateDto>(meal);
-            map.UserId = userId;
+            try
+            {
+                var map = _mapper.Map<m.Meal, MealCreateDto>(meal);
+                map.UserId = userId;
 
-            _unitOfWork.GetWriteRepository<m.Meal>().Create(map);
+                _unitOfWork.GetWriteRepository<m.Meal>().Create(map);
 
-            _unitOfWork.Save();
+                _unitOfWork.Save();
+
+                _logger.LogInformation($"Created Meal Successfully.");
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task CreateMealAsync(MealCreateDto meal, Guid userId)
         {
-            var map = _mapper.Map<m.Meal, MealCreateDto>(meal);
-            map.UserId = userId;
+            try
+            {
+                var map = _mapper.Map<m.Meal, MealCreateDto>(meal);
+                map.UserId = userId;
 
-            await _unitOfWork.GetWriteRepository<m.Meal>().CreateAsync(map);
+                await _unitOfWork.GetWriteRepository<m.Meal>().CreateAsync(map);
 
-            await _unitOfWork.SaveAsync();
+                await _unitOfWork.SaveAsync();
+
+                _logger.LogInformation($"Created Meal Successfully.");
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public List<MealDto> GetAllActiveMeals()
         {
-            var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.Status == Status.Added || x.Status == Status.Modified, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.Status == Status.Added || x.Status == Status.Modified, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Active Meals Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<List<MealDto>> GetAllActiveMealsAsync()
         {
-            var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.Status == Status.Added || x.Status == Status.Modified, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.Status == Status.Added || x.Status == Status.Modified, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Active Meals Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public List<MealDto> GetAllDeletedMeals()
         {
-            var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.Status == Status.Deleted, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.Status == Status.Deleted, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Deleted Meals Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<List<MealDto>> GetAllDeletedMealsAsync()
         {
-            var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.Status == Status.Deleted, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.Status == Status.Deleted, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Deleted Meals Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public List<MealDto> GetAllMeals()
         {
-            var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Meals Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<List<MealDto>> GetAllMealsAsync()
         {
-            var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Meals Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public MealDto GetMealById(Guid mealId)
         {
-            var meals = _unitOfWork.GetReadRepository<m.Meal>().Get(x => x.Id == mealId, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = _unitOfWork.GetReadRepository<m.Meal>().Get(x => x.Id == mealId, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map;
+                _logger.LogInformation($"Getting Meal By ID Successfully.");
+
+                return map;
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<MealDto> GetMealByIdAsync(Guid mealId)
         {
-            var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAsync(x => x.Id == mealId, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAsync(x => x.Id == mealId, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map;
+                _logger.LogInformation($"Getting Meal By ID Successfully.");
+
+                return map;
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public List<MealDto> GetUsersAllMeals(Guid userId)
         {
-            var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.UserId == userId, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.UserId == userId, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Meals Of User ({userId}) Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<List<MealDto>> GetUsersAllMealsAsync(Guid userId)
         {
-            var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.UserId == userId, includeProperties: x => x.Foods);
-            var map = _mapper.Map<MealDto, m.Meal>(meals);
+            try
+            {
+                var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.UserId == userId, includeProperties: x => x.Foods);
+                var map = _mapper.Map<MealDto, m.Meal>(meals);
 
-            return map.ToList();
+                _logger.LogInformation($"Getting All Meals Of User ({userId}) Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
 
         public void HardDeleteMeal(MealHardDeleteDto meal)
         {
-            _unitOfWork.GetWriteRepository<m.Meal>().HardDelete(meal.Id);
-            _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.GetWriteRepository<m.Meal>().HardDelete(meal.Id);
+                _unitOfWork.Save();
+
+                _logger.LogInformation($"Hard Deleted Meal Successfully: {meal.Id}");
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task HardDeleteMealAsync(MealHardDeleteDto meal)
         {
-            await _unitOfWork.GetWriteRepository<m.Meal>().HardDeleteAsync(meal.Id);
-            await _unitOfWork.SaveAsync();
+            try
+            {
+                await _unitOfWork.GetWriteRepository<m.Meal>().HardDeleteAsync(meal.Id);
+                await _unitOfWork.SaveAsync();
+
+                _logger.LogInformation($"Hard Deleted Meal Successfully: {meal.Id}");
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public void SoftDeleteMeal(MealDeleteDto meal)
         {
-            var map = _mapper.Map<m.Meal, MealDeleteDto>(meal);
+            try
+            {
+                var map = _mapper.Map<m.Meal, MealDeleteDto>(meal);
 
-            _unitOfWork.GetWriteRepository<m.Meal>().SoftDelete(map);
-            _unitOfWork.Save();
+                _unitOfWork.GetWriteRepository<m.Meal>().SoftDelete(map);
+                _unitOfWork.Save();
+
+                _logger.LogInformation($"Soft Deleted Meal Successfully: {meal.Id}");
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task SoftDeleteMealAsync(MealDeleteDto meal)
         {
-            var map = _mapper.Map<m.Meal, MealDeleteDto>(meal);
+            try
+            {
+                var map = _mapper.Map<m.Meal, MealDeleteDto>(meal);
 
-            await _unitOfWork.GetWriteRepository<m.Meal>().SoftDeleteAsync(map);
-            await _unitOfWork.SaveAsync();
+                await _unitOfWork.GetWriteRepository<m.Meal>().SoftDeleteAsync(map);
+                await _unitOfWork.SaveAsync();
+
+                _logger.LogInformation($"Soft Deleted Meal Successfully: {meal.Id}");
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public MealDto UpdateMeal(MealUpdateDto meal)
         {
-            var map = _mapper.Map<m.Meal, MealUpdateDto>(meal);
+            try
+            {
+                var map = _mapper.Map<m.Meal, MealUpdateDto>(meal);
 
-            _unitOfWork.GetWriteRepository<m.Meal>().Update(map);
-            _unitOfWork.Save();
+                _unitOfWork.GetWriteRepository<m.Meal>().Update(map);
+                _unitOfWork.Save();
 
-            return _mapper.Map<MealDto, m.Meal>(map);
+                _logger.LogInformation($"Updated Meal Successfully: {meal.Id}");
+
+                return _mapper.Map<MealDto, m.Meal>(map);
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
         public async Task<MealDto> UpdateMealAsync(MealUpdateDto meal)
         {
-            var map = _mapper.Map<m.Meal, MealUpdateDto>(meal);
+            try
+            {
+                var map = _mapper.Map<m.Meal, MealUpdateDto>(meal);
 
-            await _unitOfWork.GetWriteRepository<m.Meal>().UpdateAsync(map);
-            await _unitOfWork.SaveAsync();
+                await _unitOfWork.GetWriteRepository<m.Meal>().UpdateAsync(map);
+                await _unitOfWork.SaveAsync();
 
-            return _mapper.Map<MealDto, m.Meal>(map);
+                _logger.LogInformation($"Updated Meal Successfully: {meal.Id}");
+
+                return _mapper.Map<MealDto, m.Meal>(map);
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
     }
 }

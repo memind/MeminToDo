@@ -12,7 +12,8 @@
         "entertainment.api": "StartDebugging",
         "dashboard.api": "StartDebugging",
         "ocelotapigateway": "StartDebugging",
-        "dashboard.aggregator": "StartDebugging"
+        "dashboard.aggregator": "StartDebugging",
+        "meal.api": "StartDebugging"
       }
     }
   }

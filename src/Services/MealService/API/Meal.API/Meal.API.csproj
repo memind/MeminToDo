@@ -4,14 +4,19 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="7.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
@@ -19,6 +24,7 @@
     <ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Logging\Common.Logging\Common.Logging.csproj" />
     <ProjectReference Include="..\..\Application\Meal.Application\Meal.Application.csproj" />
     <ProjectReference Include="..\..\AutoMapper\Meal.Mapper\Meal.Mapper.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Meal.Infrastructure\Meal.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
