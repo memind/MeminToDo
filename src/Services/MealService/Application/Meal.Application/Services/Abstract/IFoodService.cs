@@ -6,6 +6,8 @@ namespace Meal.Application.Services.Abstract
     {
         List<FoodDto> GetAllFoods();
 
+        List<FoodDto> GetAllFoodsInMeal(Guid mealId);
+
         List<FoodDto> GetAllActiveFoods();
 
         List<FoodDto> GetAllDeletedFoods();
@@ -24,6 +26,8 @@ namespace Meal.Application.Services.Abstract
 
 
         Task<List<FoodDto>> GetAllFoodsAsync();
+
+        Task<List<FoodDto>> GetAllFoodsInMealAsync(Guid mealId);
 
         Task<List<FoodDto>> GetAllActiveFoodsAsync();
 

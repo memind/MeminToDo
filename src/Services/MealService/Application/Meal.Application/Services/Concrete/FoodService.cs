@@ -147,6 +147,33 @@ namespace Meal.Application.Services.Concrete
             catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
         }
 
+        public List<FoodDto> GetAllFoodsInMeal(Guid mealId)
+        {
+            try
+            {
+                var meal = _unitOfWork.GetReadRepository<m.Meal>().Get(x => x.Id == mealId);
+
+                var foods = meal.Foods.ToList();
+                var map = _mapper.Map<FoodDto, Food>(foods);
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+        }
+        public async Task<List<FoodDto>> GetAllFoodsInMealAsync(Guid mealId)
+        {
+            try
+            {
+                var meal = await _unitOfWork.GetReadRepository<m.Meal>().GetAsync(x => x.Id == mealId);
+
+                var foods = meal.Foods.ToList();
+                var map = _mapper.Map<FoodDto, Food>(foods);
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+        }
+
         public FoodDto GetFoodById(Guid foodId)
         {
             try

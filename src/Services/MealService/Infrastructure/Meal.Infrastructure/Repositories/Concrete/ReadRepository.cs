@@ -29,7 +29,7 @@ namespace Meal.Infrastructure.Repositories.Concrete
             if (orderBy is not null)
                 orderBy(query).ToList();
 
-            query = query.Where(predicate);
+            query = query.Where(predicate).AsTracking<T>();
 
             T? result = query.FirstOrDefault();
 
@@ -84,7 +84,7 @@ namespace Meal.Infrastructure.Repositories.Concrete
             if (orderBy is not null)
                 await orderBy(query).ToListAsync();
 
-            query = query.Where(predicate);
+            query = query.Where(predicate).AsTracking<T>();
 
             T? result = await query.FirstOrDefaultAsync();
 

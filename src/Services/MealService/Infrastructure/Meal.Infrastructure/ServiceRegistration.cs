@@ -22,6 +22,7 @@ using OpenTracing;
 using OpenTracing.Contrib.NetCore.Configuration;
 using Common.Logging;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Meal.Infrastructure
 {
@@ -105,6 +106,22 @@ namespace Meal.Infrastructure
                             });
 
             services.AddMvcCore().AddMetricsCore();
+            #endregion
+
+            #region IdentityServer
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.Authority = "http://localhost:8005";
+                    options.Audience = "Meal";
+                    options.RequireHttpsMetadata = false;
+                });
+
+            services.AddAuthorization(authOption =>
+            {
+                authOption.AddPolicy("MealRead", policy => policy.RequireClaim("scope", "Meal.Read"));
+                authOption.AddPolicy("MealWrite", policy => policy.RequireClaim("scope", "Meal.Write"));
+            });
             #endregion
 
             return services;

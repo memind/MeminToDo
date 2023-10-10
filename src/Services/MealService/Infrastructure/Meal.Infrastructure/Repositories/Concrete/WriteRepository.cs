@@ -32,7 +32,7 @@ namespace Meal.Infrastructure.Repositories.Concrete
 
         public void HardDelete(Guid id)
         {
-            T? entity = table.Find(id);
+            T? entity = GetByIdAsTracking(table, id);
             if (entity is not null)
                 table.Remove(entity);
         }
@@ -40,14 +40,14 @@ namespace Meal.Infrastructure.Repositories.Concrete
         public async Task HardDeleteAsync(Guid id)
         {
 
-            T? entity = await table.FindAsync(id);
+            T? entity = await GetByIdAsTrackingAsync(table, id);
             if (entity is not null)
                 await Task.Run(() => table.Remove(entity));
         }
 
         public void SoftDelete(T model)
         {
-            T? entity = table.Find(model.Id);
+            T? entity = GetByIdAsTracking(table, model.Id);
 
             if (entity is not null)
             {
@@ -60,7 +60,7 @@ namespace Meal.Infrastructure.Repositories.Concrete
 
         public async Task SoftDeleteAsync(T model)
         {
-            T? entity = table.Find(model.Id);
+            T? entity = await GetByIdAsTrackingAsync(table, model.Id);
 
             if (entity is not null)
             {
@@ -85,6 +85,22 @@ namespace Meal.Infrastructure.Repositories.Concrete
             await Task.Run(() => table.Update(entity));
 
             return entity;
+        }
+
+        private async Task<T?> GetByIdAsTrackingAsync(DbSet<T> set, Guid id)
+        {
+            return (await table.AsTracking<T>()
+                               .Where(x => x.Id == id)
+                               .ToListAsync())
+                               .FirstOrDefault();
+
+        }
+        private T? GetByIdAsTracking(DbSet<T> set, Guid id)
+        {
+            return set.AsTracking<T>()
+                            .Where(x => x.Id == id)
+                            .ToList()
+                            .FirstOrDefault();
         }
     }
 }

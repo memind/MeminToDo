@@ -7,6 +7,7 @@ using Prometheus;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(opt => opt.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 builder.Services.AddInfrastructureServices(builder.Configuration, builder.Host);
 builder.Services.AddApplicationServices();
@@ -30,6 +31,7 @@ app.MapHealthChecks("/hc", new HealthCheckOptions()
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
+app.UseCors();
 app.UseRouting();
 app.UseHttpMetrics();
 app.MapMetrics();
