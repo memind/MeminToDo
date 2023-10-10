@@ -22,8 +22,8 @@ app.UseHttpsRedirection();
 app.UseRouting(); 
 app.UseStaticFiles(); 
 app.UseAuthentication();
-app.UseIdentityServer();
 app.UseAuthorization();
+app.UseIdentityServer();
 
 app.UseEndpoints(endpoints =>
 {

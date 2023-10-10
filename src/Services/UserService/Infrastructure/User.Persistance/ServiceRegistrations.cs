@@ -12,6 +12,8 @@ namespace User.Persistance
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryApiScopes(Config.GetApiScopes())
                 .AddInMemoryClients(Config.GetClients())
+                .AddTestUsers(Config.GetTestUsers().ToList())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddDeveloperSigningCredential();
             return services;
         }

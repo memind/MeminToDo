@@ -143,15 +143,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{C9E05AEB-7CD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AutoMapper", "AutoMapper", "{0F8A2382-9D51-4338-952A-391F1621A915}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meal.Application", "src\Services\MealService\Application\Meal.Application\Meal.Application.csproj", "{A695879B-9023-43C1-B37A-CA90B50D9A1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meal.Application", "src\Services\MealService\Application\Meal.Application\Meal.Application.csproj", "{A695879B-9023-43C1-B37A-CA90B50D9A1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meal.Domain", "src\Services\MealService\Domain\Meal.Domain\Meal.Domain.csproj", "{3560113A-C588-4467-965B-59E84360C384}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meal.Domain", "src\Services\MealService\Domain\Meal.Domain\Meal.Domain.csproj", "{3560113A-C588-4467-965B-59E84360C384}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meal.Infrastructure", "src\Services\MealService\Infrastructure\Meal.Infrastructure\Meal.Infrastructure.csproj", "{1AC2ECCB-0578-4A2C-915B-3BA3042EF2C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meal.Infrastructure", "src\Services\MealService\Infrastructure\Meal.Infrastructure\Meal.Infrastructure.csproj", "{1AC2ECCB-0578-4A2C-915B-3BA3042EF2C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meal.API", "src\Services\MealService\API\Meal.API\Meal.API.csproj", "{74773F87-AC09-43B8-BD9D-2ECFAC1CA9BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meal.API", "src\Services\MealService\API\Meal.API\Meal.API.csproj", "{74773F87-AC09-43B8-BD9D-2ECFAC1CA9BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meal.Mapper", "src\Services\MealService\AutoMapper\Meal.Mapper\Meal.Mapper.csproj", "{864651C7-5298-4234-88F9-2CC1081D1192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meal.Mapper", "src\Services\MealService\AutoMapper\Meal.Mapper\Meal.Mapper.csproj", "{864651C7-5298-4234-88F9-2CC1081D1192}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Home", "Home", "{D7E3961D-70E2-4661-9D18-0F513D8B0825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomePages", "src\WebApps\Blazor\HomePages\HomePages.csproj", "{787DED29-B01F-47D8-90F4-3219E801DF78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -315,6 +319,10 @@ Global
 		{864651C7-5298-4234-88F9-2CC1081D1192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{864651C7-5298-4234-88F9-2CC1081D1192}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{864651C7-5298-4234-88F9-2CC1081D1192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{787DED29-B01F-47D8-90F4-3219E801DF78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{787DED29-B01F-47D8-90F4-3219E801DF78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{787DED29-B01F-47D8-90F4-3219E801DF78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{787DED29-B01F-47D8-90F4-3219E801DF78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -393,6 +401,8 @@ Global
 		{1AC2ECCB-0578-4A2C-915B-3BA3042EF2C3} = {2796B42A-6B5A-4B8E-AA3A-6AF24BCCFB8B}
 		{74773F87-AC09-43B8-BD9D-2ECFAC1CA9BB} = {C9E05AEB-7CDF-4F9B-B9BB-9868BACB9C07}
 		{864651C7-5298-4234-88F9-2CC1081D1192} = {0F8A2382-9D51-4338-952A-391F1621A915}
+		{D7E3961D-70E2-4661-9D18-0F513D8B0825} = {330EC2BE-419F-44AF-9AD4-F442F066A61F}
+		{787DED29-B01F-47D8-90F4-3219E801DF78} = {D7E3961D-70E2-4661-9D18-0F513D8B0825}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1DD50095-EA3E-4D3F-91EA-36656FC10020}
