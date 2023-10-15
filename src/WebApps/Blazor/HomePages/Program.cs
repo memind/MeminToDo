@@ -14,7 +14,14 @@ builder.Services.AddAuthentication(x =>
         x.ClientId = "MeminToDoHome";
         x.ClientSecret = "memintodohome";
         x.ResponseType = "code id_token";
+        x.GetClaimsFromUserInfoEndpoint = true;
+        x.Scope.Add("offline_access");
+        x.SaveTokens = true;
     });
+
+
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 
@@ -27,7 +34,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

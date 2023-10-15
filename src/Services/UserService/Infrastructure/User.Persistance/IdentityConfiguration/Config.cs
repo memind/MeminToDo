@@ -114,9 +114,15 @@ namespace User.Persistance.IdentityConfiguration
                     ClientName = "MeminToDoHome",
                     ClientSecrets = { new Secret("memintodohome".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Hybrid,
-                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
+                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,  IdentityServerConstants.StandardScopes.OfflineAccess  },
                     RedirectUris = { "https://localhost:7196/signin-oidc" },
-                    RequirePkce = false
+                    RequirePkce = false,
+                    AccessTokenLifetime = 2 * 60 * 60,
+
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+                    AbsoluteRefreshTokenLifetime = 2 * 60 * 60 + (10 * 60)
                 }
         };
         }

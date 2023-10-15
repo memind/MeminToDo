@@ -9,6 +9,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
