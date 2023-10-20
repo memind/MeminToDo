@@ -23,6 +23,8 @@ using OpenTracing.Contrib.NetCore.Configuration;
 using Common.Logging;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Meal.Infrastructure.ExecutionStrategies;
 
 namespace Meal.Infrastructure
 {
@@ -31,7 +33,11 @@ namespace Meal.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration, IHostBuilder host)
         {
             services.AddDbContext<MealDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("MsSqlDatabaseConnectionString")));
+                options.UseSqlServer(configuration.GetConnectionString("MsSqlDatabaseConnectionString"), 
+                    builder => builder.ExecutionStrategy(dependencies => new EFCoreCustomRetryExecutionStrategy(
+                                                                             dependencies: dependencies, 
+                                                                             maxRetryCount: 4,
+                                                                             maxRetryDelay: TimeSpan.FromSeconds(30)))));
 
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));

@@ -40,7 +40,7 @@ namespace Meal.Application.Services.Concrete
 
                 _unitOfWork.Save();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task CreateFoodAsync(FoodCreateDto food, Guid mealId, Guid userId)
@@ -60,7 +60,7 @@ namespace Meal.Application.Services.Concrete
 
                 await _unitOfWork.SaveAsync();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public List<FoodDto> GetAllActiveFoods()
@@ -73,7 +73,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task<List<FoodDto>> GetAllActiveFoodsAsync()
@@ -86,7 +86,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public List<FoodDto> GetAllDeletedFoods()
@@ -101,7 +101,7 @@ namespace Meal.Application.Services.Concrete
                 return map.ToList();
 
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task<List<FoodDto>> GetAllDeletedFoodsAsync()
@@ -115,7 +115,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public List<FoodDto> GetAllFoods()
@@ -129,7 +129,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
 
         }
 
@@ -144,7 +144,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public List<FoodDto> GetAllFoodsInMeal(Guid mealId)
@@ -158,7 +158,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
         public async Task<List<FoodDto>> GetAllFoodsInMealAsync(Guid mealId)
         {
@@ -171,7 +171,35 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
+        }
+
+        public List<FoodDto> GetAllHistory()
+        {
+            try
+            {
+                var history = _unitOfWork.GetReadRepository<Food>().GetHistoryAll();
+                var map = _mapper.Map<FoodDto, Food>(history);
+
+                _logger.LogInformation($"Getting All Food History Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
+        }
+
+        public async Task<List<FoodDto>> GetAllHistoryAsync()
+        {
+            try
+            {
+                var history = await _unitOfWork.GetReadRepository<Food>().GetHistoryAllAsync();
+                var map = _mapper.Map<FoodDto, Food>(history);
+
+                _logger.LogInformation($"Getting All Food History Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public FoodDto GetFoodById(Guid foodId)
@@ -185,7 +213,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map;
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task<FoodDto> GetFoodByIdAsync(Guid foodId)
@@ -199,7 +227,69 @@ namespace Meal.Application.Services.Concrete
 
                 return map;
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
+        }
+
+        public List<FoodDto> GetHistoryById(Guid id)
+        {
+            try
+            {
+                var history = _unitOfWork.GetReadRepository<Food>().GetHistoryAll()
+                                                                   .Where(x => x.Id == id)
+                                                                   .ToList();
+
+                var map = _mapper.Map<FoodDto, Food>(history);
+
+                _logger.LogInformation($"Getting Food History: {id}");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
+        }
+
+        public async Task<List<FoodDto>> GetHistoryByIdAsync(Guid id)
+        {
+            try
+            {
+                var history = (await _unitOfWork.GetReadRepository<Food>().GetHistoryAllAsync())
+                                                                   .Where(x => x.Id == id)
+                                                                   .ToList();
+
+                var map = _mapper.Map<FoodDto, Food>(history);
+
+                _logger.LogInformation($"Getting Food History: {id}");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
+        }
+
+        public List<FoodDto> GetHistoryFromTo(DateTime utcFrom, DateTime utcTo)
+        {
+            try
+            {
+                var history = _unitOfWork.GetReadRepository<Food>().GetHistoryFromTo(utcFrom, utcTo);
+                var map = _mapper.Map<FoodDto, Food>(history);
+
+                _logger.LogInformation($"Getting Food History From {utcFrom} To {utcTo} Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
+        }
+
+        public async Task<List<FoodDto>> GetHistoryFromToAsync(DateTime utcFrom, DateTime utcTo)
+        {
+            try
+            {
+                var history = await _unitOfWork.GetReadRepository<Food>().GetHistoryFromToAsync(utcFrom, utcTo);
+                var map = _mapper.Map<FoodDto, Food>(history);
+
+                _logger.LogInformation($"Getting Food History From {utcFrom} To {utcTo} Successfully.");
+
+                return map.ToList();
+            }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public List<FoodDto> GetUsersAllFoods(Guid userId)
@@ -213,7 +303,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task<List<FoodDto>> GetUsersAllFoodsAsync(Guid userId)
@@ -227,7 +317,7 @@ namespace Meal.Application.Services.Concrete
 
                 return map.ToList();
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public void HardDeleteFood(FoodHardDeleteDto food)
@@ -238,7 +328,7 @@ namespace Meal.Application.Services.Concrete
                 _unitOfWork.Save();
                 _logger.LogInformation($"Hard Deleted Food Successfully: {food.Id}");
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task HardDeleteFoodAsync(FoodHardDeleteDto food)
@@ -249,7 +339,7 @@ namespace Meal.Application.Services.Concrete
                 await _unitOfWork.SaveAsync();
                 _logger.LogInformation($"Hard Deleted Food Successfully: {food.Id}");
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public void SoftDeleteFood(FoodDeleteDto food)
@@ -263,7 +353,7 @@ namespace Meal.Application.Services.Concrete
 
                 _logger.LogInformation($"Soft Deleted Food Successfully: {food.Id}");
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task SoftDeleteFoodAsync(FoodDeleteDto food)
@@ -277,7 +367,7 @@ namespace Meal.Application.Services.Concrete
 
                 _logger.LogInformation($"Soft Deleted Food Successfully: {food.Id}");
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public FoodDto UpdateFood(FoodUpdateDto food)
@@ -293,7 +383,7 @@ namespace Meal.Application.Services.Concrete
 
                 return _mapper.Map<FoodDto, Food>(map);
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
 
         public async Task<FoodDto> UpdateFoodAsync(FoodUpdateDto food)
@@ -309,7 +399,7 @@ namespace Meal.Application.Services.Concrete
 
                 return _mapper.Map<FoodDto, Food>(map);
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw error; }
         }
     }
 }

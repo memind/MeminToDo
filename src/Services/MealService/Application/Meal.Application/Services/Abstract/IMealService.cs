@@ -1,4 +1,5 @@
-﻿using Meal.Infrastructure.DTOs.MealDTOs;
+﻿using Meal.Infrastructure.DTOs.FoodDTOs;
+using Meal.Infrastructure.DTOs.MealDTOs;
 using System.Linq.Expressions;
 using e = Meal.Domain.Entities;
 
@@ -15,6 +16,12 @@ namespace Meal.Application.Services.Abstract
         MealDto GetMealById(Guid mealId);
 
         List<MealDto> GetUsersAllMeals(Guid userId);
+
+        List<MealDto> GetAllHistory();
+
+        List<MealDto> GetHistoryById(Guid id);
+
+        List<MealDto> GetHistoryFromTo(DateTime utcFrom, DateTime utcTo);
 
 
 
@@ -36,6 +43,12 @@ namespace Meal.Application.Services.Abstract
         Task<MealDto> GetMealByIdAsync(Guid mealId);
 
         Task<List<MealDto>> GetUsersAllMealsAsync(Guid userId);
+
+        Task<List<MealDto>> GetAllHistoryAsync();
+
+        Task<List<MealDto>> GetHistoryByIdAsync(Guid id);
+
+        Task<List<MealDto>> GetHistoryFromToAsync(DateTime utcFrom, DateTime utcTo);
 
 
 

@@ -10,7 +10,7 @@ namespace Meal.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<e.Meal> builder)
         {
-            builder.ToTable("MealTable");
+            builder.ToTable("MealTable", builder => builder.IsTemporal(true));
 
             builder.HasKey(x => x.Id);
 

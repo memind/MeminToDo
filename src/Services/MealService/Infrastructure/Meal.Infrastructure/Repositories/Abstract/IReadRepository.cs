@@ -19,5 +19,12 @@ namespace Meal.Infrastructure.Repositories.Abstract
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             params Expression<Func<T, object>>[] includeProperties);
 
+        List<T> GetHistoryAll();
+
+        Task<List<T>> GetHistoryAllAsync();
+
+        List<T> GetHistoryFromTo(DateTime utcFrom, DateTime utcTo);
+
+        Task<List<T>> GetHistoryFromToAsync(DateTime utcFrom, DateTime utcTo);
     }
 }

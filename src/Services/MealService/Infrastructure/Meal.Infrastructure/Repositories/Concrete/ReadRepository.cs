@@ -94,5 +94,25 @@ namespace Meal.Infrastructure.Repositories.Concrete
             else
                 throw new Exception();
         }
+
+        public List<T> GetHistoryAll()
+        {
+            return Table.TemporalAll().ToList();
+        }
+
+        public async Task<List<T>> GetHistoryAllAsync()
+        {
+            return await Table.TemporalAll().ToListAsync();
+        }
+
+        public List<T> GetHistoryFromTo(DateTime utcFrom, DateTime utcTo)
+        {
+            return Table.TemporalFromTo(utcFrom, utcTo).ToList();
+        }
+
+        public async Task<List<T>> GetHistoryFromToAsync(DateTime utcFrom, DateTime utcTo)
+        {
+            return await Table.TemporalFromTo(utcFrom, utcTo).ToListAsync();
+        }
     }
 }

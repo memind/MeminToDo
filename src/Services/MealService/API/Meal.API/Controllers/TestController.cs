@@ -36,10 +36,16 @@ namespace Meal.API.Controllers
             var getMealById = _mealService.GetMealById(Guid.Parse("3dce4b97-d7c1-4d53-28d0-08dbc8188ae2"));
         }
 
+        [HttpGet("GetAllFoodHistory")]
+        public List<FoodDto> GetAllFoodHistory()
+        {
+            return _foodService.GetAllHistory();
+        }
+
         [HttpPost("/create")]
         public void CreateFood(FoodCreateDto model)
         {
-            _foodService.CreateFood(model, Guid.Parse("9a59c403-a6e6-4a82-1536-08dbc8415801"), Guid.Parse("00000000-3333-0000-0000-000000000000"));
+            _foodService.CreateFood(model, Guid.Parse("526ea80c-f6d6-424b-8027-08dbd1b28165"), Guid.Parse("00000000-3333-0000-0000-000000000000"));
         }
 
 
@@ -66,27 +72,27 @@ namespace Meal.API.Controllers
 
 
 
-        [HttpPost("/createMeal")]
+        [HttpPost("/createMealTest")]
         public void CreateMeal(MealCreateDto model)
         {
             _mealService.CreateMeal(model, Guid.Parse("00000000-3333-0000-0000-000000000000"));
         }
 
 
-        [HttpPost("/updateMeal")]
+        [HttpPost("/updateMealTest")]
         public MealDto UpdateMeal(MealUpdateDto model)
         {
             return _mealService.UpdateMeal(model);
         }
 
 
-        [HttpPost("/deleteMeal")]
+        [HttpPost("/deleteMealTest")]
         public void SoftDeleteMeal(MealDeleteDto model)
         {
             _mealService.SoftDeleteMeal(model);
         }
 
-        [HttpPost("/deleteHardMeal")]
+        [HttpPost("/deleteHardMealTest")]
         public void HardDeleteMeal(MealHardDeleteDto model)
         {
             _mealService.HardDeleteMeal(model);

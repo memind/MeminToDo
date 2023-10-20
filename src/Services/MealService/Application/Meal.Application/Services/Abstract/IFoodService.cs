@@ -16,6 +16,12 @@ namespace Meal.Application.Services.Abstract
 
         List<FoodDto> GetUsersAllFoods(Guid userId);
 
+        List<FoodDto> GetAllHistory();
+
+        List<FoodDto> GetHistoryById(Guid id);
+
+        List<FoodDto> GetHistoryFromTo(DateTime utcFrom, DateTime utcTo);
+
         void CreateFood(FoodCreateDto food, Guid mealId, Guid userId);
 
         FoodDto UpdateFood(FoodUpdateDto food);
@@ -36,6 +42,12 @@ namespace Meal.Application.Services.Abstract
         Task<FoodDto> GetFoodByIdAsync(Guid foodId);
 
         Task<List<FoodDto>> GetUsersAllFoodsAsync(Guid userId);
+
+        Task<List<FoodDto>> GetAllHistoryAsync();
+
+        Task<List<FoodDto>> GetHistoryByIdAsync(Guid id);
+
+        Task<List<FoodDto>> GetHistoryFromToAsync(DateTime utcFrom, DateTime utcTo);
 
         Task CreateFoodAsync(FoodCreateDto food, Guid mealId, Guid userId);
 

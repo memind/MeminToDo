@@ -12,33 +12,12 @@ namespace Meal.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Food> builder)
         {
+            builder.ToTable("FoodTable", builder => builder.IsTemporal(true));
 
-        builder.ToTable("FoodTable");
             builder.HasKey(x => x.Id);
-
-            //builder.HasMany(f => f.Meals)
-            //    .WithMany(m => m.Foods)
-            //    .UsingEntity<MealFood>(
-            //        "MealFood",
-            //        mf => mf.HasOne(mf => mf.Meal)
-            //        .WithMany()
-            //        .HasForeignKey(mf => mf.MealId)
-            //        .HasConstraintName("MealsOfFood"),
-
-            //        mf => mf.HasOne(mf => mf.Food)
-            //        .WithMany()
-            //        .HasForeignKey(mf => mf.FoodId)
-            //        .HasConstraintName("FoodsOfMeal"),
-
-            //        mf => mf.ToTable("MealFoodCrossTable").Property(x => x.MealId)
-            //    .HasColumnName("Meal")
-            //    .HasColumnType("uniqueidentifier")
-            //    .HasColumnOrder(1)
-            //    .IsRequired(true) );
 
             builder.HasMany(f => f.Meals)
                .WithMany(m => m.Foods);
-
 
             builder.HasMany(f => f.Meals)
                 .WithMany(m => m.Foods);
