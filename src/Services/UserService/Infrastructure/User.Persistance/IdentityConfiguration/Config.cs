@@ -122,7 +122,9 @@ namespace User.Persistance.IdentityConfiguration
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
                     RefreshTokenExpiration = TokenExpiration.Absolute,
-                    AbsoluteRefreshTokenLifetime = 2 * 60 * 60 + (10 * 60)
+                    AbsoluteRefreshTokenLifetime = 2 * 60 * 60 + (10 * 60),
+
+                    RequireConsent = true
                 }
         };
         }
