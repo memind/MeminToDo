@@ -14,7 +14,8 @@ namespace HomePages.Controllers
             return View();
         }
 
-        [Authorize]
+
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> TestPage()
         {
             Console.WriteLine("------------------------------------");
@@ -37,6 +38,23 @@ namespace HomePages.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminRolePage()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> ModRolePage()
+        {
+            return View();
+        }
+
+        public async Task LogOut()
+        {
+            await HttpContext.SignOutAsync("MeminToDoHomeCookie");
+            await HttpContext.SignOutAsync("oidc");
+        }
 
         public async Task<IActionResult> NewAccessTokenTest() 
         {

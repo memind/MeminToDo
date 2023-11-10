@@ -74,7 +74,7 @@ namespace User.Persistance.IdentityConfiguration
                         ClientName = "Workout",
                         ClientSecrets = { new Secret("workoutsecret".Sha256()) },
                         AllowedGrantTypes = { GrantType.ClientCredentials },
-                        AllowedScopes = { "Workout.Write", "Workout.Read" }
+                        AllowedScopes = { "Workout.Write", "Workout.Read", "Roles" }
                     },
             new Client
                     {
@@ -82,7 +82,7 @@ namespace User.Persistance.IdentityConfiguration
                         ClientName = "Entertainment",
                         ClientSecrets = { new Secret("entertainmentsecret".Sha256()) },
                         AllowedGrantTypes = { GrantType.ClientCredentials },
-                        AllowedScopes = { "Entertainment.Write", "Entertainment.Read" }
+                        AllowedScopes = { "Entertainment.Write", "Entertainment.Read", "Roles" }
                     },
             new Client
                     {
@@ -90,7 +90,7 @@ namespace User.Persistance.IdentityConfiguration
                         ClientName = "Skill",
                         ClientSecrets = { new Secret("skillsecret".Sha256()) },
                         AllowedGrantTypes = { GrantType.ClientCredentials },
-                        AllowedScopes = { "Skill.Write", "Skill.Read" }
+                        AllowedScopes = { "Skill.Write", "Skill.Read", "Roles" }
                     },
             new Client
                     {
@@ -98,7 +98,7 @@ namespace User.Persistance.IdentityConfiguration
                         ClientName = "Dashboard",
                         ClientSecrets = { new Secret("dashboardsecret".Sha256()) },
                         AllowedGrantTypes = { GrantType.ClientCredentials },
-                        AllowedScopes = { "Dashboard.Read" }
+                        AllowedScopes = { "Dashboard.Read", "Industry", "Wage", "PositionAndAuthority", "WorkingAt", "Roles" }
                     },
             new Client
                     {
@@ -106,7 +106,7 @@ namespace User.Persistance.IdentityConfiguration
                         ClientName = "Meal",
                         ClientSecrets = { new Secret("mealsecret".Sha256()) },
                         AllowedGrantTypes = { GrantType.ClientCredentials },
-                        AllowedScopes = { "Meal.Write", "Meal.Read" }
+                        AllowedScopes = { "Meal.Write", "Meal.Read", "Roles" }
                     },
             new Client
                 {
@@ -114,8 +114,9 @@ namespace User.Persistance.IdentityConfiguration
                     ClientName = "MeminToDoHome",
                     ClientSecrets = { new Secret("memintodohome".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Hybrid,
-                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,  IdentityServerConstants.StandardScopes.OfflineAccess  },
+                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,  IdentityServerConstants.StandardScopes.OfflineAccess, "Industry", "Wage", "PositionAndAuthority", "WorkingAt", "Roles" },
                     RedirectUris = { "https://localhost:7196/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:7196/signout-callback-oidc" },
                     RequirePkce = false,
                     AccessTokenLifetime = 2 * 60 * 60,
 
@@ -134,27 +135,40 @@ namespace User.Persistance.IdentityConfiguration
         public static IEnumerable<TestUser> GetTestUsers()
         {
             return new List<TestUser> {
-        new TestUser {
-            SubjectId = "test-user1",
-            Username = "test-user1",
-            Password = "12345",
-            Claims = {
-                new Claim("name","test user1"),
-                new Claim("website","https://wwww.testuser1.com"),
-                new Claim("gender","1")
-            }
-        },
-        new TestUser {
-            SubjectId = "test-user2",
-            Username = "test-user2",
-            Password = "12345",
-            Claims = {
-                new Claim("name","test user2"),
-                new Claim("website","https://wwww.testuser2.com"),
-                new Claim("gender","0")
-            }
-        }
-    };
+                new TestUser {
+                     SubjectId = "test-user1",
+                     Username = "test-user1",
+                     Password = "12345",
+                     Claims = {
+                         new Claim("name","test user1"),
+                         new Claim("website","https://wwww.testuser1.com"),
+                         new Claim("gender","1"),
+                         new Claim("industry","IT"),
+                         new Claim("wage","25000"),
+                         new Claim("position","Backend Developer"),
+                         new Claim("authority","Nothing"),
+                         new Claim("workingat","Nowhere"),
+                         new Claim("role","Admin")
+                     }
+                },
+
+                new TestUser {
+                     SubjectId = "test-user2",
+                     Username = "test-user2",
+                     Password = "12345",
+                     Claims = {
+                         new Claim("name","test user2"),
+                         new Claim("website","https://wwww.testuser2.com"),
+                         new Claim("gender","0"),
+                         new Claim("industry","Production"),
+                         new Claim("wage","11000"),
+                         new Claim("position","Dumbass"),
+                         new Claim("authority","Nothing"),
+                         new Claim("workingat","Some Production Company"),
+                         new Claim("role","Moderator")
+                     }
+                }
+            };
         }
         #endregion
 
@@ -164,7 +178,45 @@ namespace User.Persistance.IdentityConfiguration
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+
+                new IdentityResource
+                {
+                    Name = "Industry",
+                    DisplayName = "Industry",
+                    Description = "Industry where the user works.",
+                    UserClaims = { "industry" }
+                },
+
+                new IdentityResource
+                {
+                    Name = "Wage",
+                    DisplayName = "Wage",
+                    Description = "Users wage.",
+                    UserClaims = { "wage" }
+                },
+
+                new IdentityResource {
+                    Name = "PositionAndAuthority",
+                    DisplayName = "Position And Authority",
+                    Description = "User position and authority.",
+                    UserClaims = { "position", "authority" }
+                },
+
+                new IdentityResource
+                {
+                    Name = "Roles",
+                    DisplayName = "Roles",
+                    Description = "User Roles",
+                    UserClaims = { "role" }
+                },
+
+                new IdentityResource {
+                    Name = "WorkingAt",
+                    DisplayName = "Working At",
+                    Description = "Company where the user works.",
+                    UserClaims = { "workingat" }
+                }
             };
         }
         #endregion

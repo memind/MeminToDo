@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -17,6 +20,21 @@ builder.Services.AddAuthentication(x =>
         x.GetClaimsFromUserInfoEndpoint = true;
         x.Scope.Add("offline_access");
         x.SaveTokens = true;
+
+        x.Scope.Add("Industry");
+        x.Scope.Add("Wage");
+        x.Scope.Add("PositionAndAuthority");
+        x.Scope.Add("WorkingAt");
+        x.Scope.Add("Roles");
+
+        x.ClaimActions.MapUniqueJsonKey("industry", "industry");
+        x.ClaimActions.MapUniqueJsonKey("wage", "wage");
+        x.ClaimActions.MapUniqueJsonKey("position", "position");
+        x.ClaimActions.MapUniqueJsonKey("authority", "authority");
+        x.ClaimActions.MapUniqueJsonKey("workingat", "workingat");
+        x.ClaimActions.MapUniqueJsonKey("role", "role");
+
+        x.TokenValidationParameters = new TokenValidationParameters { RoleClaimType = "role" };
     });
 
 
