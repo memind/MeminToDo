@@ -92,6 +92,7 @@ namespace HomePages.Controllers
 
                 authenticationProperties.StoreTokens(new List<AuthenticationToken>
                 {
+                    new() { Name = OpenIdConnectParameterNames.IdToken, Value = response.IdentityToken },
                     new() { Name = OpenIdConnectParameterNames.AccessToken, Value = response.AccessToken },
                     new() { Name = OpenIdConnectParameterNames.RefreshToken, Value = response.RefreshToken },
                     new() { Name = OpenIdConnectParameterNames.ExpiresIn, Value = DateTime.UtcNow.AddSeconds(response.ExpiresIn).ToString("o", CultureInfo.InvariantCulture) },

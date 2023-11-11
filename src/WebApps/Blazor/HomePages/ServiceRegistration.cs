@@ -13,7 +13,7 @@ namespace HomePages
                 x.DefaultScheme = "MeminToDoHomeCookie";
                 x.DefaultChallengeScheme = "oidc";
             })
-                .AddCookie("MeminToDoHomeCookie")
+                .AddCookie("MeminToDoHomeCookie", x => { x.LoginPath = new PathString("/Home/CustomLogin"); })
                 .AddOpenIdConnect("oidc", x =>
                 {
                     x.SignInScheme = "MeminToDoHomeCookie";
