@@ -34,7 +34,7 @@ namespace User.Persistance.IdentityConfiguration
         }
         #endregion
 
-        #region Resources
+        #region ApiResources
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
@@ -113,10 +113,10 @@ namespace User.Persistance.IdentityConfiguration
                     ClientId = "MeminToDoHome",
                     ClientName = "MeminToDoHome",
                     ClientSecrets = { new Secret("memintodohome".Sha256()) },
-                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowedGrantTypes = {GrantType.Hybrid, GrantType.ResourceOwnerPassword, GrantType.ClientCredentials },
                     AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,  IdentityServerConstants.StandardScopes.OfflineAccess, "Industry", "Wage", "PositionAndAuthority", "WorkingAt", "Roles" },
-                    RedirectUris = { "https://localhost:7196/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:7196/signout-callback-oidc" },
+                    RedirectUris = { "https://localhost:8030/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:8030/signout-callback-oidc" },
                     RequirePkce = false,
                     AccessTokenLifetime = 2 * 60 * 60,
 

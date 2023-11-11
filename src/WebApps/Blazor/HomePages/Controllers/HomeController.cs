@@ -1,18 +1,20 @@
-﻿using IdentityModel.Client;
+﻿using HomePages.Models;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Diagnostics;
+using System.Globalization;
+using System.Security.Claims;
 
 namespace HomePages.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<IActionResult> Index()
-        {
-            return View();
-        }
+
+        public async Task<IActionResult> Index() => View();
 
 
         [Authorize(Roles = "Admin, Moderator")]
@@ -39,15 +41,71 @@ namespace HomePages.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminRolePage()
-        {
-            return View();
-        }
+        public IActionResult AdminRolePage() => View();
 
         [Authorize(Roles = "Moderator")]
-        public async Task<IActionResult> ModRolePage()
+        public IActionResult ModRolePage() => View();
+
+        [HttpGet]
+        public IActionResult CustomLogin() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> CustomLogin(UserLoginVM model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var httpClient = new HttpClient();
+                var discoveryDocument = await httpClient.GetDiscoveryDocumentAsync("https://localhost:8005");
+
+                if (discoveryDocument.IsError) 
+                    return View(model);
+
+                var request = new PasswordTokenRequest
+                {
+                    Address = discoveryDocument.TokenEndpoint,
+                    UserName = model.Username,
+                    Password = model.Password,
+                    ClientId = "MeminToDoHome",
+                    ClientSecret = "memintodohome"
+                };
+
+                var response = await httpClient.RequestPasswordTokenAsync(request);
+
+                if (response.IsError)  
+                    return View(model); 
+
+                var userInfoRequest = new UserInfoRequest
+                {
+                    Token = response.AccessToken,
+                    Address = discoveryDocument.UserInfoEndpoint,
+                };
+
+                var userInfoResponse = await httpClient.GetUserInfoAsync(userInfoRequest);
+
+                if (userInfoResponse.IsError) 
+                    return View(model); 
+
+                var identity = new ClaimsIdentity(userInfoResponse.Claims, CookieAuthenticationDefaults.AuthenticationScheme, "name", "role");
+                var principle = new ClaimsPrincipal(identity);
+
+                var authenticationProperties = new AuthenticationProperties();
+
+                authenticationProperties.StoreTokens(new List<AuthenticationToken>
+                {
+                    new() { Name = OpenIdConnectParameterNames.AccessToken, Value = response.AccessToken },
+                    new() { Name = OpenIdConnectParameterNames.RefreshToken, Value = response.RefreshToken },
+                    new() { Name = OpenIdConnectParameterNames.ExpiresIn, Value = DateTime.UtcNow.AddSeconds(response.ExpiresIn).ToString("o", CultureInfo.InvariantCulture) },
+                });
+
+                await HttpContext.SignInAsync("MeminToDoHomeCookie", principle, authenticationProperties);
+
+                if (model.ReturnUrl is not null)
+                    return Redirect(model.ReturnUrl);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }
 
         public async Task LogOut()
