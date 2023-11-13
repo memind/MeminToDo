@@ -15,6 +15,7 @@ using User.Persistance.Concretes.Repositories;
 using User.Persistance.Concretes.Services;
 using User.Persistance.Context;
 using User.Persistance.IdentityConfiguration;
+using User.Persistance.SeedData;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace User.Persistance
@@ -27,7 +28,10 @@ namespace User.Persistance
 
             services.AddDbContext<UserDbContext>(options =>
             {
-                options.UseSqlServer(cfg.GetConnectionString("MsSqlConnectionString"));
+                options.UseSqlServer(cfg.GetConnectionString("MsSqlConnectionString"), action =>
+                {
+                    action.MigrationsAssembly(assemblyName);
+                });
             });
 
             services.AddIdentity<AppUser, IdentityRole>()
@@ -40,32 +44,35 @@ namespace User.Persistance
                     .AddInMemoryClients(Config.GetClients())
                     .AddTestUsers(Config.GetTestUsers().ToList())
                     .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                    //.AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
-                    //.AddProfileService<CustomProfileService>()
-                    //.AddAspNetIdentity<AppUser>()
-                    //.AddConfigurationStore(options =>
-                    //{
-                    //    options.ConfigureDbContext = context =>
-                    //    {
-                    //        context.UseSqlServer(cfg.GetConnectionString("MsSqlConnectionString"), action =>
-                    //        {
-                    //            action.MigrationsAssembly(assemblyName);
-                    //        });
-                    //    };
-                    //})
-                    //.AddOperationalStore(options =>
-                    //{
-                    //    options.ConfigureDbContext = context =>
-                    //    {
-                    //        context.UseSqlServer(cfg.GetConnectionString("MsSqlConnectionString"), action =>
-                    //        {
-                    //            action.MigrationsAssembly(assemblyName);
-                    //        });
-                    //    };
-                    //})
+                    .AddAspNetIdentity<AppUser>()
+                    .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+                    .AddProfileService<CustomProfileService>()
+                    .AddConfigurationStore(options =>
+                    {
+                        options.ConfigureDbContext = context =>
+                        {
+                            context.UseSqlServer(cfg.GetConnectionString("MsSqlConnectionString"), action =>
+                            {
+                                action.MigrationsAssembly(assemblyName);
+                            });
+                        };
+                    })
+                    .AddOperationalStore(options =>
+                    {
+                        options.ConfigureDbContext = context =>
+                        {
+                            context.UseSqlServer(cfg.GetConnectionString("MsSqlConnectionString"), action =>
+                            {
+                                action.MigrationsAssembly(assemblyName);
+                            });
+                        };
+                    })
                     .AddDeveloperSigningCredential();
 
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddAuthentication();
+            Seeder.EnsureSeedData(cfg.GetConnectionString("MsSqlConnectionString"));
 
             return services;
         }

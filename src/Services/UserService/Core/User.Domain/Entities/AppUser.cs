@@ -22,11 +22,6 @@ namespace User.Domain.Entities
         [Required(ErrorMessage = "Birth date is required!")]
         public DateTime BirthDate { get; set; }
 
-        [Required(ErrorMessage = "Username is required!")]
-        [MaxLength(30, ErrorMessage = "Username must be shorter than 30 characters!")]
-        [MinLength(2, ErrorMessage = "Username must be longer than 2 characters!")]
-        public string Username { get; set; }
-
         [Required(ErrorMessage = "Password is required!")]
         [MinLength(8, ErrorMessage = "Password must be longer than 8 characters!")]
         public string Password { get; set; }

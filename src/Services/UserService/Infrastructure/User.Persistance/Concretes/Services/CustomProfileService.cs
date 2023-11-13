@@ -28,7 +28,7 @@ namespace User.Persistance.Concretes.Services
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("name", user.Username),
+                new Claim("name", user.UserName),
 
                 new Claim("fullname", $"{user.FirstName} {user.LastName}"),
                 new Claim("industry",$"{user.Industry}"),

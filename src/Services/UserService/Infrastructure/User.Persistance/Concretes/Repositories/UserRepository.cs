@@ -16,7 +16,7 @@ namespace User.Persistance.Concretes.Repositories
         }
 
         public async Task<AppUser?> GetByUserNameAsync(string userName) => 
-            await _context.Users.FirstOrDefaultAsync(f => f.Username == userName);
+            await _context.Users.FirstOrDefaultAsync(f => f.UserName == userName);
 
         public async Task<AppUser?> GetByIdAsync(Guid id) => 
             await _context.Users.FirstOrDefaultAsync(f => f.Id == id);
