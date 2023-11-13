@@ -31,7 +31,5 @@ app.UseEndpoints(endpoints =>
     endpoints.MapDefaultControllerRoute();
 });
 
-Seeder.EnsureSeedData(builder.Configuration.GetConnectionString("MsSqlConnectionString"));
-
 app.MapControllers();
 app.Run();
