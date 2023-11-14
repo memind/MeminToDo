@@ -45,8 +45,12 @@ namespace Budget.Persistance.Concretes.Services
 
 
             var wallet = director.Construct(builder, model.WalletName);
+            var account = _unitOfWork.GetReadRepository<BudgetAccount>().Get(x => x.Id == Guid.Parse("35533212-c2cb-4a38-997a-08dbe55b146d"));
+
+            account.Wallets.Add(wallet);
 
             _unitOfWork.GetWriteRepository<Wallet>().Create(wallet);
+            _unitOfWork.GetWriteRepository<BudgetAccount>().Update(account);
             return _unitOfWork.Save();
         }
 
@@ -58,13 +62,13 @@ namespace Budget.Persistance.Concretes.Services
 
         public List<WalletDto> GetAllWallets()
         {
-            var list = _unitOfWork.GetReadRepository<Wallet>().GetAll();
+            var list = _unitOfWork.GetReadRepository<Wallet>().GetAll(includeProperties: w => w.BudgetAccount);
             return _mapper.Map<List<WalletDto>>(list);
         }
 
         public WalletDto GetWalletById(Guid id)
         {
-            var wallet = _unitOfWork.GetReadRepository<Wallet>().Get(w => w.Id == id);
+            var wallet = _unitOfWork.GetReadRepository<Wallet>().Get(w => w.Id == id, includeProperties: w => w.BudgetAccount);
             return _mapper.Map<WalletDto>(wallet);
         }
 

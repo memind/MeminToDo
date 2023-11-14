@@ -23,10 +23,20 @@ namespace Budget.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public void Get()
         {
+            var x = _money.GetAllMoneyFlows();
+            var y = _budget.GetAllBudgetAccounts();
+            var z = _wallet.GetAllWallets();
 
-            return null;
+            var a = _money.GetMoneyFlowById(Guid.Parse("11be816d-b1fb-437a-2e26-08dbe56048ec"));
+            var b = _budget.GetBudgetAccountById(Guid.Parse("7a3c23f3-832c-4b51-144e-08dbe55c63c1"));
+            var c = _wallet.GetWalletById(Guid.Parse("7d445be0-110f-4264-7529-08dbe55fb389"));
+
+            var e = _money.GetUsersAllMoneyFlows(Guid.Parse("f8b5f86c-710f-4fde-bcaf-2add21116b27"));
+            var f = _budget.GetUsersAllBudgetAccounts(Guid.Parse("95e685e6-c39c-4550-90a6-fc1d8b27f7b5"));
+
+            var date = DateTime.Now;
         }
 
 

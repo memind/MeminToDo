@@ -34,19 +34,19 @@ namespace Budget.Persistance.Concretes.Services
 
         public List<BudgetAccountDto> GetAllBudgetAccounts()
         {
-            var list = _unitOfWork.GetReadRepository<BudgetAccount>().GetAll();
+            var list = _unitOfWork.GetReadRepository<BudgetAccount>().GetAll(predicate: null, orderBy: null, ba => ba.MoneyFlows, ba => ba.Wallets);
             return _mapper.Map<List<BudgetAccountDto>>(list);
         }
 
         public BudgetAccountDto GetBudgetAccountById(Guid id)
         {
-            var budgetAccount = _unitOfWork.GetReadRepository<BudgetAccount>().Get(ba => ba.Id == id);
+            var budgetAccount = _unitOfWork.GetReadRepository<BudgetAccount>().Get(ba => ba.Id == id, orderBy: null, ba => ba.MoneyFlows, ba => ba.Wallets);
             return _mapper.Map<BudgetAccountDto>(budgetAccount);
         }
 
         public List<BudgetAccountDto> GetUsersAllBudgetAccounts(Guid id)
         {
-            var list = _unitOfWork.GetReadRepository<BudgetAccount>().GetAll(ba => ba.UserId == id);
+            var list = _unitOfWork.GetReadRepository<BudgetAccount>().GetAll(ba => ba.UserId == id, orderBy: null, ba => ba.MoneyFlows, ba => ba.Wallets);
             return _mapper.Map<List<BudgetAccountDto>>(list);
         }
 
