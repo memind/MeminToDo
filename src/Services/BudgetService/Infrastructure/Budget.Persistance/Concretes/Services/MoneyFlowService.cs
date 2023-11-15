@@ -23,8 +23,9 @@ namespace Budget.Persistance.Concretes.Services
         public int CreateMoneyFlow(MoneyFlowCreateDto model)
         {
             _moneyFlowFactory.CreateMoneyFlowMessage(model);
+
             var map = _mapper.Map<MoneyFlow>(model);
-            var account = _unitOfWork.GetReadRepository<BudgetAccount>().Get(x => x.Id == Guid.Parse("35533212-c2cb-4a38-997a-08dbe55b146d"), includeProperties: mf => mf.MoneyFlows);
+            var account = _unitOfWork.GetReadRepository<BudgetAccount>().Get(x => x.Id == model.BudgetAccountId, includeProperties: mf => mf.MoneyFlows);
 
             account.MoneyFlows.Add(map);
 
@@ -49,7 +50,15 @@ namespace Budget.Persistance.Concretes.Services
         public MoneyFlowDto GetMoneyFlowById(Guid id)
         {
             var moneyFlow = _unitOfWork.GetReadRepository<MoneyFlow>().Get(mf => mf.Id == id, includeProperties: mf => mf.BudgetAccount);
-            return _mapper.Map<MoneyFlowDto>(moneyFlow);
+            var map = _mapper.Map<MoneyFlowDto>(moneyFlow);
+            return map;
+        }
+
+        public MoneyFlowDto GetMoneyFlowByIdAsNoTracking(Guid id)
+        {
+            var moneyFlow = _unitOfWork.GetReadRepository<MoneyFlow>().GetAsNoTracking(mf => mf.Id == id, includeProperties: mf => mf.BudgetAccount);
+            var map = _mapper.Map<MoneyFlowDto>(moneyFlow);
+            return map;
         }
 
         public List<MoneyFlowDto> GetUsersAllMoneyFlows(Guid userId)

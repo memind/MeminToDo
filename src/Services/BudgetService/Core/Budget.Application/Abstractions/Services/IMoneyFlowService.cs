@@ -8,6 +8,7 @@ namespace Budget.Application.Abstractions.Services
         int UpdateMoneyFlow(MoneyFlowUpdateDto model);
         int DeleteMoneyFlow(Guid id);
         MoneyFlowDto GetMoneyFlowById(Guid id);
+        MoneyFlowDto GetMoneyFlowByIdAsNoTracking(Guid id);
         List<MoneyFlowDto> GetAllMoneyFlows();
         List<MoneyFlowDto> GetUsersAllMoneyFlows(Guid userId);
     }

@@ -1,24 +1,23 @@
-﻿using Budget.Domain.Entities;
+﻿using Budget.Application.DTOs.WalletDTOs;
 
 namespace Budget.Application.Abstractions.Builders.WalletBuilder.Builders
 {
     public class TlWalletBuilder : IWalletBuilder
     {
-        private Wallet _wallet = new Wallet();
+        private WalletCreateDto _wallet;
 
         public void BuildCurrency() => _wallet.Currency = Domain.Enums.Currency.TL;
 
         public void BuildTotal() => _wallet.Total = 0;
 
-        public void BuildWalletName(string name) => _wallet.WalletName = name;
+        public WalletCreateDto GetWallet() => _wallet;
 
-        public Wallet GetWallet() => _wallet;
-
-        public Wallet BuildScheme(string name)
+        public WalletCreateDto BuildScheme(WalletCreateDto model)
         {
+            _wallet = model;
+
             BuildCurrency();
             BuildTotal();
-            BuildWalletName(name);
 
             return GetWallet();
         }

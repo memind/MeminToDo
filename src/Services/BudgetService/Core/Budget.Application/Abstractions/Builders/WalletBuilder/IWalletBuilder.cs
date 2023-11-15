@@ -1,4 +1,4 @@
-﻿using Budget.Domain.Entities;
+﻿using Budget.Application.DTOs.WalletDTOs;
 
 namespace Budget.Application.Abstractions.Builders.WalletBuilder
 {
@@ -6,8 +6,7 @@ namespace Budget.Application.Abstractions.Builders.WalletBuilder
     {
         public void BuildCurrency();
         public void BuildTotal();
-        public void BuildWalletName(string name);
-        public Wallet BuildScheme(string name);
-        public Wallet GetWallet();
+        public WalletCreateDto BuildScheme(WalletCreateDto model);
+        public WalletCreateDto GetWallet();
     }
 }

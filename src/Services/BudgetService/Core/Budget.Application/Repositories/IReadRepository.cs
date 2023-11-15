@@ -19,5 +19,21 @@ namespace Budget.Application.Repositories
         Task<T> GetAsync(Expression<Func<T, bool>> predicate,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             params Expression<Func<T, object>>[] includeProperties);
+
+
+        List<T> GetAllAsNoTracking(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            params Expression<Func<T, object>>[] includeProperties);
+
+        T GetAsNoTracking(Expression<Func<T, bool>> predicate,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            params Expression<Func<T, object>>[] includeProperties);
+
+        Task<List<T>> GetAllAsyncAsNoTracking(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            params Expression<Func<T, object>>[] includeProperties);
+        Task<T> GetAsyncAsNoTracking(Expression<Func<T, bool>> predicate,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            params Expression<Func<T, object>>[] includeProperties);
     }
 }

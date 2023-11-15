@@ -12,6 +12,7 @@ namespace Budget.Domain.Entities
         public string? Description { get; set; }
         public string? Message { get; set; }
 
+        public Guid BudgetAccountId { get; set; }
         public BudgetAccount BudgetAccount { get; set; }
     }
 }

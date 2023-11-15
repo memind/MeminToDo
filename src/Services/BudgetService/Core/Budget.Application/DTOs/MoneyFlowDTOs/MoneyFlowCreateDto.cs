@@ -10,7 +10,6 @@ namespace Budget.Application.DTOs.MoneyFlowDTOs
         public int Amount { get; set; }
         public string? Description { get; set; }
         public string? Message { get; set; }
-
-        public BudgetAccountDTOs.BudgetAccountDto BudgetAccount { get; set; }
+        public Guid BudgetAccountId { get; set; }
     }
 }

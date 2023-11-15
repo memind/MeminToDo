@@ -8,6 +8,7 @@ namespace Budget.Domain.Entities
         public string WalletName { get; set; }
         public Currency Currency { get; set; }
         public int Total { get; set; }
+        public Guid BudgetAccountId { get; set; }
 
         public BudgetAccount BudgetAccount { get; set; }
     }

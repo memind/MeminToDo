@@ -1,4 +1,4 @@
-﻿using Budget.Domain.Entities;
+﻿using Budget.Application.DTOs.BudgetAccountDTOs;
 using Budget.Domain.Enums;
 
 namespace Budget.Application.DTOs.WalletDTOs
@@ -10,7 +10,8 @@ namespace Budget.Application.DTOs.WalletDTOs
         public string WalletName { get; set; }
         public Currency Currency { get; set; }
         public int Total { get; set; }
+        public Guid BudgetAccountId { get; set; }
 
-        public BudgetAccount BudgetAccount { get; set; }
+        public BudgetAccountDto BudgetAccount { get; set; }
     }
 }

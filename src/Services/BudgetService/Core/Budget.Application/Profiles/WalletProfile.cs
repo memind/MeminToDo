@@ -11,6 +11,9 @@ namespace Budget.Application.Profiles
             CreateMap<Wallet, WalletDto>().ReverseMap();
             CreateMap<Wallet, WalletCreateDto>().ReverseMap();
             CreateMap<Wallet, WalletUpdateDto>().ReverseMap();
+
+            CreateMap<WalletCreateDto, WalletDto>().ReverseMap();
+            CreateMap<WalletUpdateDto, WalletDto>().ReverseMap();
         }
     }
 }

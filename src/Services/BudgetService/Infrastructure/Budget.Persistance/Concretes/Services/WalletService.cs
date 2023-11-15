@@ -44,13 +44,16 @@ namespace Budget.Persistance.Concretes.Services
             else builder = new EthWalletBuilder();
 
 
-            var wallet = director.Construct(builder, model.WalletName);
-            var account = _unitOfWork.GetReadRepository<BudgetAccount>().Get(x => x.Id == Guid.Parse("35533212-c2cb-4a38-997a-08dbe55b146d"));
+            var wallet = director.Construct(builder, model);
+            var budgetAccount = _unitOfWork.GetReadRepository<BudgetAccount>().Get(ba => ba.Id == model.BudgetAccountId, includeProperties: ba => ba.Wallets);
 
-            account.Wallets.Add(wallet);
+            var map = _mapper.Map<Wallet>(model);
 
-            _unitOfWork.GetWriteRepository<Wallet>().Create(wallet);
-            _unitOfWork.GetWriteRepository<BudgetAccount>().Update(account);
+            budgetAccount.Wallets.Add(map);
+
+            _unitOfWork.GetWriteRepository<Wallet>().Create(map);
+            _unitOfWork.GetWriteRepository<BudgetAccount>().Update(budgetAccount);
+
             return _unitOfWork.Save();
         }
 
@@ -66,9 +69,23 @@ namespace Budget.Persistance.Concretes.Services
             return _mapper.Map<List<WalletDto>>(list);
         }
 
+        public List<WalletDto> GetUsersAllWallets(Guid userId)
+        {
+            var budgetAccount = _unitOfWork.GetReadRepository<BudgetAccount>().Get(ba => ba.UserId == userId, includeProperties: ba => ba.Wallets);
+            var map = _mapper.Map<List<WalletDto>>(budgetAccount.Wallets);
+
+            return map;
+        }
+
         public WalletDto GetWalletById(Guid id)
         {
             var wallet = _unitOfWork.GetReadRepository<Wallet>().Get(w => w.Id == id, includeProperties: w => w.BudgetAccount);
+            return _mapper.Map<WalletDto>(wallet);
+        }
+
+        public WalletDto GetWalletByIdAsNoTracking(Guid id)
+        {
+            var wallet = _unitOfWork.GetReadRepository<Wallet>().GetAsNoTracking(w => w.Id == id, includeProperties: w => w.BudgetAccount);
             return _mapper.Map<WalletDto>(wallet);
         }
 

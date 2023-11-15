@@ -11,6 +11,9 @@ namespace Budget.Application.Profiles
             CreateMap<MoneyFlow, MoneyFlowDto>().ReverseMap();
             CreateMap<MoneyFlow, MoneyFlowCreateDto>().ReverseMap();
             CreateMap<MoneyFlow, MoneyFlowUpdateDto>().ReverseMap();
+
+            CreateMap<MoneyFlowCreateDto, MoneyFlowDto>().ReverseMap();
+            CreateMap<MoneyFlowUpdateDto, MoneyFlowDto>().ReverseMap();
         }
     }
 }

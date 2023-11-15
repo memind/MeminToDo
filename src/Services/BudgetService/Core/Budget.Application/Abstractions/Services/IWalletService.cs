@@ -8,6 +8,8 @@ namespace Budget.Application.Abstractions.Services
         int UpdateWallet(WalletUpdateDto model);
         int DeleteWallet(Guid id);
         WalletDto GetWalletById(Guid id);
+        WalletDto GetWalletByIdAsNoTracking(Guid id);
         List<WalletDto> GetAllWallets();
+        List<WalletDto> GetUsersAllWallets(Guid userId);
     }
 }

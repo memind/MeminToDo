@@ -10,27 +10,27 @@ namespace Budget.Persistance.Configurations
         {
             builder.ToTable("BudgetAccountTable");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(ba => ba.Id);
 
-            builder.HasMany(f => f.MoneyFlows)
-               .WithOne(m => m.BudgetAccount);
+            builder.HasMany(ba => ba.MoneyFlows)
+               .WithOne(mf => mf.BudgetAccount);
 
-            builder.HasMany(f => f.Wallets)
-               .WithOne(m => m.BudgetAccount);
+            builder.HasMany(ba => ba.Wallets)
+               .WithOne(w => w.BudgetAccount);
 
-            builder.Property(x => x.Id)
+            builder.Property(ba => ba.Id)
                 .HasColumnType("uniqueidentifier")
                 .HasColumnOrder(1)
                 .IsRequired(true);
 
-            builder.Property(x => x.UserId)
+            builder.Property(ba => ba.UserId)
                 .HasMaxLength(128)
                 .HasColumnName("AccountsUserId")
                 .HasColumnType("uniqueidentifier")
                 .HasColumnOrder(2)
                 .IsRequired(true);
 
-            builder.Property(f => f.CreatedDate)
+            builder.Property(ba => ba.CreatedDate)
                 .HasDefaultValue(DateTime.Now)
                 .HasColumnType("datetime2")
                 .HasColumnOrder(3)

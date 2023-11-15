@@ -1,9 +1,9 @@
-﻿using Budget.Domain.Entities;
+﻿using Budget.Application.DTOs.WalletDTOs;
 
 namespace Budget.Application.Abstractions.Builders.WalletBuilder
 {
     public interface IDirector
     {
-        public Wallet Construct(IWalletBuilder builder, string name);
+        public WalletCreateDto Construct(IWalletBuilder builder, WalletCreateDto model);
     }
 }

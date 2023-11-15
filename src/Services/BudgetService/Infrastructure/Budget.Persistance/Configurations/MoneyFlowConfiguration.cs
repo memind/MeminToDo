@@ -10,50 +10,50 @@ namespace Budget.Persistance.Configurations
         {
             builder.ToTable("MoneyFlowTable");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(mf => mf.Id);
 
-            builder.HasOne(f => f.BudgetAccount)
-               .WithMany(m => m.MoneyFlows);
+            builder.HasOne(mf => mf.BudgetAccount)
+               .WithMany(ba => ba.MoneyFlows);
 
-            builder.Property(x => x.Id)
+            builder.Property(mf => mf.Id)
                 .HasColumnType("uniqueidentifier")
                 .HasColumnOrder(1)
                 .IsRequired(true);
 
-            builder.Property(x => x.UserId)
+            builder.Property(mf => mf.UserId)
                 .HasMaxLength(128)
                 .HasColumnName("BudgetsUser")
                 .HasColumnType("uniqueidentifier")
                 .HasColumnOrder(2)
                 .IsRequired(true);
 
-            builder.Property(f => f.Currency)
+            builder.Property(mf => mf.Currency)
                 .HasColumnName("Currency")
                 .HasColumnOrder(3)
                 .IsRequired(true);
 
-            builder.Property(f => f.Type)
+            builder.Property(mf => mf.Type)
                 .HasColumnOrder(4)
                 .IsRequired(true);
 
-            builder.Property(f => f.Amount)
+            builder.Property(mf => mf.Amount)
                 .HasColumnType("int")
                 .HasColumnOrder(5)
                 .IsRequired(true);
 
-            builder.Property(f => f.Description)
+            builder.Property(mf => mf.Description)
                 .HasColumnName("Description")
                 .HasColumnType("nvarchar(128)")
                 .HasColumnOrder(6)
                 .IsRequired(false);
 
-            builder.Property(f => f.Message)
+            builder.Property(mf => mf.Message)
                 .HasColumnName("Message")
                 .HasColumnType("nvarchar(12)")
                 .HasColumnOrder(7)
                 .IsRequired(false);
 
-            builder.Property(f => f.CreatedDate)
+            builder.Property(mf => mf.CreatedDate)
                 .HasDefaultValue(DateTime.Now)
                 .HasColumnType("datetime2")
                 .HasColumnOrder(8)
