@@ -21,7 +21,7 @@ namespace Budget.Persistance.Concretes.Services
             _mapper = mapper;
         }
 
-        public int CreateWallet(WalletCreateDto model)
+        public int CreateWallet(WalletDto model)
         {
             Director director = new Director();
             IWalletBuilder builder;
@@ -89,7 +89,7 @@ namespace Budget.Persistance.Concretes.Services
             return _mapper.Map<WalletDto>(wallet);
         }
 
-        public int UpdateWallet(WalletUpdateDto model)
+        public int UpdateWallet(WalletDto model)
         {
             var map = _mapper.Map<Wallet>(model);
             _unitOfWork.GetWriteRepository<Wallet>().Update(map);

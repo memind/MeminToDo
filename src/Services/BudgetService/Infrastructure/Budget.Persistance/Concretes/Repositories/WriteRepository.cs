@@ -96,7 +96,6 @@ namespace Budget.Persistance.Concretes.Repositories
             {
                 try
                 {
-                    entity.CreatedDate = table.First(x => x.Id == entity.Id).CreatedDate;
                     table.Update(entity);
 
                     transaction.Commit();
@@ -117,7 +116,6 @@ namespace Budget.Persistance.Concretes.Repositories
             {
                 try
                 {
-                    entity.CreatedDate = (await table.FirstAsync(x => x.Id == entity.Id)).CreatedDate;
                     await Task.Run(() => table.Update(entity));
 
                     await transaction.CommitAsync();

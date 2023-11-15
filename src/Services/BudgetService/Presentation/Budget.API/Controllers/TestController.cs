@@ -35,9 +35,9 @@ namespace Budget.API.Controllers
             var y = _budget.GetAllBudgetAccounts();
             var z = _wallet.GetAllWallets();
 
-            var a = _money.GetMoneyFlowById(Guid.Parse("48775b94-79f6-43e5-f1ba-08dbe603ed73")); //
+            var a = _money.GetMoneyFlowById(Guid.Parse("4c19ceae-5d2f-4c96-bf94-08dbe61eda35")); //
             var b = _budget.GetBudgetAccountById(Guid.Parse("35533212-c2cb-4a38-997a-08dbe55b146d"));
-            var c = _wallet.GetWalletById(Guid.Parse("51c9ad6b-f48c-43aa-99ff-08dbe603ed5b")); //
+            var c = _wallet.GetWalletById(Guid.Parse("b0ee7872-1cd8-46e4-6e58-08dbe61eda17")); //
 
             var e1 = _money.GetUsersAllMoneyFlows(userId1);
             var g1 = _wallet.GetUsersAllWallets(userId1);
@@ -61,7 +61,7 @@ namespace Budget.API.Controllers
 
             
 
-            WalletCreateDto wallet1_1 = new WalletCreateDto()
+            WalletDto wallet1_1 = new WalletDto()
             {
                 WalletName = "Test1.1",
                 Currency = Domain.Enums.Currency.USD,
@@ -71,7 +71,7 @@ namespace Budget.API.Controllers
             result += _wallet.CreateWallet(wallet1_1);
 
 
-            WalletCreateDto wallet1_2 = new WalletCreateDto()
+            WalletDto wallet1_2 = new WalletDto()
             {
                 WalletName = "Test1.2",
                 Currency = Domain.Enums.Currency.TL,
@@ -80,7 +80,7 @@ namespace Budget.API.Controllers
 
             result += _wallet.CreateWallet(wallet1_2);
 
-            WalletCreateDto wallet2_1 = new WalletCreateDto()
+            WalletDto wallet2_1 = new WalletDto()
             {
                 WalletName = "Test2.1",
                 Currency = Domain.Enums.Currency.BTC,
@@ -95,7 +95,7 @@ namespace Budget.API.Controllers
 
 
 
-            MoneyFlowCreateDto flow1_1 = new MoneyFlowCreateDto()
+            MoneyFlowDto flow1_1 = new MoneyFlowDto()
             {
                 UserId = userId1,
                 Currency = Domain.Enums.Currency.TL,
@@ -108,7 +108,7 @@ namespace Budget.API.Controllers
             result += _money.CreateMoneyFlow(flow1_1);
 
 
-            MoneyFlowCreateDto flow1_2 = new MoneyFlowCreateDto()
+            MoneyFlowDto flow1_2 = new MoneyFlowDto()
             {
                 UserId = userId1,
                 Currency = Domain.Enums.Currency.TL,
@@ -121,7 +121,7 @@ namespace Budget.API.Controllers
             result += _money.CreateMoneyFlow(flow1_2);
 
 
-            MoneyFlowCreateDto flow1_3 = new MoneyFlowCreateDto()
+            MoneyFlowDto flow1_3 = new MoneyFlowDto()
             {
                 UserId = userId2,
                 Currency = Domain.Enums.Currency.TL,
@@ -142,20 +142,20 @@ namespace Budget.API.Controllers
         {
             int result = 0;
 
-            var updateMoney =_money.GetMoneyFlowByIdAsNoTracking(Guid.Parse("17753fbc-a956-42d2-f1b9-08dbe603ed73"));
+            //var updateMoney = _money.GetMoneyFlowByIdAsNoTracking(Guid.Parse("6c490135-d647-40ba-bf93-08dbe61eda35"));
 
-            updateMoney.Amount = 0;
-            var mapMoney = _mapper.Map<MoneyFlowUpdateDto>(updateMoney);
+            //updateMoney.Amount = 150;
+            //var mapMoney = _mapper.Map<MoneyFlowDto>(updateMoney);
 
 
 
-            var updateWallet = _wallet.GetWalletByIdAsNoTracking(Guid.Parse("51c9ad6b-f48c-43aa-99ff-08dbe603ed5b"));
+            var updateWallet = _wallet.GetWalletByIdAsNoTracking(Guid.Parse("b0ee7872-1cd8-46e4-6e58-08dbe61eda17"));
 
-            updateWallet.Total = 50000;
-            updateWallet.Currency = Domain.Enums.Currency.ETH;
-            var mapWallet = _mapper.Map<WalletUpdateDto>(updateWallet);
+            updateWallet.Total = 100000;
+            updateWallet.Currency = Domain.Enums.Currency.BTC;
+            var mapWallet = _mapper.Map<WalletDto>(updateWallet);
 
-            result += _money.UpdateMoneyFlow(mapMoney);
+            //result += _money.UpdateMoneyFlow(mapMoney);
             result += _wallet.UpdateWallet(mapWallet);
 
             return result;
@@ -167,13 +167,13 @@ namespace Budget.API.Controllers
         {
             int result = 0;
 
-            result += _money.DeleteMoneyFlow(Guid.Parse("17753fbc-a956-42d2-f1b9-08dbe603ed73"));
-            result += _money.DeleteMoneyFlow(Guid.Parse("48775b94-79f6-43e5-f1ba-08dbe603ed73"));
-            result += _money.DeleteMoneyFlow(Guid.Parse("d1f24588-6550-4466-f1bb-08dbe603ed73"));
+            result += _money.DeleteMoneyFlow(Guid.Parse("36e506eb-57e0-4343-b9c5-08dbe61f2a01"));
+            result += _money.DeleteMoneyFlow(Guid.Parse("15fb511b-be1f-4c76-b9c6-08dbe61f2a01"));
+            result += _money.DeleteMoneyFlow(Guid.Parse("f86a2776-24e8-457a-b9c7-08dbe61f2a01"));
 
-            result += _wallet.DeleteWallet(Guid.Parse("51c9ad6b-f48c-43aa-99ff-08dbe603ed5b"));
-            result += _wallet.DeleteWallet(Guid.Parse("16cb3de4-2be1-4ade-99fe-08dbe603ed5b"));
-            result += _wallet.DeleteWallet(Guid.Parse("886aa76d-3dd7-4c49-99fd-08dbe603ed5b"));
+            result += _wallet.DeleteWallet(Guid.Parse("2316dca8-674d-4292-a142-08dbe61f29e7"));
+            result += _wallet.DeleteWallet(Guid.Parse("0b114a9e-090c-4028-a143-08dbe61f29e7"));
+            result += _wallet.DeleteWallet(Guid.Parse("849b3da6-ae5e-48b8-a144-08dbe61f29e7"));
 
             result += _budget.DeleteBudgetAccount(Guid.Parse("661ca148-0ebd-4dce-4fe6-08dbe55cfcdf"));
             result += _budget.DeleteBudgetAccount(Guid.Parse("24103926-46cc-4286-4fe5-08dbe55cfcdf"));

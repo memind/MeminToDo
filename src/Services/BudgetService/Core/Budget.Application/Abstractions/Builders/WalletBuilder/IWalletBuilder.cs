@@ -6,7 +6,7 @@ namespace Budget.Application.Abstractions.Builders.WalletBuilder
     {
         public void BuildCurrency();
         public void BuildTotal();
-        public WalletCreateDto BuildScheme(WalletCreateDto model);
-        public WalletCreateDto GetWallet();
+        public WalletDto BuildScheme(WalletDto model);
+        public WalletDto GetWallet();
     }
 }

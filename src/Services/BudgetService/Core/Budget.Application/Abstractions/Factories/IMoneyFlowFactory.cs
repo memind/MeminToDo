@@ -5,6 +5,6 @@ namespace Budget.Application.Abstractions.Factories
 {
     public interface IMoneyFlowFactory
     {
-        MoneyFlowCreateDto CreateMoneyFlowMessage(MoneyFlowCreateDto moneyFlowType);
+        MoneyFlowDto CreateMoneyFlowMessage(MoneyFlowDto moneyFlowType);
     }
 }

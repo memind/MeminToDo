@@ -21,7 +21,7 @@ namespace Budget.Persistance
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration cfg, IHostBuilder host)
         {
             services.AddDbContext<BudgetDbContext>(options =>
-                options.UseSqlServer(cfg.GetConnectionString("MsSqlDatabaseConnectionString")));
+                options.UseSqlServer(cfg.GetConnectionString("MsSqlDatabaseConnectionString")).EnableSensitiveDataLogging());
 
             //host.UseSerilog(SeriLogger.Configure);
             //services.AddTransient<LoggingDelegatingHandler>();

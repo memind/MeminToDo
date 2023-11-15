@@ -20,7 +20,7 @@ namespace Budget.Persistance.Concretes.Services
             _moneyFlowFactory = factory;
         }
 
-        public int CreateMoneyFlow(MoneyFlowCreateDto model)
+        public int CreateMoneyFlow(MoneyFlowDto model)
         {
             _moneyFlowFactory.CreateMoneyFlowMessage(model);
 
@@ -67,7 +67,7 @@ namespace Budget.Persistance.Concretes.Services
             return _mapper.Map<List<MoneyFlowDto>>(list);
         }
 
-        public int UpdateMoneyFlow(MoneyFlowUpdateDto model)
+        public int UpdateMoneyFlow(MoneyFlowDto model)
         {
             var map = _mapper.Map<MoneyFlow>(model);
 

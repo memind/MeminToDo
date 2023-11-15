@@ -4,8 +4,8 @@ namespace Budget.Application.Abstractions.Services
 {
     public interface IMoneyFlowService
     {
-        int CreateMoneyFlow(MoneyFlowCreateDto model);
-        int UpdateMoneyFlow(MoneyFlowUpdateDto model);
+        int CreateMoneyFlow(MoneyFlowDto model);
+        int UpdateMoneyFlow(MoneyFlowDto model);
         int DeleteMoneyFlow(Guid id);
         MoneyFlowDto GetMoneyFlowById(Guid id);
         MoneyFlowDto GetMoneyFlowByIdAsNoTracking(Guid id);

@@ -8,7 +8,7 @@ namespace Budget.Persistance.Concretes.Factories
 {
     public class MoneyFlowFactory : IMoneyFlowFactory
     {
-        public MoneyFlowCreateDto CreateMoneyFlowMessage(MoneyFlowCreateDto moneyFlow)
+        public MoneyFlowDto CreateMoneyFlowMessage(MoneyFlowDto moneyFlow)
         {
             if (moneyFlow.Type == MoneyFlowType.Income)
                 moneyFlow.Message = MoneyFlowMessages.IncomeMessage();

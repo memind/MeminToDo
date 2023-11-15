@@ -62,12 +62,12 @@ namespace Budget.Persistance.Concretes.Repositories
                     query = query.Include(property);
 
             if (predicate != null)
-                query = query.Where(predicate).AsNoTracking();
+                query = query.Where(predicate);
 
             if (orderBy is not null)
-                return orderBy(query).ToList();
+                return orderBy(query.AsNoTracking()).ToList();
 
-            return query.ToList();
+            return query.AsNoTracking().ToList();
         }
 
         public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, params Expression<Func<T, object>>[] includeProperties)
@@ -98,12 +98,12 @@ namespace Budget.Persistance.Concretes.Repositories
                     query = query.Include(property);
 
             if (predicate != null)
-                query = query.Where(predicate).AsNoTracking();
+                query = query.Where(predicate);
 
             if (orderBy is not null)
-                return await orderBy(query).ToListAsync();
+                return await orderBy(query.AsNoTracking()).ToListAsync();
 
-            return await query.ToListAsync();
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public T GetAsNoTracking(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, params Expression<Func<T, object>>[] includeProperties)
@@ -117,9 +117,9 @@ namespace Budget.Persistance.Concretes.Repositories
             if (orderBy is not null)
                 orderBy(query).ToList();
 
-            query = query.Where(predicate).AsNoTracking<T>();
+            query = query.Where(predicate);
 
-            T? result = query.FirstOrDefault();
+            T? result = query.AsNoTracking().FirstOrDefault();
 
             if (result is not null) return result;
 
@@ -159,9 +159,9 @@ namespace Budget.Persistance.Concretes.Repositories
             if (orderBy is not null)
                 await orderBy(query).ToListAsync();
 
-            query = query.Where(predicate).AsNoTracking<T>();
+            query = query.Where(predicate);
 
-            T? result = await query.FirstOrDefaultAsync();
+            T? result = await query.AsNoTracking().FirstOrDefaultAsync();
 
             if (result is not null)
                 return result;

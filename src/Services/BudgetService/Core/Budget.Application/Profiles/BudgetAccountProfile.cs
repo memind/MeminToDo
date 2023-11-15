@@ -9,11 +9,6 @@ namespace Budget.Application.Profiles
         public BudgetAccountProfile()
         {
             CreateMap<BudgetAccount, BudgetAccountDto>().ReverseMap();
-            CreateMap<BudgetAccount, BudgetAccountCreateDto>().ReverseMap();
-            CreateMap<BudgetAccount, BudgetAccountUpdateDto>().ReverseMap();
-
-            CreateMap<BudgetAccountCreateDto, BudgetAccountDto>().ReverseMap();
-            CreateMap<BudgetAccountUpdateDto, BudgetAccountDto>().ReverseMap();
         }
     }
 }
