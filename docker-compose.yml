@@ -67,12 +67,6 @@ services:
   #  build:
   #    context: .
   #    dockerfile: src/Services/UserService/Presentation/User.API/Dockerfile
-
-  #log.api:
-  #  image: ${DOCKER_REGISTRY-}logapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/LogService/Presentation/Log.API/Dockerfile
   
   meal.api:
     image: ${DOCKER_REGISTRY-}mealapi
@@ -80,7 +74,12 @@ services:
       context: .
       dockerfile: src/Services/MealService/API/Meal.API/Dockerfile
 
+  log.api:
+    image: ${DOCKER_REGISTRY-}logapi
+    build:
+      context: .
+      dockerfile: src/Services/LogService/Log.API/Dockerfile
+
 volumes:
   portainer_data:
   elasticsearch-data:
-
