@@ -50,6 +50,11 @@ Workout Service
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
 
+Log Service
+- ASP.NET Core Web API application
+- REST API principles, CRUD operations
+- DynamoDB database connection
+
 Dashboard Service
 - ASP.NET Core Web API application
 - Aggregator Pattern
