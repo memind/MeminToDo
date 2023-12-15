@@ -1,6 +1,7 @@
 using App.Metrics.AspNetCore;
 using App.Metrics.Formatters.Prometheus;
 using Common.Logging;
+using Common.Logging.Handlers;
 using Dashboard.Aggregator.Extensions;
 using Dashboard.Aggregator.Services.Abstractions;
 using Dashboard.Aggregator.Services.Concretes;

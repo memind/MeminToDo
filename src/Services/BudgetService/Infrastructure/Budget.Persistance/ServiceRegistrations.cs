@@ -13,6 +13,7 @@ using Budget.Persistance.Concretes.Factories;
 using Budget.Application.Abstractions.Factories;
 using Budget.Application.Abstractions.Services;
 using Budget.Persistance.Concretes.Services;
+using Common.Logging.Handlers;
 
 namespace Budget.Persistance
 {
@@ -23,8 +24,8 @@ namespace Budget.Persistance
             services.AddDbContext<BudgetDbContext>(options =>
                 options.UseSqlServer(cfg.GetConnectionString("MsSqlDatabaseConnectionString")).EnableSensitiveDataLogging());
 
-            //host.UseSerilog(SeriLogger.Configure);
-            //services.AddTransient<LoggingDelegatingHandler>();
+            host.UseSerilog(SeriLogger.Configure);
+            services.AddTransient<LoggingDelegatingHandler>();
 
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));

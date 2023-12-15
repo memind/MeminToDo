@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Logging.Logs.EntertainmentLogs;
 using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.GameDTOs;
 using Entertainment.Application.Repositories.GameRepositories;
@@ -26,36 +27,36 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                _logger.LogInformation($"Created Game: {entity.GameName} - {entity.UserId}");
+                _logger.LogInformation(EntertainmentLogs.CreateGame(entity.GameName, entity.UserId));
                 return _write.Create(_mapper.Map<Game>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<int> CreateGameAsync(GameDto entity)
         {
             try
             {
-                _logger.LogInformation($"Created Game: {entity.GameName} - {entity.UserId}");
+                _logger.LogInformation(EntertainmentLogs.CreateGame(entity.GameName, entity.UserId));
                 return await _write.CreateAsync(_mapper.Map<Game>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public int DeleteGame(string id)
         {
             try
             {
-                _logger.LogInformation($"Deleted Game: {id}");
+                _logger.LogInformation(EntertainmentLogs.DeleteGame(id));
                 return _write.Delete(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<int> DeleteGameAsync(string id)
         {
             try
             {
-                _logger.LogInformation($"Deleted Game: {id}");
+                _logger.LogInformation(EntertainmentLogs.DeleteGame(id));
                 return await _write.DeleteAsync(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public List<GameDto> GetAllGames()
@@ -64,10 +65,10 @@ namespace Entertainment.Persistance.Concretes.Services
             {
                 var games = _read.GetAll();
 
-                _logger.LogInformation("Getting All Games");
+                _logger.LogInformation(EntertainmentLogs.GetAllGames());
 
                 return _mapper.Map<List<GameDto>>(games);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<List<GameDto>> GetAllGamesAsync()
@@ -76,10 +77,10 @@ namespace Entertainment.Persistance.Concretes.Services
             {
                 var games = await _read.GetAllAsync();
 
-                _logger.LogInformation("Getting All Games");
+                _logger.LogInformation(EntertainmentLogs.GetAllGames());
 
                 return _mapper.Map<List<GameDto>>(games);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GameDto GetGameById(string id)
@@ -88,10 +89,10 @@ namespace Entertainment.Persistance.Concretes.Services
             {
                 var game = _read.GetById(id);
 
-                _logger.LogInformation($"Getting Game: {id}");
+                _logger.LogInformation(EntertainmentLogs.GetGameById(id));
 
                 return _mapper.Map<GameDto>(game);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GameDto> GetGameByIdAsync(string id)
@@ -100,10 +101,10 @@ namespace Entertainment.Persistance.Concretes.Services
             {
                 var game = await _read.GetByIdAsync(id);
 
-                _logger.LogInformation($"Getting Game: {id}");
+                _logger.LogInformation(EntertainmentLogs.GetGameById(id));
 
                 return _mapper.Map<GameDto>(game);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public List<GameDto> GetUsersAllGames(string userId)
@@ -112,10 +113,10 @@ namespace Entertainment.Persistance.Concretes.Services
             {
                 var games = _read.GetUsersAll(userId);
 
-                _logger.LogInformation("Getting Users All Games");
+                _logger.LogInformation(EntertainmentLogs.GetUsersAllGames(userId));
 
                 return _mapper.Map<List<GameDto>>(games);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<List<GameDto>> GetUsersAllGamesAsync(string userId)
@@ -124,28 +125,28 @@ namespace Entertainment.Persistance.Concretes.Services
             {
                 var games = await _read.GetUsersAllAsync(userId);
 
-                _logger.LogInformation("Getting Users All Games");
+                _logger.LogInformation(EntertainmentLogs.GetUsersAllGames(userId));
 
                 return _mapper.Map<List<GameDto>>(games);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public int UpdateGame(GameDto entity)
         {
             try
             {
-                _logger.LogInformation($"Updated Game: {entity.GameName}");
+                _logger.LogInformation(EntertainmentLogs.UpdateGame(entity.GameName, entity.UserId));
                 return _write.Update(_mapper.Map<Game>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<int> UpdateGameAsync(GameDto entity)
         {
             try
             {
-                _logger.LogInformation($"Updated Game: {entity.GameName}");
+                _logger.LogInformation(EntertainmentLogs.UpdateGame(entity.GameName, entity.UserId));
                 return await _write.UpdateAsync(_mapper.Map<Game>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
     }
 }

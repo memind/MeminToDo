@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Logging.Logs.SkillLogs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Skill.Application.Abstractions.Services;
@@ -34,10 +35,10 @@ namespace Skill.Persistance.Concretes.Services
                 var map = _mapper.Map<Art>(newArt);
                 var result = _write.InsertOne(map);
 
-                _logger.LogInformation($"Created Art: {newArt.Name}");
+                _logger.LogInformation(SkillLogs.CreateArt(newArt.Name));
 
                 return result;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetOneResult<Art>> CreateArtAsync(ArtDto newArt, string id)
@@ -50,10 +51,10 @@ namespace Skill.Persistance.Concretes.Services
                 var map = _mapper.Map<Art>(newArt);
                 var result = await _write.InsertOneAsync(map);
 
-                _logger.LogInformation($"Created Art: {newArt.Name}");
+                _logger.LogInformation(SkillLogs.CreateArt(newArt.Name));
 
                 return result;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public void DeleteArt(string id)
@@ -61,8 +62,8 @@ namespace Skill.Persistance.Concretes.Services
             try
             {
                 _write.DeleteById(id);
-                _logger.LogInformation($"Deleted Art: {id}");
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+                _logger.LogInformation(SkillLogs.DeleteArt(id));
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task DeleteArtAsync(string id)
@@ -70,62 +71,62 @@ namespace Skill.Persistance.Concretes.Services
             try
             {
                 await _write.DeleteByIdAsync(id);
-                _logger.LogInformation($"Deleted Art: {id}");
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+                _logger.LogInformation(SkillLogs.DeleteArt(id));
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetManyResult<Art> GetAllArts()
         {
             try
             {
-                _logger.LogInformation("Getting All Arts");
+                _logger.LogInformation(SkillLogs.GetAllArts());
                 return _read.GetAll();
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetManyResult<Art>> GetAllArtsAsync()
         {
             try
             {
-                _logger.LogInformation("Getting All Arts");
+                _logger.LogInformation(SkillLogs.GetAllArts());
                 return await _read.GetAllAsync();
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetManyResult<Art> GetUsersAllArts(Guid id)
         {
             try
             {
-                _logger.LogInformation("Getting Users All Arts");
+                _logger.LogInformation(SkillLogs.GetUsersAllArts(id));
                 return _read.GetFiltered(x => x.UserId == id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetManyResult<Art>> GetAllUsersArtsAsync(Guid id)
         {
             try
             {
-                _logger.LogInformation("Getting Users All Arts");
+                _logger.LogInformation(SkillLogs.GetUsersAllArts(id));
                 return await _read.GetFilteredAsync(x => x.UserId == id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetOneResult<Art> GetArtById(string id)
         {
             try
             {
-                _logger.LogInformation($"Getting Art: {id}");
+                _logger.LogInformation(SkillLogs.GetArtById(id));
                 return _read.GetById(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetOneResult<Art>> GetArtByIdAsync(string id)
         {
             try
             {
-                _logger.LogInformation($"Getting Art: {id}");
+                _logger.LogInformation(SkillLogs.GetArtById(id));
                 return await _read.GetByIdAsync(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetOneResult<Art> UpdateArt(string id, ArtDto dto)
@@ -136,10 +137,10 @@ namespace Skill.Persistance.Concretes.Services
                 map.Id = ObjectId.Parse(id);
                 var result = _write.ReplaceOne(map, id);
 
-                _logger.LogInformation($"Updated Art: {id}");
+                _logger.LogInformation(SkillLogs.UpdateArt(id));
 
                 return result;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetOneResult<Art>> UpdateArtAsync(string id, ArtDto dto)
@@ -150,10 +151,10 @@ namespace Skill.Persistance.Concretes.Services
                 map.Id = ObjectId.Parse(id);
                 var result = await _write.ReplaceOneAsync(map, id);
 
-                _logger.LogInformation($"Updated Art: {id}");
+                _logger.LogInformation(SkillLogs.UpdateArt(id));
 
                 return result;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
     }
 }

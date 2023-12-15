@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Logging.Logs.WorkoutLogs;
 using Microsoft.Extensions.Logging;
 using Workout.Application.Abstractions.Services;
 using Workout.Application.Abstractions.UnitOfWork;
@@ -29,10 +30,10 @@ namespace Workout.Persistance.Concretes.Services
                 _uow.GetWriteRepository<w.Exercise>().Create(_mapper.Map<w.Exercise>(model));
                 _uow.Save();
 
-                _logger.LogInformation($"Created Exercise: {model.Name}");
+                _logger.LogInformation(WorkoutLogs.CreateExercise(model.Name));
 
                 return model;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<ExerciseDto> CreateExerciseAsync(ExerciseDto model)
@@ -42,10 +43,10 @@ namespace Workout.Persistance.Concretes.Services
                 await _uow.GetWriteRepository<w.Exercise>().CreateAsync(_mapper.Map<w.Exercise>(model));
                 await _uow.SaveAsync();
 
-                _logger.LogInformation($"Created Exercise: {model.Name}");
+                _logger.LogInformation(WorkoutLogs.CreateExercise(model.Name));
 
                 return model;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public void DeleteExercise(string exerciseId)
@@ -55,8 +56,8 @@ namespace Workout.Persistance.Concretes.Services
                 _uow.GetWriteRepository<w.Exercise>().DeleteById(exerciseId);
                 _uow.Save();
 
-                _logger.LogInformation($"Deleted Exercise: {exerciseId}");
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+                _logger.LogInformation(WorkoutLogs.DeleteExercise(exerciseId));
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task DeleteExerciseAsync(string exerciseId)
@@ -66,8 +67,8 @@ namespace Workout.Persistance.Concretes.Services
                 await _uow.GetWriteRepository<w.Exercise>().DeleteByIdAsync(exerciseId);
                 await _uow.SaveAsync();
 
-                _logger.LogInformation($"Deleted Exercise: {exerciseId}");
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+                _logger.LogInformation(WorkoutLogs.DeleteExercise(exerciseId));
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public List<ExerciseDto> GetAllExercises()
@@ -76,10 +77,10 @@ namespace Workout.Persistance.Concretes.Services
             {
                 var result = _uow.GetReadRepository<w.Exercise>().GetAll();
 
-                _logger.LogInformation("Getting All Exercises");
+                _logger.LogInformation(WorkoutLogs.GetAllExercises());
 
                 return _mapper.Map<List<ExerciseDto>>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<List<ExerciseDto>> GetAllExercisesAsync()
@@ -88,10 +89,10 @@ namespace Workout.Persistance.Concretes.Services
             {
                 var result = await _uow.GetReadRepository<w.Exercise>().GetAllAsync();
 
-                _logger.LogInformation("Getting All Exercises");
+                _logger.LogInformation(WorkoutLogs.GetAllExercises());
 
                 return _mapper.Map<List<ExerciseDto>>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public List<ExerciseDto> GetAllExercisesInWorkout(string workoutId)
@@ -100,10 +101,10 @@ namespace Workout.Persistance.Concretes.Services
             {
                 var result = _uow.GetReadRepository<w.Exercise>().GetAll().Where(e => e.WorkoutId == workoutId).ToList();
 
-                _logger.LogInformation($"Getting All Exercises In Workout: {workoutId}");
+                _logger.LogInformation(WorkoutLogs.GetAllExercisesInWorkout(workoutId));
 
                 return _mapper.Map<List<ExerciseDto>>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<List<ExerciseDto>> GetAllExercisesInWorkoutAsync(string workoutId)
@@ -112,10 +113,10 @@ namespace Workout.Persistance.Concretes.Services
             {
                 var result = (await _uow.GetReadRepository<w.Exercise>().GetAllAsync()).Where(e => e.WorkoutId == workoutId).ToList();
 
-                _logger.LogInformation($"Getting All Exercises In Workout: {workoutId}");
+                _logger.LogInformation(WorkoutLogs.GetAllExercisesInWorkout(workoutId));
 
                 return _mapper.Map<List<ExerciseDto>>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public ExerciseDto GetExerciseById(string exerciseId)
@@ -125,10 +126,10 @@ namespace Workout.Persistance.Concretes.Services
                 var result = _uow.GetReadRepository<w.Exercise>().GetById(exerciseId);
                 result.Workout = _uow.GetReadRepository<w.Workout>().GetById(result.WorkoutId);
 
-                _logger.LogInformation($"Getting Exercise: {exerciseId}");
+                _logger.LogInformation(WorkoutLogs.GetExerciseById(exerciseId));
 
                 return _mapper.Map<ExerciseDto>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<ExerciseDto> GetExerciseByIdAsync(string exerciseId)
@@ -139,10 +140,10 @@ namespace Workout.Persistance.Concretes.Services
                 var result = await _uow.GetReadRepository<w.Exercise>().GetByIdAsync(exerciseId);
                 result.Workout = await _uow.GetReadRepository<w.Workout>().GetByIdAsync(result.WorkoutId);
 
-                _logger.LogInformation($"Getting Exercise: {exerciseId}");
+                _logger.LogInformation(WorkoutLogs.GetExerciseById(exerciseId));
 
                 return _mapper.Map<ExerciseDto>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public List<ExerciseDto> GetUsersAllExercises(string userId)
@@ -151,10 +152,10 @@ namespace Workout.Persistance.Concretes.Services
             {
                 var result = _uow.GetReadRepository<w.Exercise>().GetUsersAll(userId);
 
-                _logger.LogInformation($"Getting Users All Exercises: {userId}");
+                _logger.LogInformation(WorkoutLogs.GetUsersAllExercises(userId));
 
                 return _mapper.Map<List<ExerciseDto>>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<List<ExerciseDto>> GetUsersAllExercisesAsync(string userId)
@@ -163,10 +164,10 @@ namespace Workout.Persistance.Concretes.Services
             {
                 var result = await _uow.GetReadRepository<w.Exercise>().GetUsersAllAsync(userId);
 
-                _logger.LogInformation($"Getting Users All Exercises: {userId}");
+                _logger.LogInformation(WorkoutLogs.GetUsersAllExercises(userId));
 
                 return _mapper.Map<List<ExerciseDto>>(result);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public ExerciseDto UpdateExercise(ExerciseDto model, string id)
@@ -179,10 +180,10 @@ namespace Workout.Persistance.Concretes.Services
                 result.UpdatedDate = DateTime.UtcNow;
 
                 _uow.Save();
-                _logger.LogInformation($"Updated Exercise: {id}");
+                _logger.LogInformation(WorkoutLogs.UpdateExercise(id));
 
                 return _mapper.Map<ExerciseDto>(map);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<ExerciseDto> UpdateExerciseAsync(ExerciseDto model, string id)
@@ -195,10 +196,10 @@ namespace Workout.Persistance.Concretes.Services
                 result.UpdatedDate = DateTime.UtcNow;
 
                 await _uow.SaveAsync();
-                _logger.LogInformation($"Updated Exercise: {id}");
+                _logger.LogInformation(WorkoutLogs.UpdateExercise(id));
 
                 return _mapper.Map<ExerciseDto>(map);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
     }
 }

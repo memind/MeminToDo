@@ -24,6 +24,7 @@ using OpenTracing.Util;
 using Common.Logging;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Common.Logging.Handlers;
 
 namespace Workout.Persistance
 {

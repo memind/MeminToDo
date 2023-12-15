@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace Common.Logging
+namespace Common.Logging.Handlers
 {
     public class LoggingDelegatingHandler : DelegatingHandler
     {

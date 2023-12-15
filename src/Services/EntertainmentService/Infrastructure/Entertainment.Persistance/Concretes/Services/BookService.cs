@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Logging.Logs.EntertainmentLogs;
 using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.BookDTOs;
 using Entertainment.Application.Repositories.BookNoteRepositories;
@@ -29,36 +30,36 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                _logger.LogInformation($"Created Book: {entity.BookName} - {entity.UserId}");
+                _logger.LogInformation(EntertainmentLogs.CreateBook(entity.BookName, entity.UserId));
                 return _write.Create(_mapper.Map<Book>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<int> CreateBookAsync(BookDto entity)
         {
             try
             {
-                _logger.LogInformation($"Created Book: {entity.BookName} - {entity.UserId}");
+                _logger.LogInformation(EntertainmentLogs.CreateBook(entity.BookName, entity.UserId));
                 return await _write.CreateAsync(_mapper.Map<Book>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public int DeleteBook(string id)
         {
             try
             {
-                _logger.LogInformation($"Deleted Book: {id}");
+                _logger.LogInformation(EntertainmentLogs.DeleteBook(id));
                 return _write.Delete(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<int> DeleteBookAsync(string id)
         {
             try
             {
-                _logger.LogInformation($"Deleted Book: {id}");
+                _logger.LogInformation(EntertainmentLogs.DeleteBook(id));
                 return await _write.DeleteAsync(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public List<BookDto> GetAllBooks()
@@ -77,9 +78,9 @@ namespace Entertainment.Persistance.Concretes.Services
                     }
                 }
 
-                _logger.LogInformation("Getting All Books");
+                _logger.LogInformation(EntertainmentLogs.GetAllBooks());
                 return _mapper.Map<List<BookDto>>(books);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<List<BookDto>> GetAllBooksAsync()
@@ -98,9 +99,9 @@ namespace Entertainment.Persistance.Concretes.Services
                     }
                 }
 
-                _logger.LogInformation("Getting All Books");
+                _logger.LogInformation(EntertainmentLogs.GetAllBooks());
                 return _mapper.Map<List<BookDto>>(books);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public BookDto GetBookById(string id)
@@ -116,9 +117,9 @@ namespace Entertainment.Persistance.Concretes.Services
                         book.BookNotes.Add(note);
                 }
 
-                _logger.LogInformation($"Getting Book: {id}");
+                _logger.LogInformation(EntertainmentLogs.GetBookById(id));
                 return _mapper.Map<BookDto>(book);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<BookDto> GetBookByIdAsync(string id)
@@ -134,9 +135,9 @@ namespace Entertainment.Persistance.Concretes.Services
                         book.BookNotes.Add(note);
                 }
 
-                _logger.LogInformation($"Getting Book: {id}");
+                _logger.LogInformation(EntertainmentLogs.GetBookById(id));
                 return _mapper.Map<BookDto>(book);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public List<BookDto> GetUsersAllBooks(string userId)
@@ -155,9 +156,9 @@ namespace Entertainment.Persistance.Concretes.Services
                     }
                 }
 
-                _logger.LogInformation("Getting Users All Books");
+                _logger.LogInformation(EntertainmentLogs.GetUsersAllBooks(userId));
                 return _mapper.Map<List<BookDto>>(books);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<List<BookDto>> GetUsersAllBooksAsync(string userId)
@@ -176,27 +177,27 @@ namespace Entertainment.Persistance.Concretes.Services
                     }
                 }
 
-                _logger.LogInformation("Getting Users All Books");
+                _logger.LogInformation(EntertainmentLogs.GetUsersAllBooks(userId));
                 return _mapper.Map<List<BookDto>>(books);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public int UpdateBook(BookDto entity)
         {
             try
             {
-                _logger.LogInformation($"Updated Book Note: {entity.BookName}");
+                _logger.LogInformation(EntertainmentLogs.UpdateBook(entity.BookName, entity.UserId));
                 return _write.Update(_mapper.Map<Book>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<int> UpdateBookAsync(BookDto entity)
         {
             try
             {
-                _logger.LogInformation($"Updated Book Note: {entity.BookName}");
+                _logger.LogInformation(EntertainmentLogs.UpdateBook(entity.BookName, entity.UserId));
                 return await _write.UpdateAsync(_mapper.Map<Book>(entity));
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
     }
 }

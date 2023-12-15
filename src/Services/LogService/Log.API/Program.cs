@@ -1,4 +1,11 @@
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonDynamoDB>();
+builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

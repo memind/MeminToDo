@@ -25,6 +25,7 @@ using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Meal.Infrastructure.ExecutionStrategies;
+using Common.Logging.Handlers;
 
 namespace Meal.Infrastructure
 {

@@ -26,7 +26,7 @@ namespace Budget.API.Controllers
         }
 
         [HttpGet]
-        public void Get()
+        public List<MoneyFlowDto> Get()
         {
             Guid userId1 = Guid.Parse("95e685e6-c39c-4550-90a6-fc1d8b27f7b5"); // BA = 5c6f961f-1100-4824-9979-08dbe55b146d
             Guid userId2 = Guid.Parse("e318626c-4ce2-41fd-8c1a-aefd526570e6"); // BA = 35533212-c2cb-4a38-997a-08dbe55b146d
@@ -48,6 +48,7 @@ namespace Budget.API.Controllers
             var f2 = _budget.GetUsersAllBudgetAccounts(userId2);
 
             var date = DateTime.Now;
+            return x;
         }
 
 

@@ -31,6 +31,7 @@ using Microsoft.Extensions.Logging;
 using Common.Logging;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Common.Logging.Handlers;
 
 namespace Skill.Persistance
 {

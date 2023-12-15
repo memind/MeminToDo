@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Logging.Logs.SkillLogs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Skill.Application.Abstractions.Services;
@@ -34,11 +35,11 @@ namespace Skill.Persistance.Concretes.Services
                 var map = _mapper.Map<Song>(newSong);
                 var result = _write.InsertOne(map);
 
-                _logger.LogInformation($"Created Song: {newSong.SongName}");
+                _logger.LogInformation(SkillLogs.CreateSong(newSong.SongName));
 
                 return result;
             }
-            catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetOneResult<Song>> CreateSongAsync(SongDto newSong, string id)
@@ -51,10 +52,10 @@ namespace Skill.Persistance.Concretes.Services
                 var map = _mapper.Map<Song>(newSong);
                 var result = await _write.InsertOneAsync(map);
 
-                _logger.LogInformation($"Created Song: {newSong.SongName}");
+                _logger.LogInformation(SkillLogs.CreateSong(newSong.SongName));
 
                 return result;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public void DeleteSong(string id)
@@ -62,8 +63,8 @@ namespace Skill.Persistance.Concretes.Services
             try
             {
                 _write.DeleteById(id);
-                _logger.LogInformation($"Deleted Song: {id}");
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+                _logger.LogInformation(SkillLogs.DeleteSong(id));
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task DeleteSongAsync(string id)
@@ -71,62 +72,62 @@ namespace Skill.Persistance.Concretes.Services
             try
             {
                 await _write.DeleteByIdAsync(id);
-                _logger.LogInformation($"Deleted Song: {id}");
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+                _logger.LogInformation(SkillLogs.DeleteSong(id));
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetManyResult<Song> GetAllSongs()
         {
             try
             {
-                _logger.LogInformation("Getting All Songs");
+                _logger.LogInformation(SkillLogs.GetAllSongs());
                 return _read.GetAll();
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetManyResult<Song>> GetAllSongsAsync()
         {
             try
             {
-                _logger.LogInformation("Getting All Songs");
+                _logger.LogInformation(SkillLogs.GetAllSongs());
                 return await _read.GetAllAsync();
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetManyResult<Song> GetUsersAllSongs(Guid id)
         {
             try
             {
-                _logger.LogInformation("Getting Users All Songs");
+                _logger.LogInformation(SkillLogs.GetUsersAllSongs(id));
                 return _read.GetFiltered(x => x.UserId == id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetManyResult<Song>> GetUsersAllSongsAsync(Guid id)
         {
             try
             {
-                _logger.LogInformation("Getting Users All Songs");
+                _logger.LogInformation(SkillLogs.GetUsersAllSongs(id));
                 return await _read.GetFilteredAsync(x => x.UserId == id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetOneResult<Song> GetSongById(string id)
         {
             try
             {
-                _logger.LogInformation($"Getting Song: {id}");
+                _logger.LogInformation(SkillLogs.GetSongById(id));
                 return _read.GetById(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetOneResult<Song>> GetSongByIdAsync(string id)
         {
             try
             {
-                _logger.LogInformation($"Getting Song: {id}");
+                _logger.LogInformation(SkillLogs.GetSongById(id));
                 return await _read.GetByIdAsync(id);
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public GetOneResult<Song> UpdateSong(string id, SongDto dto)
@@ -137,10 +138,10 @@ namespace Skill.Persistance.Concretes.Services
                 var map = _mapper.Map<Song>(dto);
                 var result = _write.ReplaceOne(map, id);
 
-                _logger.LogInformation($"Updated Song: {id}");
+                _logger.LogInformation(SkillLogs.UpdateSong(id));
 
                 return result;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
         public async Task<GetOneResult<Song>> UpdateSongAsync(string id, SongDto dto)
@@ -151,10 +152,10 @@ namespace Skill.Persistance.Concretes.Services
                 var map = _mapper.Map<Song>(dto);
                 var result = await _write.ReplaceOneAsync(map, id);
 
-                _logger.LogInformation($"Updated Song: {id}");
+                _logger.LogInformation(SkillLogs.UpdateSong(id));
 
                 return result;
-            } catch (Exception error) { _logger.LogError($"An error occured: {error.Message}"); throw; }
+            } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
     }
 }
