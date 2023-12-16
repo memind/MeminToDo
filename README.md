@@ -54,6 +54,7 @@ Log Service
 - ASP.NET Core Web API application
 - REST API principles, CRUD operations
 - DynamoDB database connection
+- Cron jobs via Hangfire
 
 Dashboard Service
 - ASP.NET Core Web API application
