@@ -30,7 +30,7 @@ namespace Common.Logging.Sinks
                 LogTime = logEvent.Timestamp.DateTime,
                 Application = logEvent.Properties["Application"].ToString(),
                 Level = logEvent.Level.ToString(),
-                IsBackedUp = true
+                IsBackedUp = false
             };
 
             var json = JsonSerializer.Serialize(customLog);

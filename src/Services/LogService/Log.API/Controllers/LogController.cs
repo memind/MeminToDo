@@ -1,5 +1,7 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 using Common.Logging;
+using Hangfire;
+using Hangfire.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -11,10 +13,12 @@ namespace Log.API.Controllers
     public class LogController : ControllerBase
     {
         readonly IDynamoDBContext _dynamoDBContext;
+        private List<LogBackUp> _logList = new List<LogBackUp>();
 
         public LogController(IDynamoDBContext dynamoDBContext)
         {
             _dynamoDBContext = dynamoDBContext;
+            RecurringJob.AddOrUpdate(() => Job(), "0 0 * * *");
         }
 
         [HttpGet("{logId}")]
@@ -37,12 +41,10 @@ namespace Log.API.Controllers
         }
 
         [HttpPost("/createBackUp")]
-        public async Task<IActionResult> CreateLogBackUp(LogBackUp logBackUpRequest)
+        public async Task CreateLogBackUp(LogBackUp logBackUpRequest)
         {
-            logBackUpRequest.Id = Guid.NewGuid();
-            await _dynamoDBContext.SaveAsync(logBackUpRequest);
-
-            return Ok(logBackUpRequest);
+            _logList.Add(logBackUpRequest);
+            await Job();
         }
 
         [HttpDelete("{logBackUpId}")]
@@ -71,5 +73,18 @@ namespace Log.API.Controllers
             return Ok(logBackUpRequest);
         }
 
+        [HttpGet("/job")]
+        public async Task Job()
+        {
+            if(_logList.Count > 0)
+                foreach (var log in _logList.ToList())
+                {
+                    log.Id = Guid.NewGuid();
+                    log.IsBackedUp = true;
+
+                    await _dynamoDBContext.SaveAsync(log);
+                    _logList.Remove(log);
+                }
+        }
     }
 }
