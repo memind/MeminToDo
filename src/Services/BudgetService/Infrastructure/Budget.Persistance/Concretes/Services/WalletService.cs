@@ -5,10 +5,14 @@ using Budget.Application.Abstractions.Services;
 using Budget.Application.DTOs.BudgetAccountDTOs;
 using Budget.Application.DTOs.WalletDTOs;
 using Budget.Application.UnitOfWork;
+using Budget.Persistance.Consts;
 using Budget.Domain.Entities;
+using Common.Caching.Services;
 using Common.Logging.Logs.BudgetLogs;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 using System;
+using Newtonsoft.Json;
 
 namespace Budget.Persistance.Concretes.Services
 {
@@ -17,9 +21,11 @@ namespace Budget.Persistance.Concretes.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<WalletService> _logger;
+        private readonly IDatabase _cache;
 
         public WalletService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<WalletService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
@@ -87,10 +93,20 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
-                var list = _unitOfWork.GetReadRepository<Wallet>().GetAll(includeProperties: w => w.BudgetAccount);
-                _logger.LogInformation(BudgetLogs.GetAllWallets());
+                var cacheKey = CacheConsts.GetAllWallets();
+                var cachedWallets = _cache.StringGet(cacheKey);
 
-                return _mapper.Map<List<WalletDto>>(list);
+                if (!cachedWallets.IsNull)
+                    return JsonConvert.DeserializeObject<List<WalletDto>>(cachedWallets);
+
+                var list = _unitOfWork.GetReadRepository<Wallet>().GetAll(includeProperties: w => w.BudgetAccount);
+                var map = _mapper.Map<List<WalletDto>>(list);
+
+                var serializedWallets = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedWallets);
+
+                _logger.LogInformation(BudgetLogs.GetAllWallets());
+                return map;
             }
             catch (Exception error) { _logger.LogError(BudgetLogs.AnErrorOccured(error.Message)); throw error; }
         }
@@ -99,8 +115,17 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllWallets(userId);
+                var cachedWallets = _cache.StringGet(cacheKey);
+
+                if (!cachedWallets.IsNull)
+                    return JsonConvert.DeserializeObject<List<WalletDto>>(cachedWallets);
+
                 var budgetAccount = _unitOfWork.GetReadRepository<BudgetAccount>().Get(ba => ba.UserId == userId, includeProperties: ba => ba.Wallets);
                 var map = _mapper.Map<List<WalletDto>>(budgetAccount.Wallets);
+
+                var serializedWallets = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedWallets);
 
                 _logger.LogInformation(BudgetLogs.GetUsersAllWallets(userId));
 
@@ -113,8 +138,17 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetWalletById(id);
+                var cachedWallets = _cache.StringGet(cacheKey);
+
+                if (!cachedWallets.IsNull)
+                    return JsonConvert.DeserializeObject<WalletDto>(cachedWallets);
+
                 var wallet = _unitOfWork.GetReadRepository<Wallet>().Get(w => w.Id == id, includeProperties: w => w.BudgetAccount);
                 var map = _mapper.Map<WalletDto>(wallet);
+
+                var serializedWallets = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedWallets);
 
                 _logger.LogInformation(BudgetLogs.GetWalletById(id));
 
@@ -127,8 +161,17 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetWalletByIdAsNoTracking(id);
+                var cachedWallets = _cache.StringGet(cacheKey);
+
+                if (!cachedWallets.IsNull)
+                    return JsonConvert.DeserializeObject<WalletDto>(cachedWallets);
+
                 var wallet = _unitOfWork.GetReadRepository<Wallet>().GetAsNoTracking(w => w.Id == id, includeProperties: w => w.BudgetAccount);
                 var map = _mapper.Map<WalletDto>(wallet);
+
+                var serializedWallets = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedWallets);
 
                 _logger.LogInformation(BudgetLogs.GetWalletByIdAsNoTracking(id));
 

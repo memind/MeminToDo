@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
+using Common.Caching.Services;
 using Common.Logging.Logs.SkillLogs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 using Skill.Application.Abstractions.Services;
 using Skill.Application.DTOs.ArtDTOs;
 using Skill.Application.Repositories.ArtRepositories;
 using Skill.Domain.Entities;
 using Skill.Domain.Entities.Common;
+using Skill.Persistance.Consts;
+using StackExchange.Redis;
+using Thrift.Protocol.Entities;
 
 namespace Skill.Persistance.Concretes.Services
 {
@@ -16,9 +21,11 @@ namespace Skill.Persistance.Concretes.Services
         private readonly IArtWriteRepository _write;
         private readonly IMapper _mapper;
         private readonly ILogger<ArtService> _logger;
+        private readonly IDatabase _cache;
 
         public ArtService(IArtWriteRepository write, IArtReadRepository read, IMapper mapper, ILogger<ArtService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _write = write;
             _read = read;
             _mapper = mapper;
@@ -79,8 +86,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllArts();
+                var cachedArts = _cache.StringGet(cacheKey);
+
+                if (!cachedArts.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Art>>(cachedArts);
+
+                var arts = _read.GetAll();
+
+                var serializedArts = JsonConvert.SerializeObject(arts);
+                _cache.StringSet(cacheKey, serializedArts);
+
                 _logger.LogInformation(SkillLogs.GetAllArts());
-                return _read.GetAll();
+                return arts;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -88,8 +106,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllArts();
+                var cachedArts = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedArts.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Art>>(cachedArts);
+
+                var arts = await _read.GetAllAsync();
+
+                var serializedArts = JsonConvert.SerializeObject(arts);
+                await _cache.StringSetAsync(cacheKey, serializedArts);
+
                 _logger.LogInformation(SkillLogs.GetAllArts());
-                return await _read.GetAllAsync();
+                return arts;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -97,8 +126,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllArts(id);
+                var cachedArts = _cache.StringGet(cacheKey);
+
+                if (!cachedArts.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Art>>(cachedArts);
+
+                var arts = _read.GetFiltered(x => x.UserId == id);
+
+                var serializedArts = JsonConvert.SerializeObject(arts);
+                _cache.StringSet(cacheKey, serializedArts);
+
                 _logger.LogInformation(SkillLogs.GetUsersAllArts(id));
-                return _read.GetFiltered(x => x.UserId == id);
+                return arts;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -106,8 +146,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllArts(id);
+                var cachedArts = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedArts.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Art>>(cachedArts);
+
+                var arts = await _read.GetFilteredAsync(x => x.UserId == id);
+
+                var serializedArts = JsonConvert.SerializeObject(arts);
+                await _cache.StringSetAsync(cacheKey, serializedArts);
+
                 _logger.LogInformation(SkillLogs.GetUsersAllArts(id));
-                return await _read.GetFilteredAsync(x => x.UserId == id);
+                return arts;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -115,8 +166,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetArtById(id);
+                var cachedArts = _cache.StringGet(cacheKey);
+
+                if (!cachedArts.IsNull)
+                    return JsonConvert.DeserializeObject<GetOneResult<Art>>(cachedArts);
+
+                var art = _read.GetById(id);
+
+                var serializedArt = JsonConvert.SerializeObject(art);
+                _cache.StringSet(cacheKey, serializedArt);
+
                 _logger.LogInformation(SkillLogs.GetArtById(id));
-                return _read.GetById(id);
+                return art;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -124,8 +186,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetArtById(id);
+                var cachedArts = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedArts.IsNull)
+                    return JsonConvert.DeserializeObject<GetOneResult<Art>>(cachedArts);
+
+                var art = await _read.GetByIdAsync(id);
+
+                var serializedArt = JsonConvert.SerializeObject(art);
+                await _cache.StringSetAsync(cacheKey, serializedArt);
+
                 _logger.LogInformation(SkillLogs.GetArtById(id));
-                return await _read.GetByIdAsync(id);
+                return art;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 

@@ -49,3 +49,13 @@ scrape_configs:
   static_configs:  
   - targets:  
     - http://localhost:8003
+
+- job_name: BudgetAPITrack
+  honor_timestamps: true
+  scrape_interval: 15s  
+  scrape_timeout: 10s  
+  metrics_path: /metrics-text 
+  scheme: http
+  static_configs:  
+  - targets:  
+    - http://localhost:8008

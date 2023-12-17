@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Common.Caching.Services;
 using Common.Logging.Logs.EntertainmentLogs;
+using Entertainment.API.Consts;
 using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.ShowDTOs;
 using Entertainment.Application.Repositories.ShowRepositories;
 using Entertainment.Domain.Entities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Entertainment.Persistance.Concretes.Services
 {
@@ -14,9 +18,11 @@ namespace Entertainment.Persistance.Concretes.Services
         private readonly IShowWriteRepository _write;
         private readonly IMapper _mapper;
         private readonly ILogger<ShowService> _logger;
+        private readonly IDatabase _cache;
 
         public ShowService(IShowWriteRepository bookWriteRepository, IShowReadRepository bookReadRepository, IMapper mapper, ILogger<ShowService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _write = bookWriteRepository;
             _read = bookReadRepository;
             _mapper = mapper;
@@ -67,11 +73,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = _read.GetAll();
+                var cacheKey = CacheConsts.GetAllShows();
+                var cachedShows = _cache.StringGet(cacheKey);
+
+                if (!cachedShows.IsNull)
+                    return JsonConvert.DeserializeObject<List<ShowDto>>(cachedShows);
+
+                var shows = _read.GetAll();
+
+                var serializedShows = JsonConvert.SerializeObject(shows);
+                _cache.StringSet(cacheKey, serializedShows);
 
                 _logger.LogInformation(EntertainmentLogs.GetAllShows());
-
-                return _mapper.Map<List<ShowDto>>(games);
+                return _mapper.Map<List<ShowDto>>(shows);
             }
             catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
@@ -80,11 +94,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = await _read.GetAllAsync();
+                var cacheKey = CacheConsts.GetAllShows();
+                var cachedShows = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedShows.IsNull)
+                    return JsonConvert.DeserializeObject<List<ShowDto>>(cachedShows);
+
+                var shows = await _read.GetAllAsync();
+
+                var serializedShows = JsonConvert.SerializeObject(shows);
+                await _cache.StringSetAsync(cacheKey, serializedShows);
 
                 _logger.LogInformation(EntertainmentLogs.GetAllShows());
-
-                return _mapper.Map<List<ShowDto>>(games);
+                return _mapper.Map<List<ShowDto>>(shows);
             }
             catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
@@ -93,11 +115,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var game = _read.GetById(id);
+                var cacheKey = CacheConsts.GetShow(id);
+                var cachedShow = _cache.StringGet(cacheKey);
+
+                if (!cachedShow.IsNull)
+                    return JsonConvert.DeserializeObject<ShowDto>(cachedShow);
+
+                var show = _read.GetById(id);
+
+                var serializedShow = JsonConvert.SerializeObject(show);
+                _cache.StringSet(cacheKey, serializedShow);
 
                 _logger.LogInformation(EntertainmentLogs.GetShowById(id));
-
-                return _mapper.Map<ShowDto>(game);
+                return _mapper.Map<ShowDto>(show);
             }
             catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
@@ -106,11 +136,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var game = await _read.GetByIdAsync(id);
+                var cacheKey = CacheConsts.GetShow(id);
+                var cachedShow = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedShow.IsNull)
+                    return JsonConvert.DeserializeObject<ShowDto>(cachedShow);
+
+                var show = await _read.GetByIdAsync(id);
+
+                var serializedShow = JsonConvert.SerializeObject(show);
+                await _cache.StringSetAsync(cacheKey, serializedShow);
 
                 _logger.LogInformation(EntertainmentLogs.GetShowById(id));
-
-                return _mapper.Map<ShowDto>(game);
+                return _mapper.Map<ShowDto>(show);
             }
             catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
@@ -119,11 +157,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = _read.GetUsersAll(userId);
+                var cacheKey = CacheConsts.GetUsersAllShows(userId);
+                var cachedShows = _cache.StringGet(cacheKey);
+
+                if (!cachedShows.IsNull)
+                    return JsonConvert.DeserializeObject<List<ShowDto>>(cachedShows);
+
+                var show = _read.GetUsersAll(userId);
+
+                var serializedShows = JsonConvert.SerializeObject(show);
+                _cache.StringSet(cacheKey, serializedShows);
 
                 _logger.LogInformation(EntertainmentLogs.GetUsersAllShows(userId));
-
-                return _mapper.Map<List<ShowDto>>(games);
+                return _mapper.Map<List<ShowDto>>(show);
             }
             catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
@@ -132,11 +178,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = await _read.GetUsersAllAsync(userId);
+                var cacheKey = CacheConsts.GetUsersAllShows(userId);
+                var cachedShows = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedShows.IsNull)
+                    return JsonConvert.DeserializeObject<List<ShowDto>>(cachedShows);
+
+                var shows = await _read.GetUsersAllAsync(userId);
+
+                var serializedShows = JsonConvert.SerializeObject(shows);
+                await _cache.StringSetAsync(cacheKey, serializedShows);
 
                 _logger.LogInformation(EntertainmentLogs.GetUsersAllShows(userId));
-
-                return _mapper.Map<List<ShowDto>>(games);
+                return _mapper.Map<List<ShowDto>>(shows);
             }
             catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }

@@ -20,44 +20,30 @@ namespace Entertainment.API.Controllers
 
         [HttpGet("/getBook")]
         [Authorize(Policy = "EntertainmentRead")]
-        public BookDto GetBook(string id)
-        {
-            return _service.GetBookById(id);
-        }
+        public BookDto GetBook(string id) => _service.GetBookById(id);
+        
 
         [HttpGet("/getBooks")]
         [Authorize(Policy = "EntertainmentRead")]
-        public List<BookDto> GetAllBooks()
-        {
-            return _service.GetAllBooks();
-        }
+        public List<BookDto> GetAllBooks() => _service.GetAllBooks();
 
         [HttpGet("/getUsersBooks")]
         [Authorize(Policy = "EntertainmentRead")]
-        public List<BookDto> GetUsersAllBooks(string id)
-        {
-            return _service.GetUsersAllBooks(id);
-        }
+        public List<BookDto> GetUsersAllBooks(string id) => _service.GetUsersAllBooks(id);
+        
 
         [HttpPost("/createBook")]
         [Authorize(Policy = "EntertainmentWrite")]
-        public int CreateBook(BookDto model)
-        {
-            return _service.CreateBook(model);
-        }
+        public int CreateBook(BookDto model) => _service.CreateBook(model);
+        
 
         [HttpPut("/updateBook")]
         [Authorize(Policy = "EntertainmentWrite")]
-        public int UpdateBook(BookDto model)
-        {
-            return _service.UpdateBook(model);
-        }
+        public int UpdateBook(BookDto model) => _service.UpdateBook(model);
+        
 
         [HttpDelete("/deleteBook")]
         [Authorize(Policy = "EntertainmentWrite")]
-        public int DeleteBook(string id)
-        {
-            return _service.DeleteBook(id);
-        }
+        public int DeleteBook(string id) => _service.DeleteBook(id);
     }
 }

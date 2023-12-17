@@ -20,44 +20,26 @@ namespace Workout.API.Controllers
 
         [HttpPost("/createExercise")]
         [Authorize(Policy = "WorkoutWrite")]
-        public ExerciseDto CreateExercise(ExerciseDto model)
-        {
-            return _service.CreateExercise(model);
-        }
+        public ExerciseDto CreateExercise(ExerciseDto model) => _service.CreateExercise(model);
 
         [HttpGet("/getExercise")]
         [Authorize(Policy = "WorkoutRead")]
-        public ExerciseDto GetExercise(string id)
-        {
-            return _service.GetExerciseById(id);
-        }
+        public ExerciseDto GetExercise(string id) => _service.GetExerciseById(id);
 
         [HttpGet("/getAllExercises")]
         [Authorize(Policy = "WorkoutRead")]
-        public List<ExerciseDto> GetAllExercises()
-        {
-            return _service.GetAllExercises();
-        }
+        public List<ExerciseDto> GetAllExercises() => _service.GetAllExercises();
 
         [HttpGet("/getUsersAllExercises")]
         [Authorize(Policy = "WorkoutRead")]
-        public List<ExerciseDto> GetUsersAllExercises(string id)
-        {
-            return _service.GetUsersAllExercises(id);
-        }
+        public List<ExerciseDto> GetUsersAllExercises(string id) => _service.GetUsersAllExercises(id);
 
         [HttpPut("/updateExercise")]
         [Authorize(Policy = "WorkoutWrite")]
-        public ExerciseDto UpdateExercise(ExerciseDto model, string id)
-        {
-            return _service.UpdateExercise(model, id);
-        }
+        public ExerciseDto UpdateExercise(ExerciseDto model, string id) => _service.UpdateExercise(model, id);
 
         [HttpDelete("/deleteExercise")]
         [Authorize(Policy = "WorkoutWrite")]
-        public void DeleteExercise(string id)
-        {
-            _service.DeleteExercise(id);
-        }
+        public void DeleteExercise(string id) => _service.DeleteExercise(id);
     }
 }

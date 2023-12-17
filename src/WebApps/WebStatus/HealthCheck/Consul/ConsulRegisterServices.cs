@@ -11,8 +11,9 @@ namespace HealthCheck.Consul
         private EntertainmentConfiguration _entertainmentConfig;
         private DashboardConfiguration _dashboardConfig;
         private MealConfiguration _mealConfig;
+        private BudgetConfiguration _budgetConfig;
 
-        public ConsulRegisterServices(IOptions<WorkoutConfiguration> workoutConfiguration, IOptions<SkillConfiguration> skillConfiguration, IConsulClient client, IOptions<EntertainmentConfiguration> entertainmentConfiguration, IOptions<DashboardConfiguration> dashboardConfig, IOptions<MealConfiguration> mealConfiguration)
+        public ConsulRegisterServices(IOptions<WorkoutConfiguration> workoutConfiguration, IOptions<SkillConfiguration> skillConfiguration, IConsulClient client, IOptions<EntertainmentConfiguration> entertainmentConfiguration, IOptions<DashboardConfiguration> dashboardConfig, IOptions<MealConfiguration> mealConfiguration, BudgetConfiguration budgetConfig)
         {
             _client = client;
             _workoutConfig = workoutConfiguration.Value;
@@ -20,6 +21,7 @@ namespace HealthCheck.Consul
             _entertainmentConfig = entertainmentConfiguration.Value;
             _dashboardConfig = dashboardConfig.Value;
             _mealConfig = mealConfiguration.Value;
+            _budgetConfig = budgetConfig;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -79,17 +81,30 @@ namespace HealthCheck.Consul
                 Tags = new[] { _mealConfig.ServiceName }
             };
 
+            var budgetUri = new Uri(_budgetConfig.Url);
+
+            var budgetRegistration = new AgentServiceRegistration()
+            {
+                Address = budgetUri.Host,
+                Name = _budgetConfig.ServiceName,
+                ID = _budgetConfig.ServiceId,
+                Port = budgetUri.Port,
+                Tags = new[] { _budgetConfig.ServiceName }
+            };
+
             await _client.Agent.ServiceDeregister(_workoutConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_mealConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_skillConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_entertainmentConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_dashboardConfig.ServiceId, cancellationToken);
+            await _client.Agent.ServiceDeregister(_budgetConfig.ServiceId, cancellationToken);
 
             await _client.Agent.ServiceRegister(workoutRegistration, cancellationToken);
             await _client.Agent.ServiceRegister(mealRegistration, cancellationToken);
             await _client.Agent.ServiceRegister(skillRegistration, cancellationToken);
             await _client.Agent.ServiceRegister(entertainmentRegistration, cancellationToken);
             await _client.Agent.ServiceRegister(dashboardRegistration, cancellationToken);
+            await _client.Agent.ServiceRegister(budgetRegistration, cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -99,6 +114,7 @@ namespace HealthCheck.Consul
             await _client.Agent.ServiceDeregister(_mealConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_entertainmentConfig.ServiceId, cancellationToken);
             await _client.Agent.ServiceDeregister(_dashboardConfig.ServiceId, cancellationToken);
+            await _client.Agent.ServiceDeregister(_budgetConfig.ServiceId, cancellationToken);
         }
     }
 }

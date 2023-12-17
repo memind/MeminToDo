@@ -1,11 +1,16 @@
-﻿using AutoMapper;
+﻿using Autofac.Core;
+using AutoMapper;
+using Common.Caching.Services;
 using Common.Logging.Logs.EntertainmentLogs;
+using Entertainment.API.Consts;
 using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.BookDTOs;
 using Entertainment.Application.Repositories.BookNoteRepositories;
 using Entertainment.Application.Repositories.BookRepositories;
 using Entertainment.Domain.Entities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Entertainment.Persistance.Concretes.Services
 {
@@ -16,9 +21,11 @@ namespace Entertainment.Persistance.Concretes.Services
         private readonly IBookNoteReadRepository _bookNote;
         private readonly IMapper _mapper;
         private readonly ILogger<BookService> _logger;
+        private readonly IDatabase _cache;
 
         public BookService(IBookWriteRepository bookWriteRepository, IBookReadRepository bookReadRepository, IMapper mapper, IBookNoteReadRepository bookNote, ILogger<BookService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _write = bookWriteRepository;
             _read = bookReadRepository;
             _mapper = mapper;
@@ -66,17 +73,22 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllBooks();
+                var cachedBooks = _cache.StringGet(cacheKey);
+
+                if (!cachedBooks.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookDto>>(cachedBooks);
+
                 var notes = _bookNote.GetAll();
                 var books = _read.GetAll();
 
                 foreach (var book in books)
-                {
                     foreach (var note in notes)
-                    {
                         if (note.BookId == book.Id && note.UserId == book.UserId)
                             book.BookNotes.Add(note);
-                    }
-                }
+
+                var serializedBooks = JsonConvert.SerializeObject(books);
+                _cache.StringSet(cacheKey, serializedBooks);
 
                 _logger.LogInformation(EntertainmentLogs.GetAllBooks());
                 return _mapper.Map<List<BookDto>>(books);
@@ -87,17 +99,22 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllBooks();
+                var cachedBooks = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedBooks.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookDto>>(cachedBooks);
+
                 var notes = await _bookNote.GetAllAsync();
                 var books = await _read.GetAllAsync();
 
                 foreach (var book in books)
-                {
                     foreach (var note in notes)
-                    {
                         if (note.BookId == book.Id && note.UserId == book.UserId)
                             book.BookNotes.Add(note);
-                    }
-                }
+
+                var serializedBooks = JsonConvert.SerializeObject(books);
+                await _cache.StringSetAsync(cacheKey, serializedBooks);
 
                 _logger.LogInformation(EntertainmentLogs.GetAllBooks());
                 return _mapper.Map<List<BookDto>>(books);
@@ -108,14 +125,23 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetBook(id);
+                var cachedBook = _cache.StringGet(cacheKey);
+
+                if (!cachedBook.IsNull)
+                    return JsonConvert.DeserializeObject<BookDto>(cachedBook);
+
+
                 var book = _read.GetById(id);
                 var notes = _bookNote.GetUsersAll(book.UserId.ToString());
 
                 foreach (var note in notes)
-                {
                     if (book.Id == note.BookId)
                         book.BookNotes.Add(note);
-                }
+                
+
+                var serializedBook = JsonConvert.SerializeObject(book);
+                _cache.StringSet(cacheKey, serializedBook);
 
                 _logger.LogInformation(EntertainmentLogs.GetBookById(id));
                 return _mapper.Map<BookDto>(book);
@@ -126,14 +152,23 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetBook(id);
+                var cachedBook = _cache.StringGet(cacheKey);
+
+                if (!cachedBook.IsNull)
+                    return JsonConvert.DeserializeObject<BookDto>(cachedBook);
+
+
                 var book = await _read.GetByIdAsync(id);
                 var notes = await _bookNote.GetUsersAllAsync(book.UserId.ToString());
 
                 foreach (var note in notes)
-                {
-                    if (book.Id == note.BookId)
+                  if (book.Id == note.BookId)
                         book.BookNotes.Add(note);
-                }
+                
+
+                var serializedBook = JsonConvert.SerializeObject(book);
+                await _cache.StringSetAsync(cacheKey, serializedBook);
 
                 _logger.LogInformation(EntertainmentLogs.GetBookById(id));
                 return _mapper.Map<BookDto>(book);
@@ -144,17 +179,23 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllBooks();
+                var cachedBooks = _cache.StringGet(cacheKey);
+
+                if (!cachedBooks.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookDto>>(cachedBooks);
+
+
                 var books = _read.GetUsersAll(userId);
                 var notes = _bookNote.GetUsersAll(userId);
 
                 foreach (var book in books)
-                {
                     foreach (var note in notes)
-                    {
                         if (book.Id == note.BookId)
                             book.BookNotes.Add(note);
-                    }
-                }
+
+                var serializedBooks = JsonConvert.SerializeObject(books);
+                _cache.StringSet(cacheKey, serializedBooks);
 
                 _logger.LogInformation(EntertainmentLogs.GetUsersAllBooks(userId));
                 return _mapper.Map<List<BookDto>>(books);
@@ -165,17 +206,23 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllBooks();
+                var cachedBooks = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedBooks.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookDto>>(cachedBooks);
+
+
                 var books = await _read.GetUsersAllAsync(userId);
                 var notes = await _bookNote.GetUsersAllAsync(userId);
 
                 foreach (var book in books)
-                {
                     foreach (var note in notes)
-                    {
                         if (book.Id == note.BookId)
                             book.BookNotes.Add(note);
-                    }
-                }
+
+                var serializedBooks = JsonConvert.SerializeObject(books);
+                await _cache.StringSetAsync(cacheKey, serializedBooks);
 
                 _logger.LogInformation(EntertainmentLogs.GetUsersAllBooks(userId));
                 return _mapper.Map<List<BookDto>>(books);

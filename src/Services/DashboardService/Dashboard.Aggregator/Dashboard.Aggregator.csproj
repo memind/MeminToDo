@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Common.Caching\Common.Caching\Common.Caching.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Common.Logging\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
 

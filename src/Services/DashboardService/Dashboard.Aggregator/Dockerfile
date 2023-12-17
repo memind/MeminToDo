@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["src/Services/DashboardService/Dashboard.Aggregator/Dashboard.Aggregator.csproj", "src/Services/DashboardService/Dashboard.Aggregator/"]
+COPY ["src/BuildingBlocks/Common.Caching/Common.Caching/Common.Caching.csproj", "src/BuildingBlocks/Common.Caching/Common.Caching/"]
 COPY ["src/BuildingBlocks/Common.Logging/Common.Logging/Common.Logging.csproj", "src/BuildingBlocks/Common.Logging/Common.Logging/"]
 RUN dotnet restore "src/Services/DashboardService/Dashboard.Aggregator/Dashboard.Aggregator.csproj"
 COPY . .

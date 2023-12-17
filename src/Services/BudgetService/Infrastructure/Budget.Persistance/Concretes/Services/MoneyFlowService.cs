@@ -3,11 +3,15 @@ using Budget.Application.Abstractions.Factories;
 using Budget.Application.Abstractions.Services;
 using Budget.Application.DTOs.MoneyFlowDTOs;
 using Budget.Application.UnitOfWork;
+using Budget.Persistance.Consts;
 using Budget.Domain.Entities;
+using Common.Caching.Services;
 using Common.Logging.Logs.BudgetLogs;
 using Common.Logging.Logs.EntertainmentLogs;
 using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Budget.Persistance.Concretes.Services
 {
@@ -17,9 +21,11 @@ namespace Budget.Persistance.Concretes.Services
         private readonly IMapper _mapper;
         private readonly IMoneyFlowFactory _moneyFlowFactory;
         private readonly ILogger<MoneyFlowService> _logger;
+        private readonly IDatabase _cache;
 
         public MoneyFlowService(IUnitOfWork unitOfWork, IMapper mapper, IMoneyFlowFactory factory, ILogger<MoneyFlowService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _moneyFlowFactory = factory;
@@ -67,8 +73,17 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllMoneyFlows();
+                var cachedMoneyFlows = _cache.StringGet(cacheKey);
+
+                if (!cachedMoneyFlows.IsNull)
+                    return JsonConvert.DeserializeObject<List<MoneyFlowDto>>(cachedMoneyFlows);
+
                 var list = _unitOfWork.GetReadRepository<MoneyFlow>().GetAll(includeProperties: mf => mf.BudgetAccount);
                 var map = _mapper.Map<List<MoneyFlowDto>>(list);
+
+                var serializedMoneyFlows = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMoneyFlows);
 
                 _logger.LogInformation(BudgetLogs.GetAllMoneyFlows());
 
@@ -81,8 +96,17 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetMoneyFlowById(id);
+                var cachedMoneyFlows = _cache.StringGet(cacheKey);
+
+                if (!cachedMoneyFlows.IsNull)
+                    return JsonConvert.DeserializeObject<MoneyFlowDto>(cachedMoneyFlows);
+
                 var moneyFlow = _unitOfWork.GetReadRepository<MoneyFlow>().Get(mf => mf.Id == id, includeProperties: mf => mf.BudgetAccount);
                 var map = _mapper.Map<MoneyFlowDto>(moneyFlow);
+
+                var serializedMoneyFlows = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMoneyFlows);
 
                 _logger.LogInformation(BudgetLogs.GetMoneyFlowById(id));
 
@@ -95,8 +119,17 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetMoneyFlowByIdAsNoTracking(id);
+                var cachedMoneyFlows = _cache.StringGet(cacheKey);
+
+                if (!cachedMoneyFlows.IsNull)
+                    return JsonConvert.DeserializeObject<MoneyFlowDto>(cachedMoneyFlows);
+
                 var moneyFlow = _unitOfWork.GetReadRepository<MoneyFlow>().GetAsNoTracking(mf => mf.Id == id, includeProperties: mf => mf.BudgetAccount);
                 var map = _mapper.Map<MoneyFlowDto>(moneyFlow);
+
+                var serializedMoneyFlows = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMoneyFlows);
 
                 _logger.LogInformation(BudgetLogs.GetMoneyFlowByIdAsNoTracking(id));
 
@@ -109,8 +142,17 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllMoneyFlows(userId);
+                var cachedMoneyFlows = _cache.StringGet(cacheKey);
+
+                if (!cachedMoneyFlows.IsNull)
+                    return JsonConvert.DeserializeObject<List<MoneyFlowDto>>(cachedMoneyFlows);
+
                 var list = _unitOfWork.GetReadRepository<MoneyFlow>().GetAll(mf => mf.UserId == userId, includeProperties: mf => mf.BudgetAccount);
                 var map = _mapper.Map<List<MoneyFlowDto>>(list);
+
+                var serializedMoneyFlows = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMoneyFlows);
 
                 _logger.LogInformation(BudgetLogs.GetUsersAllMoneyFlows(userId));
 

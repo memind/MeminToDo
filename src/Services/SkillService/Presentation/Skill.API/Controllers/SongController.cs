@@ -12,6 +12,7 @@ using Skill.Application.Features.Commands.SongCommands.CreateSong;
 using Skill.Application.Features.Commands.SongCommands.UpdateSong;
 using Skill.Application.Features.Commands.SongCommands.DeleteSong;
 using Microsoft.AspNetCore.Authorization;
+using Amazon.Runtime.Internal;
 
 namespace Skill.API.Controllers
 {
@@ -31,44 +32,26 @@ namespace Skill.API.Controllers
 
         [HttpGet("/getOneSong")]
         [Authorize(Policy = "SkillRead")]
-        public async Task<GetSongByIdQueryResponse> GetById([FromQuery] GetSongByIdQueryRequest request)
-        {
-            return await _mediator.Send(request);
-        }
+        public async Task<GetSongByIdQueryResponse> GetById([FromQuery] GetSongByIdQueryRequest request) => await _mediator.Send(request);
 
         [HttpGet("/getAllSongs")]
         [Authorize(Policy = "SkillRead")]
-        public async Task<GetAllSongsQueryResponse> GetAll([FromQuery] GetAllSongsQueryRequest request)
-        {
-            return await _mediator.Send(request);
-        }
+        public async Task<GetAllSongsQueryResponse> GetAll([FromQuery] GetAllSongsQueryRequest request) => await _mediator.Send(request);
 
         [HttpGet("/getUsersAllSongs")]
         [Authorize(Policy = "SkillRead")]
-        public async Task<GetUsersAllSongsQueryResponse> GetUsersAll([FromQuery] GetUsersAllSongsQueryRequest request)
-        {
-            return await _mediator.Send(request);
-        }
+        public async Task<GetUsersAllSongsQueryResponse> GetUsersAll([FromQuery] GetUsersAllSongsQueryRequest request) => await _mediator.Send(request);
 
         [HttpPost]
         [Authorize(Policy = "SkillWrite")]
-        public async Task<CreateSongCommandResponse> Create([FromQuery] CreateSongCommandRequest request)
-        {
-            return await _mediator.Send(request);
-        }
+        public async Task<CreateSongCommandResponse> Create([FromQuery] CreateSongCommandRequest request) => await _mediator.Send(request);
 
         [HttpPut]
         [Authorize(Policy = "SkillWrite")]
-        public async Task<UpdateSongCommandResponse> Update([FromQuery] UpdateSongCommandRequest request)
-        {
-            return await _mediator.Send(request);
-        }
+        public async Task<UpdateSongCommandResponse> Update([FromQuery] UpdateSongCommandRequest request) => await _mediator.Send(request);
 
         [HttpDelete]
         [Authorize(Policy = "SkillWrite")]
-        public async Task<DeleteSongCommandResponse> Delete([FromQuery] DeleteSongCommandRequest request)
-        {
-            return await _mediator.Send(request);
-        }
+        public async Task<DeleteSongCommandResponse> Delete([FromQuery] DeleteSongCommandRequest request) => await _mediator.Send(request);
     }
 }

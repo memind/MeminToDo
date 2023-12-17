@@ -8,6 +8,10 @@ using Meal.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Meal.Infrastructure.DTOs.FoodDTOs;
 using Common.Logging.Logs.MealLogs;
+using Common.Caching.Services;
+using StackExchange.Redis;
+using Meal.Application.Consts;
+using Newtonsoft.Json;
 
 namespace Meal.Application.Services.Concrete
 {
@@ -16,9 +20,11 @@ namespace Meal.Application.Services.Concrete
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICustomMapper _mapper;
         private readonly ILogger<MealService> _logger;
+        private readonly IDatabase _cache;
 
         public MealService(IUnitOfWork unitOfWork, ICustomMapper mapper, ILogger<MealService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
@@ -60,8 +66,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllActiveMeals();
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.Status == Status.Added || x.Status == Status.Modified, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllActiveMeals());
 
@@ -74,8 +89,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
-                var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.Status == Status.Added || x.Status == Status.Modified, includeProperties: x => x.Foods);
+                var cacheKey = CacheConsts.GetAllActiveMeals();
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
+                var meals =await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.Status == Status.Added || x.Status == Status.Modified, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllActiveMeals());
 
@@ -88,8 +112,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllDeletedMeals();
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.Status == Status.Deleted, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllDeletedMeals());
 
@@ -102,8 +135,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllDeletedMeals();
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.Status == Status.Deleted, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllDeletedMeals());
 
@@ -116,8 +158,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllMealHistory();
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var history = _unitOfWork.GetReadRepository<m.Meal>().GetHistoryAll();
                 var map = _mapper.Map<MealDto, m.Meal>(history);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllMealHistory());
 
@@ -130,8 +181,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllMealHistory();
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var history = await _unitOfWork.GetReadRepository<m.Meal>().GetHistoryAllAsync();
                 var map = _mapper.Map<MealDto, m.Meal>(history);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllMealHistory());
 
@@ -144,8 +204,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllMeals();
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllMeals());
 
@@ -158,8 +227,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllMeals();
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetAllMeals());
 
@@ -172,11 +250,19 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetMealHistoryById(id);
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var history = _unitOfWork.GetReadRepository<m.Meal>().GetHistoryAll()
                                                                      .Where(x => x.Id == id)
                                                                      .ToList();
-
                 var map = _mapper.Map<MealDto, m.Meal>(history);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetMealHistoryById(id));
 
@@ -189,11 +275,19 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
-                var history = (await _unitOfWork.GetReadRepository<m.Meal>().GetHistoryAllAsync())
-                                                                            .Where(x => x.Id == id)
-                                                                            .ToList();
+                var cacheKey = CacheConsts.GetMealHistoryById(id);
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
 
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
+                var history = (await _unitOfWork.GetReadRepository<m.Meal>().GetHistoryAllAsync())
+                                                                     .Where(x => x.Id == id)
+                                                                     .ToList();
                 var map = _mapper.Map<MealDto, m.Meal>(history);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+               await  _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetMealHistoryById(id));
 
@@ -206,8 +300,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetMealHistoryFromTo(utcFrom, utcTo);
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var history = _unitOfWork.GetReadRepository<m.Meal>().GetHistoryFromTo(utcFrom, utcTo);
                 var map = _mapper.Map<MealDto, m.Meal>(history);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetMealHistoryFromTo(utcFrom, utcTo));
 
@@ -220,8 +323,18 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+
+                var cacheKey = CacheConsts.GetMealHistoryFromTo(utcFrom, utcTo);
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var history = await _unitOfWork.GetReadRepository<m.Meal>().GetHistoryFromToAsync(utcFrom, utcTo);
                 var map = _mapper.Map<MealDto, m.Meal>(history);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetMealHistoryFromTo(utcFrom, utcTo));
 
@@ -234,8 +347,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetMealById(mealId);
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<MealDto>(cachedMeals);
+
                 var meals = _unitOfWork.GetReadRepository<m.Meal>().Get(x => x.Id == mealId, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetMealById(mealId));
 
@@ -248,8 +370,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetMealById(mealId);
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<MealDto>(cachedMeals);
+
                 var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAsync(x => x.Id == mealId, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetMealById(mealId));
 
@@ -262,8 +393,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllMeals(userId);
+                var cachedMeals = _cache.StringGet(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var meals = _unitOfWork.GetReadRepository<m.Meal>().GetAll(x => x.UserId == userId, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetUsersAllMeals(userId));
 
@@ -276,8 +416,17 @@ namespace Meal.Application.Services.Concrete
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllMeals(userId);
+                var cachedMeals = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedMeals.IsNull)
+                    return JsonConvert.DeserializeObject<List<MealDto>>(cachedMeals);
+
                 var meals = await _unitOfWork.GetReadRepository<m.Meal>().GetAllAsync(x => x.UserId == userId, includeProperties: x => x.Foods);
                 var map = _mapper.Map<MealDto, m.Meal>(meals);
+
+                var serializedMeals = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedMeals);
 
                 _logger.LogInformation(MealLogs.GetUsersAllMeals(userId));
 

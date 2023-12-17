@@ -1,10 +1,16 @@
 ﻿using AutoMapper;
+using Common.Caching.Services;
 using Common.Logging.Logs.EntertainmentLogs;
+using Entertainment.API.Consts;
 using Entertainment.Application.Abstractions.Services;
+using Entertainment.Application.DTOs.BookDTOs;
 using Entertainment.Application.DTOs.BookNoteDTOs;
 using Entertainment.Application.Repositories.BookNoteRepositories;
 using Entertainment.Domain.Entities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using StackExchange.Redis;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Entertainment.Persistance.Concretes.Services
 {
@@ -14,9 +20,11 @@ namespace Entertainment.Persistance.Concretes.Services
         private readonly IBookNoteWriteRepository _write;
         private readonly IMapper _mapper;
         private readonly ILogger<BookNoteService> _logger;
+        private readonly IDatabase _cache;
 
         public BookNoteService(IBookNoteWriteRepository bookWriteRepository, IBookNoteReadRepository bookReadRepository, IMapper mapper, ILogger<BookNoteService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _write = bookWriteRepository;
             _read = bookReadRepository;
             _mapper = mapper;
@@ -63,11 +71,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = _read.GetAll();
+                var cacheKey = CacheConsts.GetAllBookNotes();
+                var cachedBookNotes = _cache.StringGet(cacheKey);
+
+                if (!cachedBookNotes.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookNoteDto>>(cachedBookNotes);
+
+                var bookNotes = _read.GetAll();
+
+                var serializedBookNotes = JsonConvert.SerializeObject(bookNotes);
+                _cache.StringSet(cacheKey, serializedBookNotes);
 
                 _logger.LogInformation(EntertainmentLogs.GetAllBookNotes());
-
-                return _mapper.Map<List<BookNoteDto>>(games);
+                return _mapper.Map<List<BookNoteDto>>(bookNotes);
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -75,11 +91,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = await _read.GetAllAsync();
+                var cacheKey = CacheConsts.GetAllBookNotes();
+                var cachedBookNotes = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedBookNotes.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookNoteDto>>(cachedBookNotes);
+
+                var bookNotes = await _read.GetAllAsync();
+
+                var serializedBookNotes = JsonConvert.SerializeObject(bookNotes);
+                await _cache.StringSetAsync(cacheKey, serializedBookNotes);
 
                 _logger.LogInformation(EntertainmentLogs.GetAllBookNotes());
-
-                return _mapper.Map<List<BookNoteDto>>(games);
+                return _mapper.Map<List<BookNoteDto>>(bookNotes);
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -87,11 +111,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var game = _read.GetById(id);
+                var cacheKey = CacheConsts.GetBookNote(id);
+                var cachedBookNote = _cache.StringGet(cacheKey);
+
+                if (!cachedBookNote.IsNull)
+                    return JsonConvert.DeserializeObject<BookNoteDto>(cachedBookNote);
+
+                var bookNote = _read.GetById(id);
+
+                var serializedBookNote = JsonConvert.SerializeObject(bookNote);
+                _cache.StringSet(cacheKey, serializedBookNote);
 
                 _logger.LogInformation(EntertainmentLogs.GetBookNoteById(id));
-
-                return _mapper.Map<BookNoteDto>(game);
+                return _mapper.Map<BookNoteDto>(bookNote);
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -99,11 +131,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var game = await _read.GetByIdAsync(id);
+                var cacheKey = CacheConsts.GetBookNote(id);
+                var cachedBookNote = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedBookNote.IsNull)
+                    return JsonConvert.DeserializeObject<BookNoteDto>(cachedBookNote);
+
+                var bookNote = await _read.GetByIdAsync(id);
+
+                var serializedBookNote = JsonConvert.SerializeObject(bookNote);
+                await _cache.StringSetAsync(cacheKey, serializedBookNote);
 
                 _logger.LogInformation(EntertainmentLogs.GetBookNoteById(id));
-
-                return _mapper.Map<BookNoteDto>(game);
+                return _mapper.Map<BookNoteDto>(bookNote);
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -111,11 +151,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = _read.GetUsersAll(userId);
+                var cacheKey = CacheConsts.GetUsersAllBookNotes(userId);
+                var cachedBookNotes = _cache.StringGet(cacheKey);
+
+                if (!cachedBookNotes.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookNoteDto>>(cachedBookNotes);
+
+                var bookNotes = _read.GetUsersAll(userId);
+
+                var serializedBookNotes = JsonConvert.SerializeObject(bookNotes);
+                _cache.StringSet(cacheKey, serializedBookNotes);
 
                 _logger.LogInformation(EntertainmentLogs.GetUsersAllBookNotes(userId));
-
-                return _mapper.Map<List<BookNoteDto>>(games);
+                return _mapper.Map<List<BookNoteDto>>(bookNotes);
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -123,11 +171,19 @@ namespace Entertainment.Persistance.Concretes.Services
         {
             try
             {
-                var games = await _read.GetUsersAllAsync(userId);
+                var cacheKey = CacheConsts.GetUsersAllBookNotes(userId);
+                var cachedBookNotes = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedBookNotes.IsNull)
+                    return JsonConvert.DeserializeObject<List<BookNoteDto>>(cachedBookNotes);
+
+                var bookNotes = await _read.GetUsersAllAsync(userId);
+
+                var serializedBookNotes = JsonConvert.SerializeObject(bookNotes);
+                await _cache.StringSetAsync(cacheKey, serializedBookNotes);
 
                 _logger.LogInformation(EntertainmentLogs.GetUsersAllBookNotes(userId));
-
-                return _mapper.Map<List<BookNoteDto>>(games);
+                return _mapper.Map<List<BookNoteDto>>(bookNotes);
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 

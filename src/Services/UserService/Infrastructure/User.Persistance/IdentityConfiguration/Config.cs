@@ -29,7 +29,10 @@ namespace User.Persistance.IdentityConfiguration
             new ApiScope("Dashboard.Read","Read for Dashboard"),
 
             new ApiScope("Meal.Write","Write for Meal"),
-            new ApiScope("Meal.Read","Read for Meal")
+            new ApiScope("Meal.Read","Read for Meal"),
+
+            new ApiScope("Budget.Write","Write for Budget"),
+            new ApiScope("Budget.Read","Read for Budget")
         };
         }
         #endregion
@@ -58,6 +61,10 @@ namespace User.Persistance.IdentityConfiguration
             new ApiResource("Meal"){
                 ApiSecrets = {new Secret("mealsecret".Sha256()) },
                 Scopes = { "Meal.Write", "Meal.Read" }
+            },
+            new ApiResource("Budget"){
+                ApiSecrets = {new Secret("budgetsecret".Sha256()) },
+                Scopes = { "Budget.Write", "Budget.Read" }
             }
         };
         }
@@ -107,6 +114,14 @@ namespace User.Persistance.IdentityConfiguration
                         ClientSecrets = { new Secret("mealsecret".Sha256()) },
                         AllowedGrantTypes = { GrantType.ClientCredentials },
                         AllowedScopes = { "Meal.Write", "Meal.Read", "Roles" }
+                    },
+            new Client
+                    {
+                        ClientId = "Budget",
+                        ClientName = "Budget",
+                        ClientSecrets = { new Secret("budgetsecret".Sha256()) },
+                        AllowedGrantTypes = { GrantType.ClientCredentials },
+                        AllowedScopes = { "Budget.Write", "Budget.Read", "Roles" }
                     },
             new Client
                 {

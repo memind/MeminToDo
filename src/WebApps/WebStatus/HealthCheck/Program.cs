@@ -29,6 +29,7 @@ builder.Services.Configure<EntertainmentConfiguration>(builder.Configuration.Get
 builder.Services.Configure<SkillConfiguration>(builder.Configuration.GetSection("SkillService"));
 builder.Services.Configure<DashboardConfiguration>(builder.Configuration.GetSection("DashboardAggregator"));
 builder.Services.Configure<MealConfiguration>(builder.Configuration.GetSection("MealService"));
+builder.Services.Configure<BudgetConfiguration>(builder.Configuration.GetSection("BudgetService"));
 builder.Services.AddSingleton<IHostedService, ConsulRegisterServices>();
 #endregion
 

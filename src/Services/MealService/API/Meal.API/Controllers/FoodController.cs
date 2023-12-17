@@ -21,72 +21,42 @@ namespace Meal.API.Controllers
 
         [HttpGet("/GetAllFoods")]
         [Authorize(Policy = "MealRead")]
-        public List<FoodDto> GetAllFoods()
-        {
-            return _foodService.GetAllFoods();
-        }
+        public List<FoodDto> GetAllFoods() => _foodService.GetAllFoods();
 
         [HttpGet("/GetAllFoodsInMeal")]
         [Authorize(Policy = "MealRead")]
-        public List<FoodDto> GetAllFoodsInMeal(Guid mealId)
-        {
-            return _foodService.GetAllFoodsInMeal(mealId);
-        }
+        public List<FoodDto> GetAllFoodsInMeal(Guid mealId) => _foodService.GetAllFoodsInMeal(mealId);
 
         [HttpGet("/GetAllActiveFoods")]
         [Authorize(Policy = "MealRead")]
-        public List<FoodDto> GetAllActiveFoods()
-        {
-            return _foodService.GetAllActiveFoods();
-        }
+        public List<FoodDto> GetAllActiveFoods() => _foodService.GetAllActiveFoods();
 
         [HttpGet("/GetAllDeletedFoods")]
         [Authorize(Policy = "MealRead")]
-        public List<FoodDto> GetAllDeletedFoods()
-        {
-            return _foodService.GetAllDeletedFoods();
-        }
+        public List<FoodDto> GetAllDeletedFoods() => _foodService.GetAllDeletedFoods();
 
         [HttpGet("/GetFoodById")]
         [Authorize(Policy = "MealRead")]
-        public FoodDto GetFoodById(Guid foodId)
-        {
-            return _foodService.GetFoodById(foodId);
-        }
+        public FoodDto GetFoodById(Guid foodId) => _foodService.GetFoodById(foodId);
 
         [HttpGet("/GetUsersAllFoods")]
         [Authorize(Policy = "MealRead")]
-        public List<FoodDto> GetUsersAllFoods(Guid userId)
-        {
-            return _foodService.GetUsersAllFoods(userId);
-        }
+        public List<FoodDto> GetUsersAllFoods(Guid userId) => _foodService.GetUsersAllFoods(userId);
 
         [HttpPost("/CreateFood")]
         [Authorize(Policy = "MealWrite")]
-        public void CreateFood(FoodCreateDto food, Guid mealId, Guid userId)
-        {
-            _foodService.CreateFood(food, mealId, userId);
-        }
+        public void CreateFood(FoodCreateDto food, Guid mealId, Guid userId) => _foodService.CreateFood(food, mealId, userId);
 
         [HttpPut("/UpdateFood")]
         [Authorize(Policy = "MealWrite")]
-        public FoodDto UpdateFood(FoodUpdateDto food)
-        {
-            return _foodService.UpdateFood(food);
-        }
+        public FoodDto UpdateFood(FoodUpdateDto food) => _foodService.UpdateFood(food);
 
         [HttpDelete("/SoftDeleteFood")]
         [Authorize(Policy = "MealWrite")]
-        public void SoftDeleteFood(FoodDeleteDto food)
-        {
-            _foodService.SoftDeleteFood(food);
-        }
+        public void SoftDeleteFood(FoodDeleteDto food) => _foodService.SoftDeleteFood(food);
 
         [HttpDelete("/HardDeleteFood")]
         [Authorize(Policy = "MealWrite")]
-        public void HardDeleteFood(FoodHardDeleteDto food)
-        {
-            _foodService.HardDeleteFood(food);
-        }
+        public void HardDeleteFood(FoodHardDeleteDto food) => _foodService.HardDeleteFood(food);
     }
 }

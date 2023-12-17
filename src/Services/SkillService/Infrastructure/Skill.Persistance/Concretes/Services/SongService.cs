@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
+using Common.Caching.Services;
 using Common.Logging.Logs.SkillLogs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 using Skill.Application.Abstractions.Services;
 using Skill.Application.DTOs.SongDTOs;
 using Skill.Application.Repositories.SongRepositories;
 using Skill.Domain.Entities;
 using Skill.Domain.Entities.Common;
+using Skill.Persistance.Consts;
+using StackExchange.Redis;
 
 namespace Skill.Persistance.Concretes.Services
 {
@@ -16,9 +20,11 @@ namespace Skill.Persistance.Concretes.Services
         private readonly ISongWriteRepository _write;
         private readonly IMapper _mapper;
         private readonly ILogger<SongService> _logger;
+        private readonly IDatabase _cache;
 
         public SongService(ISongWriteRepository write, ISongReadRepository read, IMapper mapper, ILogger<SongService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _write = write;
             _read = read;
             _mapper = mapper;
@@ -80,8 +86,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllSongs();
+                var cachedSongs = _cache.StringGet(cacheKey);
+
+                if (!cachedSongs.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Song>>(cachedSongs);
+
+                var songs = _read.GetAll();
+
+                var serializedSongs = JsonConvert.SerializeObject(songs);
+                _cache.StringSet(cacheKey, serializedSongs);
+
                 _logger.LogInformation(SkillLogs.GetAllSongs());
-                return _read.GetAll();
+                return songs;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -89,8 +106,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllSongs();
+                var cachedSongs = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedSongs.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Song>>(cachedSongs);
+
+                var songs = await _read.GetAllAsync();
+
+                var serializedSongs = JsonConvert.SerializeObject(songs);
+                await _cache.StringSetAsync(cacheKey, serializedSongs);
+
                 _logger.LogInformation(SkillLogs.GetAllSongs());
-                return await _read.GetAllAsync();
+                return songs;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -98,8 +126,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllSongs(id);
+                var cachedSongs = _cache.StringGet(cacheKey);
+
+                if (!cachedSongs.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Song>>(cachedSongs);
+
+                var songs = _read.GetFiltered(x => x.UserId == id);
+
+                var serializedSongs = JsonConvert.SerializeObject(songs);
+                _cache.StringSet(cacheKey, serializedSongs);
+
                 _logger.LogInformation(SkillLogs.GetUsersAllSongs(id));
-                return _read.GetFiltered(x => x.UserId == id);
+                return songs;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -107,8 +146,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllSongs(id);
+                var cachedSongs = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedSongs.IsNull)
+                    return JsonConvert.DeserializeObject<GetManyResult<Song>>(cachedSongs);
+
+                var songs = await _read.GetFilteredAsync(x => x.UserId == id);
+
+                var serializedSongs = JsonConvert.SerializeObject(songs);
+                await _cache.StringSetAsync(cacheKey, serializedSongs);
+
                 _logger.LogInformation(SkillLogs.GetUsersAllSongs(id));
-                return await _read.GetFilteredAsync(x => x.UserId == id);
+                return songs;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -116,8 +166,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetSongById(id);
+                var cachedSongs = _cache.StringGet(cacheKey);
+
+                if (!cachedSongs.IsNull)
+                    return JsonConvert.DeserializeObject<GetOneResult<Song>>(cachedSongs);
+
+                var song = _read.GetById(id);
+
+                var serializedSong = JsonConvert.SerializeObject(song);
+                _cache.StringSet(cacheKey, serializedSong);
+
                 _logger.LogInformation(SkillLogs.GetSongById(id));
-                return _read.GetById(id);
+                return song;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -125,8 +186,19 @@ namespace Skill.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetSongById(id);
+                var cachedSongs = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedSongs.IsNull)
+                    return JsonConvert.DeserializeObject<GetOneResult<Song>>(cachedSongs);
+
+                var song = await _read.GetByIdAsync(id);
+
+                var serializedSong = JsonConvert.SerializeObject(song);
+                await _cache.StringSetAsync(cacheKey, serializedSong);
+
                 _logger.LogInformation(SkillLogs.GetSongById(id));
-                return await _read.GetByIdAsync(id);
+                return song;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
         }
 

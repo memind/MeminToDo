@@ -21,44 +21,26 @@ namespace Workout.API.Controllers
 
         [HttpPost("/createWorkout")]
         [Authorize(Policy = "WorkoutWrite")]
-        public WorkoutDto CreateWorkout(WorkoutDto model)
-        {
-            return _service.CreateWorkout(model);
-        }
+        public WorkoutDto CreateWorkout(WorkoutDto model) => _service.CreateWorkout(model);
 
         [HttpGet("/getWorkout")]
         [Authorize(Policy = "WorkoutRead")]
-        public WorkoutDto GetWorkout(string id)
-        {
-            return _service.GetWorkoutById(id);
-        }
+        public WorkoutDto GetWorkout(string id) => _service.GetWorkoutById(id);
 
         [HttpGet("/getAllWorkouts")]
         [Authorize(Policy = "WorkoutRead")]
-        public List<WorkoutDto> GetAllWorkouts()
-        {
-            return _service.GetAllWorkouts();
-        }
+        public List<WorkoutDto> GetAllWorkouts() => _service.GetAllWorkouts();
 
         [HttpGet("/getUsersAllWorkouts")]
         [Authorize(Policy = "WorkoutRead")]
-        public List<WorkoutDto> GetUsersAllWorkouts(string id)
-        {
-            return _service.GetUsersAllWorkouts(id);
-        }
+        public List<WorkoutDto> GetUsersAllWorkouts(string id) => _service.GetUsersAllWorkouts(id);
 
         [HttpPut("/updateWorkout")]
         [Authorize(Policy = "WorkoutWrite")]
-        public WorkoutDto UpdateWorkout(WorkoutDto model, string id)
-        {
-            return _service.UpdateWorkout(model, id);
-        }
+        public WorkoutDto UpdateWorkout(WorkoutDto model, string id) => _service.UpdateWorkout(model, id);
 
         [HttpDelete("/deleteWorkout")]
         [Authorize(Policy = "WorkoutWrite")]
-        public void DeleteWorkout(string id)
-        {
-            _service.DeleteWorkout(id);
-        }
+        public void DeleteWorkout(string id) => _service.DeleteWorkout(id);
     }
 }

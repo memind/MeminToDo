@@ -1,6 +1,24 @@
 version: '3.4'
 
 services:
+  redis.master:
+    image: redis:latest
+
+  redis.slave1:
+    image: redis:latest
+
+  redis.slave2:
+    image: redis:latest
+
+  redis.slave3:
+    image: redis:latest
+
+  redis.sentinel1:
+    image: redis:latest
+
+  redis.sentinel2:
+    image: redis:latest
+
   consul:
     image: consul:1.15.4
 
@@ -79,6 +97,12 @@ services:
     build:
       context: .
       dockerfile: src/Services/LogService/Log.API/Dockerfile
+
+  budget.api:
+    image: ${DOCKER_REGISTRY-}budgetapi
+    build:
+      context: .
+      dockerfile: src/Services/BudgetService/Presentation/Budget.API/Dockerfile
 
 volumes:
   portainer_data:

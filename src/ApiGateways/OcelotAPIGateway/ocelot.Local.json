@@ -1,5 +1,406 @@
 ﻿{
   "Routes": [
+    /////////////////////// BUDGET API ///////////////////////
+    {
+      "DownstreamPathTemplate": "/CreateBudgetAccount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BudgetAccount",
+      "UpstreamHttpMethod": [ "POST" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/DeleteBudgetAccount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BudgetAccount",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/UpdateBudgetAccount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BudgetAccount",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetBudgetAccountById?budgetAccountId={budgetAccountId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BudgetAccount/GetBudgetAccountById?budgetAccountId={budgetAccountId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetUsersAllBudgetAccounts?userId={userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BudgetAccount/GetUsersAllBudgetAccounts?userId={userId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetAllBudgetAccounts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BudgetAccount/GetAllBudgetAccounts",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/CreateWallet",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Wallet",
+      "UpstreamHttpMethod": [ "POST" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/DeleteWallet",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Wallet",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/UpdateWallet",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Wallet",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetWalletById?walletId={walletId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Wallet/GetWalletById?walletId={walletId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetUsersAllWallets?userId={userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Wallet/GetUsersAllWallets?userId={userId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetAllWallets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Wallet/GetAllWallets",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetWalletByIdAsNoTracking?walletId={walletId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Wallet/noTracking/{walletId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/CreateMoneyFlow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/MoneyFlow",
+      "UpstreamHttpMethod": [ "POST" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/DeleteMoneyFlow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/MoneyFlow",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/UpdateMoneyFlow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/MoneyFlow",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetMoneyFlowById?moneyFlowId={moneyFlowId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/MoneyFlow/GetMoneyFlowById?moneyFlowId={moneyFlowId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetUsersAllMoneyFlows?userId={userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/MoneyFlow/GetUsersAllMoneyFlows?userId={userId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetAllMoneyFlows",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/MoneyFlow/GetAllMoneyFlows",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/GetMoneyFlowByIdAsNoTracking?moneyFlowId={moneyFlowId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/MoneyFlow/noTracking/{moneyFlowId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
     /////////////////////// WORKOUT API ///////////////////////
     {
       "DownstreamPathTemplate": "/CreateWorkout",

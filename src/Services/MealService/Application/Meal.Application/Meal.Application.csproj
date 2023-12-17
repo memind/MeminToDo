@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Caching\Common.Caching\Common.Caching.csproj" />
     <ProjectReference Include="..\..\AutoMapper\Meal.Mapper\Meal.Mapper.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Meal.Infrastructure\Meal.Infrastructure.csproj" />
   </ItemGroup>

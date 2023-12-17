@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
+using Common.Caching.Services;
 using Common.Logging.Logs.WorkoutLogs;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Workout.Application.Abstractions.Services;
 using Workout.Application.Abstractions.UnitOfWork;
 using Workout.Application.DTOs.ExerciseDTOs;
 using Workout.Application.DTOs.WorkoutDTOs;
 using Workout.Domain.Entities;
 using w = Workout.Domain.Entities;
+using Workout.Persistance.Consts;
+using Thrift.Protocol.Entities;
+using StackExchange.Redis;
 
 namespace Workout.Persistance.Concretes.Services
 {
@@ -15,9 +20,11 @@ namespace Workout.Persistance.Concretes.Services
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
         private readonly ILogger<ExerciseService> _logger;
+        private readonly IDatabase _cache;
 
         public ExerciseService(IMapper mapper, IUnitOfWork uow, ILogger<ExerciseService> logger)
         {
+            _cache = RedisService.GetRedisMasterDatabase();
             _mapper = mapper;
             _uow = uow;
             _logger = logger;
@@ -75,11 +82,21 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllExercises();
+                var cachedExercises = _cache.StringGet(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<List<ExerciseDto>>(cachedExercises);
+
                 var result = _uow.GetReadRepository<w.Exercise>().GetAll();
+                var map = _mapper.Map<List<ExerciseDto>>(result);
+
+                var serializedWorkouts = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedWorkouts);
 
                 _logger.LogInformation(WorkoutLogs.GetAllExercises());
 
-                return _mapper.Map<List<ExerciseDto>>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -87,11 +104,21 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllExercises();
+                var cachedExercises = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<List<ExerciseDto>>(cachedExercises);
+
                 var result = await _uow.GetReadRepository<w.Exercise>().GetAllAsync();
+                var map = _mapper.Map<List<ExerciseDto>>(result);
+
+                var serializedWorkouts = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedWorkouts);
 
                 _logger.LogInformation(WorkoutLogs.GetAllExercises());
 
-                return _mapper.Map<List<ExerciseDto>>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -99,11 +126,21 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllExercisesInWorkout(workoutId);
+                var cachedExercises = _cache.StringGet(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<List<ExerciseDto>>(cachedExercises);
+
                 var result = _uow.GetReadRepository<w.Exercise>().GetAll().Where(e => e.WorkoutId == workoutId).ToList();
+                var map = _mapper.Map<List<ExerciseDto>>(result);
+
+                var serializedExercises = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedExercises);
 
                 _logger.LogInformation(WorkoutLogs.GetAllExercisesInWorkout(workoutId));
 
-                return _mapper.Map<List<ExerciseDto>>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -111,11 +148,21 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetAllExercisesInWorkout(workoutId);
+                var cachedExercises = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<List<ExerciseDto>>(cachedExercises);
+
                 var result = (await _uow.GetReadRepository<w.Exercise>().GetAllAsync()).Where(e => e.WorkoutId == workoutId).ToList();
+                var map = _mapper.Map<List<ExerciseDto>>(result);
+
+                var serializedExercises = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedExercises);
 
                 _logger.LogInformation(WorkoutLogs.GetAllExercisesInWorkout(workoutId));
 
-                return _mapper.Map<List<ExerciseDto>>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -123,12 +170,22 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetExerciseById(exerciseId);
+                var cachedExercises = _cache.StringGet(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<ExerciseDto>(cachedExercises);
+
                 var result = _uow.GetReadRepository<w.Exercise>().GetById(exerciseId);
                 result.Workout = _uow.GetReadRepository<w.Workout>().GetById(result.WorkoutId);
+                var map = _mapper.Map<ExerciseDto>(result);
+
+                var serializedExercises = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedExercises);
 
                 _logger.LogInformation(WorkoutLogs.GetExerciseById(exerciseId));
 
-                return _mapper.Map<ExerciseDto>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -136,13 +193,23 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetExerciseById(exerciseId);
+                var cachedExercises = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<ExerciseDto>(cachedExercises);
 
                 var result = await _uow.GetReadRepository<w.Exercise>().GetByIdAsync(exerciseId);
                 result.Workout = await _uow.GetReadRepository<w.Workout>().GetByIdAsync(result.WorkoutId);
+                var map = _mapper.Map<ExerciseDto>(result);
+
+
+                var serializedExercises = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedExercises);
 
                 _logger.LogInformation(WorkoutLogs.GetExerciseById(exerciseId));
 
-                return _mapper.Map<ExerciseDto>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -150,11 +217,21 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllExercises(userId);
+                var cachedExercises = _cache.StringGet(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<List<ExerciseDto>>(cachedExercises);
+
                 var result = _uow.GetReadRepository<w.Exercise>().GetUsersAll(userId);
+                var map = _mapper.Map<List<ExerciseDto>>(result);
+
+                var serializedExercises = JsonConvert.SerializeObject(map);
+                _cache.StringSet(cacheKey, serializedExercises);
 
                 _logger.LogInformation(WorkoutLogs.GetUsersAllExercises(userId));
 
-                return _mapper.Map<List<ExerciseDto>>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 
@@ -162,11 +239,21 @@ namespace Workout.Persistance.Concretes.Services
         {
             try
             {
+                var cacheKey = CacheConsts.GetUsersAllExercises(userId);
+                var cachedExercises = await _cache.StringGetAsync(cacheKey);
+
+                if (!cachedExercises.IsNull)
+                    return JsonConvert.DeserializeObject<List<ExerciseDto>>(cachedExercises);
+
                 var result = await _uow.GetReadRepository<w.Exercise>().GetUsersAllAsync(userId);
+                var map = _mapper.Map<List<ExerciseDto>>(result);
+
+                var serializedExercises = JsonConvert.SerializeObject(map);
+                await _cache.StringSetAsync(cacheKey, serializedExercises);
 
                 _logger.LogInformation(WorkoutLogs.GetUsersAllExercises(userId));
 
-                return _mapper.Map<List<ExerciseDto>>(result);
+                return map;
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
 

@@ -21,44 +21,26 @@ namespace Entertainment.API.Controllers
 
         [HttpGet("/getBookNote")]
         [Authorize(Policy = "EntertainmentRead")]
-        public BookNoteDto GetBookNote(string id)
-        {
-            return _service.GetBookNoteById(id);
-        }
+        public BookNoteDto GetBookNote(string id) => _service.GetBookNoteById(id);
 
         [HttpGet("/getBookNotes")]
         [Authorize(Policy = "EntertainmentRead")]
-        public List<BookNoteDto> GetAllBookNotes()
-        {
-            return _service.GetAllBookNotes();
-        }
+        public List<BookNoteDto> GetAllBookNotes() => _service.GetAllBookNotes();
 
         [HttpGet("/getUsersBookNotes")]
         [Authorize(Policy = "EntertainmentRead")]
-        public List<BookNoteDto> GetUsersAllBookNotes(string id)
-        {
-            return _service.GetUsersAllBookNotes(id);
-        }
+        public List<BookNoteDto> GetUsersAllBookNotes(string id) => _service.GetUsersAllBookNotes(id);
 
         [HttpPost("/createBookNote")]
         [Authorize(Policy = "EntertainmentWrite")]
-        public int CreateBookNote(BookNoteDto model)
-        {
-            return _service.CreateBookNote(model);
-        }
+        public int CreateBookNote(BookNoteDto model) => _service.CreateBookNote(model);
 
         [HttpPut("/updateBookNote")]
         [Authorize(Policy = "EntertainmentWrite")]
-        public int UpdateBookNote(BookNoteDto model)
-        {
-            return _service.UpdateBookNote(model);
-        }
+        public int UpdateBookNote(BookNoteDto model) => _service.UpdateBookNote(model);
 
         [HttpDelete("/deleteBookNote")]
         [Authorize(Policy = "EntertainmentWrite")]
-        public int DeleteBookNote(string id)
-        {
-            return _service.DeleteBookNote(id);
-        }
+        public int DeleteBookNote(string id) => _service.DeleteBookNote(id);
     }
 }

@@ -1,5 +1,9 @@
 using Budget.Application;
 using Budget.Persistance;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Prometheus;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +22,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.MapHealthChecks("/hc", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.UseCors();
+app.UseRouting();
+app.UseHttpMetrics();
+app.MapMetrics();
+app.UseHttpLogging();
+app.UseSerilogRequestLogging();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
