@@ -19,7 +19,7 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetRead")]
         public List<MoneyFlowDto> GetAllMoneyFlows() => _moneyFlow.GetAllMoneyFlows();
 
-        [HttpGet("/user/{userId}")]
+        [HttpGet("/userMoneyFlows/{userId}")]
         [Authorize(Policy = "BudgetRead")]
         public List<MoneyFlowDto> GetUsersAllMoneyFlows(Guid userId) => _moneyFlow.GetUsersAllMoneyFlows(userId);
 

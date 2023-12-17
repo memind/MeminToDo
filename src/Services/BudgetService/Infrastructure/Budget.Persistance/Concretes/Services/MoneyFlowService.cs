@@ -82,7 +82,10 @@ namespace Budget.Persistance.Concretes.Services
                 var list = _unitOfWork.GetReadRepository<MoneyFlow>().GetAll(includeProperties: mf => mf.BudgetAccount);
                 var map = _mapper.Map<List<MoneyFlowDto>>(list);
 
-                var serializedMoneyFlows = JsonConvert.SerializeObject(map);
+                var serializedMoneyFlows = JsonConvert.SerializeObject(map, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
                 _cache.StringSet(cacheKey, serializedMoneyFlows);
 
                 _logger.LogInformation(BudgetLogs.GetAllMoneyFlows());
@@ -105,7 +108,7 @@ namespace Budget.Persistance.Concretes.Services
                 var moneyFlow = _unitOfWork.GetReadRepository<MoneyFlow>().Get(mf => mf.Id == id, includeProperties: mf => mf.BudgetAccount);
                 var map = _mapper.Map<MoneyFlowDto>(moneyFlow);
 
-                var serializedMoneyFlows = JsonConvert.SerializeObject(map);
+                var serializedMoneyFlows = JsonConvert.SerializeObject(map, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
                 _cache.StringSet(cacheKey, serializedMoneyFlows);
 
                 _logger.LogInformation(BudgetLogs.GetMoneyFlowById(id));

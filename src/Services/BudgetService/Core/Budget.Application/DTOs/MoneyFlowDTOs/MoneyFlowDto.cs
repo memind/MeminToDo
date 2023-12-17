@@ -16,8 +16,5 @@ namespace Budget.Application.DTOs.MoneyFlowDTOs
         public string? Message { get; set; }
 
         public Guid BudgetAccountId { get; set; }
-
-        [JsonIgnore]
-        public BudgetAccountDto BudgetAccount { get; set; }
     }
 }

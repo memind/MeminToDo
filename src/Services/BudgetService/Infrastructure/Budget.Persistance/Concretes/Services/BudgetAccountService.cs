@@ -70,7 +70,10 @@ namespace Budget.Persistance.Concretes.Services
                 var list = _unitOfWork.GetReadRepository<BudgetAccount>().GetAll(predicate: null, orderBy: null, ba => ba.MoneyFlows, ba => ba.Wallets);
                 var map = _mapper.Map<List<BudgetAccountDto>>(list);
 
-                var serializedBudgetAccounts = JsonConvert.SerializeObject(map);
+                var serializedBudgetAccounts = JsonConvert.SerializeObject(map, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
                 _cache.StringSet(cacheKey, serializedBudgetAccounts);
 
                 _logger.LogInformation(BudgetLogs.GetAllBudgetAccounts());
@@ -84,7 +87,7 @@ namespace Budget.Persistance.Concretes.Services
         {
             try
             {
-                var cacheKey = CacheConsts.GetAllBudgetAccounts();
+                var cacheKey = CacheConsts.GetBudgetAccountById(id);
                 var cachedBudgetAccount = _cache.StringGet(cacheKey);
 
                 if (!cachedBudgetAccount.IsNull)
@@ -93,7 +96,7 @@ namespace Budget.Persistance.Concretes.Services
                 var budgetAccount = _unitOfWork.GetReadRepository<BudgetAccount>().Get(ba => ba.Id == id, orderBy: null, ba => ba.MoneyFlows, ba => ba.Wallets);
                 var map = _mapper.Map<BudgetAccountDto>(budgetAccount);
 
-                var serializedBudgetAccount = JsonConvert.SerializeObject(map);
+                var serializedBudgetAccount = JsonConvert.SerializeObject(map, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
                 _cache.StringSet(cacheKey, serializedBudgetAccount);
 
                 _logger.LogInformation(BudgetLogs.GetBudgetAccountById(id));

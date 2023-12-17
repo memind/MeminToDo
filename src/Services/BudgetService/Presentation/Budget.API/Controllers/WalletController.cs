@@ -19,7 +19,7 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetRead")]
         public List<WalletDto> GetAllWallets() => _wallet.GetAllWallets();
 
-        [HttpGet("/user/{userId}")]
+        [HttpGet("/userWallets/{userId}")]
         [Authorize(Policy = "BudgetRead")]
         public List<WalletDto> GetUsersAllWallets(Guid userId) => _wallet.GetUsersAllWallets(userId);
 

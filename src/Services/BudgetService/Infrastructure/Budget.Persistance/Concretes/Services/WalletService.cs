@@ -102,7 +102,10 @@ namespace Budget.Persistance.Concretes.Services
                 var list = _unitOfWork.GetReadRepository<Wallet>().GetAll(includeProperties: w => w.BudgetAccount);
                 var map = _mapper.Map<List<WalletDto>>(list);
 
-                var serializedWallets = JsonConvert.SerializeObject(map);
+                var serializedWallets = JsonConvert.SerializeObject(map, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
                 _cache.StringSet(cacheKey, serializedWallets);
 
                 _logger.LogInformation(BudgetLogs.GetAllWallets());
@@ -124,7 +127,10 @@ namespace Budget.Persistance.Concretes.Services
                 var budgetAccount = _unitOfWork.GetReadRepository<BudgetAccount>().Get(ba => ba.UserId == userId, includeProperties: ba => ba.Wallets);
                 var map = _mapper.Map<List<WalletDto>>(budgetAccount.Wallets);
 
-                var serializedWallets = JsonConvert.SerializeObject(map);
+                var serializedWallets = JsonConvert.SerializeObject(map, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
                 _cache.StringSet(cacheKey, serializedWallets);
 
                 _logger.LogInformation(BudgetLogs.GetUsersAllWallets(userId));

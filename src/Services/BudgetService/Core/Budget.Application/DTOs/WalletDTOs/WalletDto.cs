@@ -11,7 +11,5 @@ namespace Budget.Application.DTOs.WalletDTOs
         public Currency Currency { get; set; }
         public int Total { get; set; }
         public Guid BudgetAccountId { get; set; }
-
-        public BudgetAccountDto BudgetAccount { get; set; }
     }
 }
