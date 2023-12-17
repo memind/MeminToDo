@@ -49,8 +49,8 @@ namespace Budget.Persistance
 
             services.AddAuthorization(authOption =>
             {
-                authOption.AddPolicy("Budget.Read", policy => policy.RequireClaim("scope", "Budget.Read"));
-                authOption.AddPolicy("Budget.Write", policy => policy.RequireClaim("scope", "Budget.Write"));
+                authOption.AddPolicy("BudgetRead", policy => policy.RequireClaim("scope", "Budget.Read"));
+                authOption.AddPolicy("BudgetWrite", policy => policy.RequireClaim("scope", "Budget.Write"));
             });
             #endregion
 
