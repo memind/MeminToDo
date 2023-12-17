@@ -5,6 +5,7 @@ ASP.Net Core Microservices
 - Container Management: Portainer
 - API Gateway: Ocelot
 - Logging: ElasticSearch, SeriLog, Kibana
+- Distributed Caching: Redis Sentinel
 - Log Monitoring: Seq
 - Monitoring: AppMetrics/Prometheus/Grafana
 - Tracing: OpenTracing/JaegerUI
@@ -19,6 +20,7 @@ Meal Service
 - Generic Repository Pattern, Unit of Work Pattern
 - Custom AutoMapper class
 - Logging was done by SeriLog
+- Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
 
@@ -29,6 +31,7 @@ Skill Service
 - Generic Repository Pattern, CQRS Pattern, MediatR implementation
 - Autofac, AutoMapper implementation
 - Logging was done by SeriLog
+- Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
 
@@ -39,6 +42,7 @@ Entertainment Service
 - Using Dapper for micro-orm implementation to simplify data access and ensure high performance
 - Autofac, AutoMapper implementation
 - Logging was done by SeriLog
+- Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
 
@@ -47,19 +51,31 @@ Workout Service
 - REST API principles, CRUD operations
 - CosmosDB database connection
 - Logging was done by SeriLog
+- Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
 
+Budget Service
+- ASP.NET Core Web API application
+- REST API principles, CRUD operations
+- MSSQL database connection
+- Logging was done by SeriLog
+- Caching was done by Redis Sentinel
+- Monitoring was done by AppMetrics/Prometheus/Grafana
+- Tracing was done by OpenTracing/JaegerUI
+  
 Log Service
 - ASP.NET Core Web API application
 - REST API principles, CRUD operations
 - DynamoDB database connection
-- Cron jobs via Hangfire
+- Caching was done by Redis Sentinel
+- Cron jobs for backup mechanism via Hangfire
 
 Dashboard Service
 - ASP.NET Core Web API application
 - Aggregator Pattern
 - Logging was done by SeriLog
+- Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
 - Resiliency implementations were made with Polly
