@@ -14,32 +14,30 @@ namespace Entertainment.API.Controllers
     {
         private readonly IBookNoteService _service;
 
-        public BookNoteController(IBookNoteService service)
-        {
-            _service = service;
-        }
+        public BookNoteController(IBookNoteService service) => _service = service;
+        
 
-        [HttpGet("/getBookNote")]
+        [HttpGet("/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public BookNoteDto GetBookNote(string id) => _service.GetBookNoteById(id);
 
-        [HttpGet("/getBookNotes")]
+        [HttpGet]
         [Authorize(Policy = "EntertainmentRead")]
         public List<BookNoteDto> GetAllBookNotes() => _service.GetAllBookNotes();
 
-        [HttpGet("/getUsersBookNotes")]
+        [HttpGet("/user/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public List<BookNoteDto> GetUsersAllBookNotes(string id) => _service.GetUsersAllBookNotes(id);
 
-        [HttpPost("/createBookNote")]
+        [HttpPost]
         [Authorize(Policy = "EntertainmentWrite")]
         public int CreateBookNote(BookNoteDto model) => _service.CreateBookNote(model);
 
-        [HttpPut("/updateBookNote")]
+        [HttpPut]
         [Authorize(Policy = "EntertainmentWrite")]
         public int UpdateBookNote(BookNoteDto model) => _service.UpdateBookNote(model);
 
-        [HttpDelete("/deleteBookNote")]
+        [HttpDelete("/{id}")]
         [Authorize(Policy = "EntertainmentWrite")]
         public int DeleteBookNote(string id) => _service.DeleteBookNote(id);
     }

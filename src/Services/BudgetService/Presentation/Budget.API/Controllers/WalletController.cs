@@ -19,13 +19,9 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetRead")]
         public List<WalletDto> GetAllWallets() => _wallet.GetAllWallets();
 
-        [HttpGet("/userWallets/{userId}")]
+        [HttpGet("/user/{userId}")]
         [Authorize(Policy = "BudgetRead")]
         public List<WalletDto> GetUsersAllWallets(Guid userId) => _wallet.GetUsersAllWallets(userId);
-
-        [HttpGet("/noTracking/{walletId}")]
-        [Authorize(Policy = "BudgetRead")]
-        public WalletDto GetWalletByIdAsNoTracking(Guid walletId) => _wallet.GetWalletByIdAsNoTracking(walletId);
 
         [HttpGet("/{walletId}")]
         [Authorize(Policy = "BudgetRead")]
@@ -39,7 +35,7 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetWrite")]
         public int UpdateWallet(WalletDto model) => _wallet.UpdateWallet(model);
 
-        [HttpDelete]
+        [HttpDelete("/{walletId}")]
         [Authorize(Policy = "BudgetWrite")]
         public int DeleteWallet(Guid walletId) => _wallet.DeleteWallet(walletId);
     }

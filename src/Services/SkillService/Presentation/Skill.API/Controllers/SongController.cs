@@ -21,20 +21,16 @@ namespace Skill.API.Controllers
     [Authorize]
     public class SongController : ControllerBase
     {
-        private ISongService _service;
         private IMediator _mediator;
 
-        public SongController(ISongService service, IMediator mediator)
-        {
-            _service = service;
-            _mediator = mediator;
-        }
+        public SongController(IMediator mediator) => _mediator = mediator;
+        
 
         [HttpGet("/getOneSong")]
         [Authorize(Policy = "SkillRead")]
         public async Task<GetSongByIdQueryResponse> GetById([FromQuery] GetSongByIdQueryRequest request) => await _mediator.Send(request);
 
-        [HttpGet("/getAllSongs")]
+        [HttpGet]
         [Authorize(Policy = "SkillRead")]
         public async Task<GetAllSongsQueryResponse> GetAll([FromQuery] GetAllSongsQueryRequest request) => await _mediator.Send(request);
 

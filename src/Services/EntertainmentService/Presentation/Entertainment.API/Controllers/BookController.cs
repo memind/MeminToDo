@@ -13,36 +13,34 @@ namespace Entertainment.API.Controllers
     {
         private readonly IBookService _service;
 
-        public BookController(IBookService service)
-        {
-            _service = service;
-        }
+        public BookController(IBookService service) => _service = service;
+        
 
-        [HttpGet("/getBook")]
+        [HttpGet("/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public BookDto GetBook(string id) => _service.GetBookById(id);
         
 
-        [HttpGet("/getBooks")]
+        [HttpGet]
         [Authorize(Policy = "EntertainmentRead")]
         public List<BookDto> GetAllBooks() => _service.GetAllBooks();
 
-        [HttpGet("/getUsersBooks")]
+        [HttpGet("/user/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public List<BookDto> GetUsersAllBooks(string id) => _service.GetUsersAllBooks(id);
         
 
-        [HttpPost("/createBook")]
+        [HttpPost]
         [Authorize(Policy = "EntertainmentWrite")]
         public int CreateBook(BookDto model) => _service.CreateBook(model);
         
 
-        [HttpPut("/updateBook")]
+        [HttpPut]
         [Authorize(Policy = "EntertainmentWrite")]
         public int UpdateBook(BookDto model) => _service.UpdateBook(model);
         
 
-        [HttpDelete("/deleteBook")]
+        [HttpDelete("/{id}")]
         [Authorize(Policy = "EntertainmentWrite")]
         public int DeleteBook(string id) => _service.DeleteBook(id);
     }

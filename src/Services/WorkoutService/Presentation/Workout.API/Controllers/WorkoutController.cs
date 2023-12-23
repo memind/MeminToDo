@@ -14,32 +14,30 @@ namespace Workout.API.Controllers
     {
         private readonly IWorkoutService _service;
 
-        public WorkoutController(IWorkoutService service)
-        {
-            _service = service;
-        }
+        public WorkoutController(IWorkoutService service) => _service = service;
+        
 
-        [HttpPost("/createWorkout")]
+        [HttpPost]
         [Authorize(Policy = "WorkoutWrite")]
         public WorkoutDto CreateWorkout(WorkoutDto model) => _service.CreateWorkout(model);
 
-        [HttpGet("/getWorkout")]
+        [HttpGet("/{id}")]
         [Authorize(Policy = "WorkoutRead")]
         public WorkoutDto GetWorkout(string id) => _service.GetWorkoutById(id);
 
-        [HttpGet("/getAllWorkouts")]
+        [HttpGet]
         [Authorize(Policy = "WorkoutRead")]
         public List<WorkoutDto> GetAllWorkouts() => _service.GetAllWorkouts();
 
-        [HttpGet("/getUsersAllWorkouts")]
+        [HttpGet("/user/{id}")]
         [Authorize(Policy = "WorkoutRead")]
         public List<WorkoutDto> GetUsersAllWorkouts(string id) => _service.GetUsersAllWorkouts(id);
 
-        [HttpPut("/updateWorkout")]
+        [HttpPut]
         [Authorize(Policy = "WorkoutWrite")]
         public WorkoutDto UpdateWorkout(WorkoutDto model, string id) => _service.UpdateWorkout(model, id);
 
-        [HttpDelete("/deleteWorkout")]
+        [HttpDelete]
         [Authorize(Policy = "WorkoutWrite")]
         public void DeleteWorkout(string id) => _service.DeleteWorkout(id);
     }

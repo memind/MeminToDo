@@ -2,7 +2,7 @@
   "Routes": [
     /////////////////////// BUDGET API ///////////////////////
     {
-      "DownstreamPathTemplate": "/CreateBudgetAccount",
+      "DownstreamPathTemplate": "/api/budget",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -10,8 +10,8 @@
           "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/BudgetAccount",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/Budget",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -22,7 +22,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/DeleteBudgetAccount",
+      "DownstreamPathTemplate": "/api/Budget/{budgetAccountId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -30,8 +30,8 @@
           "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/BudgetAccount",
-      "UpstreamHttpMethod": [ "DELETE" ],
+      "UpstreamPathTemplate": "/Budget/{budgetAccountId}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -42,7 +42,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/UpdateBudgetAccount",
+      "DownstreamPathTemplate": "/api/Budget/user/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -50,27 +50,7 @@
           "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/BudgetAccount",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetBudgetAccountById?budgetAccountId={budgetAccountId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/BudgetAccount/GetBudgetAccountById?budgetAccountId={budgetAccountId}",
+      "UpstreamPathTemplate": "/Budget/user/{userId}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -82,47 +62,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetUsersAllBudgetAccounts?userId={userId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/BudgetAccount/GetUsersAllBudgetAccounts?userId={userId}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllBudgetAccounts",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/BudgetAccount/GetAllBudgetAccounts",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/CreateWallet",
+      "DownstreamPathTemplate": "/api/wallet",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -131,7 +71,7 @@
         }
       ],
       "UpstreamPathTemplate": "/Wallet",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -142,7 +82,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/DeleteWallet",
+      "DownstreamPathTemplate": "/api/wallet/{walletId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -150,8 +90,8 @@
           "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Wallet",
-      "UpstreamHttpMethod": [ "DELETE" ],
+      "UpstreamPathTemplate": "/Wallet/{walletId}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -162,7 +102,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/UpdateWallet",
+      "DownstreamPathTemplate": "/api/wallet/user/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -170,27 +110,7 @@
           "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Wallet",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetWalletById?walletId={walletId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/Wallet/GetWalletById?walletId={walletId}",
+      "UpstreamPathTemplate": "/Wallet/user/{userId}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -202,7 +122,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetUsersAllWallets?userId={userId}",
+      "DownstreamPathTemplate": "/api/moneyflow",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -210,7 +130,47 @@
           "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Wallet/GetUsersAllWallets?userId={userId}",
+      "UpstreamPathTemplate": "/Flow",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/wallet/{moneyFlowId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Flow/{moneyFlowId}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/moneyflow/user/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Flow/user/{userId}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -221,198 +181,19 @@
         "Limit": 1
       }
     },
-    {
-      "DownstreamPathTemplate": "/GetAllWallets",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/Wallet/GetAllWallets",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetWalletByIdAsNoTracking?walletId={walletId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/Wallet/noTracking/{walletId}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/CreateMoneyFlow",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/MoneyFlow",
-      "UpstreamHttpMethod": [ "POST" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/DeleteMoneyFlow",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/MoneyFlow",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/UpdateMoneyFlow",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/MoneyFlow",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetMoneyFlowById?moneyFlowId={moneyFlowId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/MoneyFlow/GetMoneyFlowById?moneyFlowId={moneyFlowId}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersAllMoneyFlows?userId={userId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/MoneyFlow/GetUsersAllMoneyFlows?userId={userId}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllMoneyFlows",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/MoneyFlow/GetAllMoneyFlows",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetMoneyFlowByIdAsNoTracking?moneyFlowId={moneyFlowId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5202"
-        }
-      ],
-      "UpstreamPathTemplate": "/MoneyFlow/noTracking/{moneyFlowId}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
+
     /////////////////////// WORKOUT API ///////////////////////
     {
-      "DownstreamPathTemplate": "/CreateWorkout",
+      "DownstreamPathTemplate": "/api/workout",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "4001"
+          "Port": "5202"
         }
       ],
       "UpstreamPathTemplate": "/Workout",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -423,16 +204,56 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/CreateExercise",
+      "DownstreamPathTemplate": "/api/workout/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "4001"
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Workout/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/workout/user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Workout/User/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/exercise",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
         }
       ],
       "UpstreamPathTemplate": "/Exercise",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -443,15 +264,15 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetAllWorkouts",
+      "DownstreamPathTemplate": "/api/exercise/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "4001"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Workout",
+      "UpstreamPathTemplate": "/Exercise/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -463,15 +284,15 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetAllExercises",
+      "DownstreamPathTemplate": "/api/exercise/user/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "4001"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Exercise",
+      "UpstreamPathTemplate": "/Exercise/User/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -482,238 +303,19 @@
         "Limit": 1
       }
     },
-    {
-      "DownstreamPathTemplate": "/GetWorkout?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/Workout?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetExercise?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/Exercise?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersAllExercises?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersExercises?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersAllWorkouts?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersWorkouts?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/UpdateWorkout?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/Workout?id={id}",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/UpdateExercise?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/Exercise?id={id}",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/DeleteExercise?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/Exercise?id={id}",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/DeleteWorkout?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "4001"
-        }
-      ],
-      "UpstreamPathTemplate": "/Workout?id={id}",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
+
     /////////////////////// ENTERTAINMENT API ///////////////////////
     {
-      "DownstreamPathTemplate": "/CreateGame",
+      "DownstreamPathTemplate": "/api/show",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Game",
-      "UpstreamHttpMethod": [ "POST" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/CreateBook",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Book",
-      "UpstreamHttpMethod": [ "POST" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/CreateBookNote",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/BookNote",
-      "UpstreamHttpMethod": [ "POST" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/CreateShow",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
+          "Port": "5202"
         }
       ],
       "UpstreamPathTemplate": "/Show",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -724,15 +326,35 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetShows",
+      "DownstreamPathTemplate": "/api/show/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Show",
+      "UpstreamPathTemplate": "/Show/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/show/user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Show/User/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -744,16 +366,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetGames",
+      "DownstreamPathTemplate": "/api/game",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "5202"
         }
       ],
       "UpstreamPathTemplate": "/Game",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -764,15 +386,35 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetBooks",
+      "DownstreamPathTemplate": "/api/game/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Book",
+      "UpstreamPathTemplate": "/Game/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/game/user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Game/User/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -784,15 +426,55 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetBookNotes",
+      "DownstreamPathTemplate": "/api/booknote",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "5202"
         }
       ],
       "UpstreamPathTemplate": "/BookNote",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/booknote/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BookNote/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/booknote/user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/BookNote/User/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -804,15 +486,55 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetShow?id={id}",
+      "DownstreamPathTemplate": "/api/book",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Show?id={id}",
+      "UpstreamPathTemplate": "/Book",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/book/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Book/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/book/user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Book/User/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -823,357 +545,38 @@
         "Limit": 1
       }
     },
-    {
-      "DownstreamPathTemplate": "/GetGame?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Game?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetBook?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Book?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetBookNote?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/BookNote?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersShows?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersShows?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersGames?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersGames?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersBooks?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersBooks?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersBookNotes?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersBookNotes?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/UpdateGame?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Game?id={id}",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/UpdateShow?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Show?id={id}",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/UpdateBook?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Book?id={id}",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/UpdateBookNote?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/BookNote?id={id}",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/DeleteBook?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Book?id={id}",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/DeleteBookNote?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/BookNote?id={id}",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/DeleteGame?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Game?id={id}",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/DeleteShow?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Show?id={id}",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
+
     /////////////////////// SKILL API ///////////////////////
     {
-      "DownstreamPathTemplate": "/GetOneArt?id={id}",
+      "DownstreamPathTemplate": "/api/art",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
-        }
-      ],
-      "UpstreamPathTemplate": "/Art?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetOneSong?id={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8002"
-        }
-      ],
-      "UpstreamPathTemplate": "/Song?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllArts",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
       "UpstreamPathTemplate": "/Art",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/art/getoneart?id={id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Art/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -1185,15 +588,15 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetAllSongs",
+      "DownstreamPathTemplate": "/api/art/getusersallarts?id={id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Song",
+      "UpstreamPathTemplate": "/Art/User/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -1205,15 +608,35 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetUsersAllArts?id={id}",
+      "DownstreamPathTemplate": "/api/song",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/UsersArts?id={id}",
+      "UpstreamPathTemplate": "/Song",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/song/getonesong?id={id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Song/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -1225,15 +648,57 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/GetUsersAllSongs?id={id}",
+      "DownstreamPathTemplate": "/api/song/getusersallsongs?id={id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/UsersSongs?id={id}",
+      "UpstreamPathTemplate": "/Song/User/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+
+    /////////////////////// MEAL API ///////////////////////
+    {
+      "DownstreamPathTemplate": "/api/food",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Food",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/food/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Food/{id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
@@ -1245,16 +710,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Song",
+      "DownstreamPathTemplate": "/api/food/harddelete",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Song",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/Food/HardDelete",
+      "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -1265,16 +730,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Art",
+      "DownstreamPathTemplate": "/api/food/user/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Art",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/Food/User/{userId}",
+      "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -1285,16 +750,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Art",
+      "DownstreamPathTemplate": "/api/food/deleted",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Art",
-      "UpstreamHttpMethod": [ "DELETE" ],
+      "UpstreamPathTemplate": "/Food/Deleted",
+      "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -1305,16 +770,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Song",
+      "DownstreamPathTemplate": "/api/food/active",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Song",
-      "UpstreamHttpMethod": [ "DELETE" ],
+      "UpstreamPathTemplate": "/Food/Active",
+      "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -1325,16 +790,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Art",
+      "DownstreamPathTemplate": "/api/food/meal/{mealId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Art",
-      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamPathTemplate": "/Food/Meal/{mealId}",
+      "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -1345,16 +810,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Song",
+      "DownstreamPathTemplate": "/api/meal",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "5202"
         }
       ],
-      "UpstreamPathTemplate": "/Song",
-      "UpstreamHttpMethod": [ "PUT" ],
+      "UpstreamPathTemplate": "/Meal",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -1364,7 +829,108 @@
         "Limit": 1
       }
     },
-    /////////////////////// DASHBOARD SERVICE ///////////////////////
+    {
+      "DownstreamPathTemplate": "/api/meal/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Meal/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/meal/user/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Meal/User/{userId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/meal/harddelete",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Meal/HardDelete",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/meal/active",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Meal/Active",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/meal/deleted",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5202"
+        }
+      ],
+      "UpstreamPathTemplate": "/Meal/Deleted",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+
+    /////////////////////// DASHBOARD AGGREGATOR ///////////////////////
     {
       "DownstreamPathTemplate": "/GetAdminDashboardInfos",
       "DownstreamScheme": "http",
@@ -1395,349 +961,6 @@
         }
       ],
       "UpstreamPathTemplate": "/Dashboard?id={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    /////////////////////// MEAL API ///////////////////////
-    {
-      "DownstreamPathTemplate": "/api/Food",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/Food",
-      "UpstreamHttpMethod": [ "POST", "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-
-
-    {
-      "DownstreamPathTemplate": "/DeleteFood",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/Food",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/HardDeleteFood",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/HardDeleteFood",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllFoods",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/AllFoods",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersAllFoods?userId={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersAllFoods",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllActiveFoods",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/ActiveFoods",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllDeletedFoods",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/DeletedFoods",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetFoodById",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/GetFood",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllFoodsInMeal?mealId={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/GetFoodsInMeal",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/Meal",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/Meal",
-      "UpstreamHttpMethod": [ "POST", "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/SoftDeleteFood",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/Meal",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/HardDeleteMeal",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/HardDeleteMeal",
-      "UpstreamHttpMethod": [ "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllMeals",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/AllMeals",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetUsersAllMeals?userId={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/UsersAllMeals?userId={id}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllActiveMeals",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/ActiveMeals",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetAllDeletedMeals",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/DeletedMeals",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "3s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/GetMealById?mealId={id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5289"
-        }
-      ],
-      "UpstreamPathTemplate": "/GetMeal?mealId={id}",
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 30 },
       "RateLimitOptions": {

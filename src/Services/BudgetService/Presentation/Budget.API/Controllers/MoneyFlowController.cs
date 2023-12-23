@@ -19,13 +19,9 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetRead")]
         public List<MoneyFlowDto> GetAllMoneyFlows() => _moneyFlow.GetAllMoneyFlows();
 
-        [HttpGet("/userMoneyFlows/{userId}")]
+        [HttpGet("/user/{userId}")]
         [Authorize(Policy = "BudgetRead")]
         public List<MoneyFlowDto> GetUsersAllMoneyFlows(Guid userId) => _moneyFlow.GetUsersAllMoneyFlows(userId);
-
-        [HttpGet("/noTracking/{moneyFlowId}")]
-        [Authorize(Policy = "BudgetRead")]
-        public MoneyFlowDto GetMoneyFlowByIdAsNoTracking(Guid moneyFlowId) => _moneyFlow.GetMoneyFlowByIdAsNoTracking(moneyFlowId);
 
         [HttpGet("/{moneyFlowId}")]
         [Authorize(Policy = "BudgetRead")]
@@ -39,7 +35,7 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetWrite")]
         public int UpdateMoneyFlow(MoneyFlowDto model) => _moneyFlow.UpdateMoneyFlow(model);
 
-        [HttpDelete]
+        [HttpDelete("/{moneyFlowId}")]
         [Authorize(Policy = "BudgetWrite")]
         public int DeleteMoneyFlow(Guid moneyFlowId) => _moneyFlow.DeleteMoneyFlow(moneyFlowId);
     }

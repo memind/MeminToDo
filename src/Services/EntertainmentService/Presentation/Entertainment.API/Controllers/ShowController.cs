@@ -14,32 +14,30 @@ namespace Entertainment.API.Controllers
     {
         private readonly IShowService _service;
 
-        public ShowController(IShowService service)
-        {
-            _service = service;
-        }
+        public ShowController(IShowService service) => _service = service;
+        
 
-        [HttpGet("/getShow")]
+        [HttpGet("/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public ShowDto GetShow(string id) => _service.GetShowById(id);
 
-        [HttpGet("/getShows")]
+        [HttpGet]
         [Authorize(Policy = "EntertainmentRead")]
         public List<ShowDto> GetAllShows() => _service.GetAllShows();
 
-        [HttpGet("/getUsersShows")]
+        [HttpGet("/user/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public List<ShowDto> GetUsersAllShows(string id) => _service.GetUsersAllShows(id);
 
-        [HttpPost("/createShow")]
+        [HttpPost]
         [Authorize(Policy = "EntertainmentWrite")]
         public int CreateShow(ShowDto model) => _service.CreateShow(model);
 
-        [HttpPut("/updateShow")]
+        [HttpPut]
         [Authorize(Policy = "EntertainmentWrite")]
         public int UpdateShow(ShowDto model) => _service.UpdateShow(model);
 
-        [HttpDelete("/deleteShow")]
+        [HttpDelete("/{id}")]
         [Authorize(Policy = "EntertainmentWrite")]
         public int DeleteShow(string id) => _service.DeleteShow(id);
     }

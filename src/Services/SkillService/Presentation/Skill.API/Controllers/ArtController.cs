@@ -20,20 +20,16 @@ namespace Skill.API.Controllers
     [Authorize]
     public class ArtController : ControllerBase
     {
-        private IArtService _service;
         private IMediator _mediator;
 
-        public ArtController(IArtService service, IMediator mediator)
-        {
-            _service = service;
-            _mediator = mediator;
-        }
+        public ArtController(IMediator mediator) => _mediator = mediator;
+        
 
         [HttpGet("/getOneArt")]
         [Authorize(Policy = "SkillRead")]
         public async Task<GetArtByIdQueryResponse> GetById([FromQuery] GetArtByIdQueryRequest request) => await _mediator.Send(request);
 
-        [HttpGet("/getAllArts")]
+        [HttpGet]
         [Authorize(Policy = "SkillRead")]
         public async Task<GetAllArtsQueryResponse> GetAll([FromQuery] GetAllArtsQueryRequest request) => await _mediator.Send(request);
 

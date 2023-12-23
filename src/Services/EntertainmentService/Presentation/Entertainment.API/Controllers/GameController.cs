@@ -14,33 +14,31 @@ namespace Entertainment.API.Controllers
     {
         private readonly IGameService _service;
 
-        public GameController(IGameService service)
-        {
-            _service = service;
-        }
+        public GameController(IGameService service) => _service = service;
+        
 
-        [HttpGet("/getGame")]
+        [HttpGet("/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public GameDto GetGame(string id) => _service.GetGameById(id);
 
-        [HttpGet("/getGames")]
+        [HttpGet]
         [Authorize(Policy = "EntertainmentRead")]
         public List<GameDto> GetAllGames() => _service.GetAllGames();
 
 
-        [HttpGet("/getUsersGames")]
+        [HttpGet("/user/{id}")]
         [Authorize(Policy = "EntertainmentRead")]
         public List<GameDto> GetUsersAllGames(string id) => _service.GetUsersAllGames(id);
 
-        [HttpPost("/createGame")]
+        [HttpPost]
         [Authorize(Policy = "EntertainmentWrite")]
         public int CreateGame(GameDto model) => _service.CreateGame(model);
 
-        [HttpPut("/updateGame")]
+        [HttpPut]
         [Authorize(Policy = "EntertainmentWrite")]
         public int UpdateGame(GameDto model) => _service.UpdateGame(model);
 
-        [HttpDelete("/deleteGame")]
+        [HttpDelete("/{id}")]
         [Authorize(Policy = "EntertainmentWrite")]
         public int DeleteGame(string id) => _service.DeleteGame(id);
     }

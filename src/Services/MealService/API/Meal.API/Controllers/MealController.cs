@@ -13,44 +13,42 @@ namespace Meal.API.Controllers
     {
         private readonly IMealService _mealService;
 
-        public MealController(IMealService mealService)
-        {
-            _mealService = mealService;
-        }
+        public MealController(IMealService mealService) => _mealService = mealService;
+        
 
-        [HttpGet("/GetAllMeals")]
+        [HttpGet]
         [Authorize(Policy = "MealRead")]
         public List<MealDto> GetAllMeals() => _mealService.GetAllMeals();
 
-        [HttpGet("/GetAllActiveMeals")]
+        [HttpGet("/meal/active")]
         [Authorize(Policy = "MealRead")]
         public List<MealDto> GetAllActiveMeals() => _mealService.GetAllActiveMeals();
 
-        [HttpGet("/GetAllDeletedMeals")]
+        [HttpGet("/meal/deleted")]
         [Authorize(Policy = "MealRead")]
         public List<MealDto> GetAllDeletedMeals() => _mealService.GetAllDeletedMeals();
 
-        [HttpGet("/GetMealById")]
+        [HttpGet("/{mealId}")]
         [Authorize(Policy = "MealRead")]
         public MealDto GetMealById(Guid mealId) => _mealService.GetMealById(mealId);
 
-        [HttpGet("GetUsersAllMeals")]
+        [HttpGet("/user/{userId}")]
         [Authorize(Policy = "MealRead")]
         public List<MealDto> GetUsersAllMeals(Guid userId) => _mealService.GetUsersAllMeals(userId);
 
-        [HttpPost("/CreateMeal")]
+        [HttpPost]
         [Authorize(Policy = "MealWrite")]
         public void CreateMeal(MealCreateDto meal, Guid userId) => _mealService.CreateMeal(meal, userId);
 
-        [HttpPut("/UpdateMeal")]
+        [HttpPut]
         [Authorize(Policy = "MealWrite")]
         public MealDto UpdateMeal(MealUpdateDto meal) => _mealService.UpdateMeal(meal);
 
-        [HttpDelete("/SoftDeleteMeal")]
+        [HttpDelete]
         [Authorize(Policy = "MealWrite")]
         public void SoftDeleteMeal(MealDeleteDto meal) => _mealService.SoftDeleteMeal(meal);
 
-        [HttpDelete("/HardDeleteMeal")]
+        [HttpDelete("/hardDelete")]
         [Authorize(Policy = "MealWrite")]
         public void HardDeleteMeal(MealHardDeleteDto meal) => _mealService.HardDeleteMeal(meal);
     }
