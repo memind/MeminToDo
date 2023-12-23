@@ -31,6 +31,8 @@ using Jaeger;
 using Jaeger.Samplers;
 using OpenTracing.Util;
 using OpenTracing.Contrib.NetCore.Configuration;
+using Budget.Application.Abstractions.Hubs;
+using Budget.Persistance.SignalR.HubService;
 
 namespace Budget.Persistance
 {
@@ -119,11 +121,16 @@ namespace Budget.Persistance
             });
             #endregion
 
+            #region HealthCheck
             services.AddHealthChecks().AddSqlServer(cfg.GetConnectionString("MsSqlDatabaseConnectionString"));
+            #endregion
 
+            #region Serilog
             host.UseSerilog(SeriLogger.Configure);
             services.AddTransient<LoggingDelegatingHandler>();
+            #endregion
 
+            #region ProjectServices
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
 
@@ -134,8 +141,19 @@ namespace Budget.Persistance
             services.AddScoped(typeof(IMoneyFlowService), typeof(MoneyFlowService));
             services.AddScoped(typeof(IBudgetAccountService), typeof(BudgetAccountService));
             services.AddScoped(typeof(IWalletService), typeof(WalletService));
+            #endregion
+
+            return services;
+        }
+
+        public static IServiceCollection AddSignalRServices(this IServiceCollection services)
+        {
+            services.AddSignalR();
+            services.AddTransient(typeof(IPriceHubService), typeof(PriceHubService));
 
             return services;
         }
     }
 }
+
+
