@@ -707,6 +707,26 @@
         "Limit": 1
       }
     },
+    {
+      "DownstreamPathTemplate": "/api/art/file/{fileId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "MeminToDo.Skill.API",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Art/File/{fileId}",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
 
     /////////////////////// MEAL API ///////////////////////
     {

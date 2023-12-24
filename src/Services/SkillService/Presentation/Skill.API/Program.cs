@@ -16,6 +16,7 @@ builder.Services.AddPersistanceServices(builder.Configuration, builder.Host);
 
 
 builder.Services.Configure<SongConfigurations>(builder.Configuration.GetSection("S3"));
+builder.Services.Configure<ArtConfigurations>(builder.Configuration.GetSection("Blob"));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

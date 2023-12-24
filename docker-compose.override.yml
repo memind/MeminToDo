@@ -207,6 +207,10 @@ services:
       - "S3:AccessKey="
       - "S3:SecretKey="
       - "S3:BucketName="
+      - "Blob:StorageAccount="
+      - "Blob:Key="
+      - "Blob:BlobContainerName="
+      - "Blob:BlobUri="
     ports:
       - "8002:80"
     networks:

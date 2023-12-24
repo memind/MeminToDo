@@ -25,7 +25,7 @@ namespace Skill.Application.Abstractions.Services
         public GetOneResult<Song> UpdateSong(string id, SongDto dto);
         public Task<GetOneResult<Song>> UpdateSongAsync(string id, SongDto dto);
 
-        public void UploadSong(Guid fileName, string filePath);
-        public Task UploadSongAsync(Guid fileName, string filePath);
+        public void UploadSong(string fileName, string filePath);
+        public Task UploadSongAsync(string fileName, string filePath);
     }
 }

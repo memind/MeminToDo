@@ -129,6 +129,8 @@ namespace Skill.Persistance
 
             services.AddAWSService<IAmazonS3>();
 
+            services.AddSingleton<IFileService, FileService>();
+
             services.AddHealthChecks().AddMongoDb(mongodbConnectionString: cfg.GetSection("MongoConnection:ConnectionString").Value, mongoDatabaseName: cfg.GetSection("MongoConnection:Database").Value);
 
             return services;

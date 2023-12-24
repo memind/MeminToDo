@@ -21,9 +21,13 @@ namespace Skill.API.Controllers
     public class ArtController : ControllerBase
     {
         private IMediator _mediator;
+        private IFileService _fileService;
 
-        public ArtController(IMediator mediator) => _mediator = mediator;
-        
+        public ArtController(IMediator mediator, IFileService fileService)
+        {
+            _mediator = mediator;
+            _fileService = fileService;
+        }
 
         [HttpGet("/getOneArt")]
         [Authorize(Policy = "SkillRead")]
@@ -48,5 +52,18 @@ namespace Skill.API.Controllers
         [HttpDelete]
         [Authorize(Policy = "SkillWrite")]
         public async Task<DeleteArtCommandResponse> Delete([FromQuery] DeleteArtCommandRequest request) => await _mediator.Send(request);
+
+        [HttpPost("/file/{fileId}")]
+        [Authorize(Policy = "SkillWrite")]
+        public async Task<BlobResponseDto?> File(IFormFile file, [FromQuery] string fileId) => await _fileService.UploadAsync(file, fileId);
+        
+
+        [HttpGet("/file/{fileId}")]
+        [Authorize(Policy = "SkillRead")]
+        public async Task<IActionResult> File(string fileId)
+        {
+            var result = await _fileService.DownloadAsync(fileId);
+            return File(result.Content, result.ContentType, result.Name);
+        }
     }
 }
