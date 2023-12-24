@@ -32,6 +32,7 @@ using Common.Logging;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Common.Logging.Handlers;
+using Amazon.S3;
 
 namespace Skill.Persistance
 {
@@ -125,6 +126,8 @@ namespace Skill.Persistance
 
             host.UseSerilog(SeriLogger.Configure);
             services.AddTransient<LoggingDelegatingHandler>();
+
+            services.AddAWSService<IAmazonS3>();
 
             services.AddHealthChecks().AddMongoDb(mongodbConnectionString: cfg.GetSection("MongoConnection:ConnectionString").Value, mongoDatabaseName: cfg.GetSection("MongoConnection:Database").Value);
 

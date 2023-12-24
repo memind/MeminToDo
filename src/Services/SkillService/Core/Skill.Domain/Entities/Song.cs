@@ -7,6 +7,7 @@ namespace Skill.Domain.Entities
     {
         public string SongName { get; set; }
         public string ArtistName { get; set; }
+        public Guid FileName { get; set; } = Guid.NewGuid();
         public Instrument Instrument{ get; set; }
     }
 }

@@ -6,12 +6,16 @@ using Skill.Persistance.DependencyResolver.Autofac;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Prometheus;
+using Skill.Persistance.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 builder.Services.AddApplicationServices();
 builder.Services.AddPersistanceServices(builder.Configuration, builder.Host);
+
+
+builder.Services.Configure<SongConfigurations>(builder.Configuration.GetSection("S3"));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

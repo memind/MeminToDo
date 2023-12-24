@@ -204,6 +204,9 @@ services:
       - MongoConnection:Database=
       - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
       - "Seq:ServerUrl=http://memintodo.seq:8013"
+      - "S3:AccessKey="
+      - "S3:SecretKey="
+      - "S3:BucketName="
     ports:
       - "8002:80"
     networks:

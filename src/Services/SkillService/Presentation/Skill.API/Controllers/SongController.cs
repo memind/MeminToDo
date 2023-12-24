@@ -13,6 +13,11 @@ using Skill.Application.Features.Commands.SongCommands.UpdateSong;
 using Skill.Application.Features.Commands.SongCommands.DeleteSong;
 using Microsoft.AspNetCore.Authorization;
 using Amazon.Runtime.Internal;
+using Amazon.S3.Model;
+using Amazon.S3;
+using Skill.Application.Features.Commands.SongCommands.UploadSong;
+using Skill.Persistance.Configurations;
+using Microsoft.Extensions.Options;
 
 namespace Skill.API.Controllers
 {
@@ -22,9 +27,15 @@ namespace Skill.API.Controllers
     public class SongController : ControllerBase
     {
         private IMediator _mediator;
+        private IAmazonS3 _s3;
+        private readonly SongConfigurations _songConfig;
 
-        public SongController(IMediator mediator) => _mediator = mediator;
-        
+        public SongController(IMediator mediator, IAmazonS3 s3, IOptions<SongConfigurations> songConfig)
+        {
+            _mediator = mediator;
+            _s3 = s3;
+            _songConfig = songConfig.Value;
+        }
 
         [HttpGet("/getOneSong")]
         [Authorize(Policy = "SkillRead")]
@@ -49,5 +60,15 @@ namespace Skill.API.Controllers
         [HttpDelete]
         [Authorize(Policy = "SkillWrite")]
         public async Task<DeleteSongCommandResponse> Delete([FromQuery] DeleteSongCommandRequest request) => await _mediator.Send(request);
+
+        [HttpPost("/upload")]
+        public async Task UploadSong([FromQuery] UploadSongCommandRequest request) => await _mediator.Send(request);
+
+        [HttpGet("/download/{fileId}")]
+        public async Task<IActionResult> DownloadSong(string fileId)
+        {
+            GetObjectResponse response = await _s3.GetObjectAsync(_songConfig.BucketName, fileId);
+            return File(response.ResponseStream, response.Headers.ContentType);
+        }
     }
 }

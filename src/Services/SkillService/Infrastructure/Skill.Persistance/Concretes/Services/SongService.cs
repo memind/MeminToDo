@@ -1,7 +1,13 @@
-﻿using AutoMapper;
+﻿using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.S3.Transfer;
+using AutoMapper;
 using Common.Caching.Services;
 using Common.Logging.Logs.SkillLogs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using Newtonsoft.Json;
 using Skill.Application.Abstractions.Services;
@@ -9,6 +15,7 @@ using Skill.Application.DTOs.SongDTOs;
 using Skill.Application.Repositories.SongRepositories;
 using Skill.Domain.Entities;
 using Skill.Domain.Entities.Common;
+using Skill.Persistance.Configurations;
 using Skill.Persistance.Consts;
 using StackExchange.Redis;
 
@@ -21,14 +28,18 @@ namespace Skill.Persistance.Concretes.Services
         private readonly IMapper _mapper;
         private readonly ILogger<SongService> _logger;
         private readonly IDatabase _cache;
+        private readonly IAmazonS3 _s3;
+        private readonly SongConfigurations _songConfig;
 
-        public SongService(ISongWriteRepository write, ISongReadRepository read, IMapper mapper, ILogger<SongService> logger)
+        public SongService(ISongWriteRepository write, ISongReadRepository read, IMapper mapper, ILogger<SongService> logger, IAmazonS3 s3, IOptions<SongConfigurations> songConfig)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _write = write;
             _read = read;
             _mapper = mapper;
             _logger = logger;
+            _s3 = s3;
+            _songConfig = songConfig.Value;
         }
 
         public GetOneResult<Song> CreateSong(SongDto newSong, string id)
@@ -228,6 +239,73 @@ namespace Skill.Persistance.Concretes.Services
 
                 return result;
             } catch (Exception error) { _logger.LogError(SkillLogs.AnErrorOccured(error.Message)); throw; }
+        }
+
+        public void UploadSong(string fileName, string filePath)
+        {
+            var accessKey = _songConfig.AccessKey;
+            var secretKey = _songConfig.SecretKey;
+            var bucketName = _songConfig.BucketName;
+            RegionEndpoint bucketRegion = RegionEndpoint.USEast1;
+
+            var s3Client = new AmazonS3Client(accessKey, secretKey, bucketRegion);
+            var fileTransferUtility = new TransferUtility(s3Client);
+
+            string path = filePath;
+
+            try
+            {
+                fileTransferUtility.Upload(path,bucketName, fileName);
+                fileTransferUtility.Dispose();
+            }
+            catch (AmazonS3Exception ex)
+            {
+                if (ex.ErrorCode != null && ex.ErrorCode.Equals("InvalidAccessKeyId") || ex.ErrorCode.Equals("InvalidSecurityKey"))
+                    Console.WriteLine("Check AWS Credentials");
+
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task UploadSongAsync(string fileName, string filePath)
+        {
+            var accessKey = _songConfig.AccessKey;
+            var secretKey = _songConfig.SecretKey;
+            var bucketName = _songConfig.BucketName;
+            RegionEndpoint bucketRegion = RegionEndpoint.USEast1;
+
+            var s3Client = new AmazonS3Client(accessKey, secretKey, bucketRegion);
+            var fileTransferUtility = new TransferUtility(s3Client);
+
+            string path = filePath;
+
+            try
+            {
+                var fileTransferUtilityRequest = new TransferUtilityUploadRequest
+                {
+                    BucketName = bucketName,
+                    FilePath = path,
+                    StorageClass = S3StorageClass.Standard,
+                    Key = fileName
+                };
+
+                await fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
+            }
+            catch (AmazonS3Exception ex)
+            {
+                if (ex.ErrorCode != null && ex.ErrorCode.Equals("InvalidAccessKeyId") || ex.ErrorCode.Equals("InvalidSecurityKey"))
+                    Console.WriteLine("Check AWS Credentials");
+
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
