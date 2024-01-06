@@ -14,7 +14,7 @@ namespace Skill.Application.Features.Commands.SongCommands.UploadSong
 
         public async Task<UploadSongCommandResponse> Handle(UploadSongCommandRequest request, CancellationToken cancellationToken)
         {
-            await _service.UploadSongAsync(Guid.Parse(request.Id), request.Path);
+            await _service.UploadSongAsync(request.Id, request.Path);
             return new()
             {
                 Result = true
