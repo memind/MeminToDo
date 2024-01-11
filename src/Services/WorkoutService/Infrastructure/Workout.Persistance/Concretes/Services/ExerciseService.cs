@@ -12,6 +12,7 @@ using w = Workout.Domain.Entities;
 using Workout.Persistance.Consts;
 using Thrift.Protocol.Entities;
 using StackExchange.Redis;
+using Common.Messaging.RabbitMQ.Abstract;
 
 namespace Workout.Persistance.Concretes.Services
 {
@@ -21,13 +22,17 @@ namespace Workout.Persistance.Concretes.Services
         private readonly IMapper _mapper;
         private readonly ILogger<ExerciseService> _logger;
         private readonly IDatabase _cache;
+        private readonly IMessageConsumerService _message;
 
-        public ExerciseService(IMapper mapper, IUnitOfWork uow, ILogger<ExerciseService> logger)
+        public ExerciseService(IMapper mapper, IUnitOfWork uow, ILogger<ExerciseService> logger, IMessageConsumerService message)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _mapper = mapper;
             _uow = uow;
             _logger = logger;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.ExerciseServiceName());
         }
 
         public ExerciseDto CreateExercise(ExerciseDto model)
@@ -288,5 +293,9 @@ namespace Workout.Persistance.Concretes.Services
                 return _mapper.Map<ExerciseDto>(map);
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)); throw; }
         }
+
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
     }
 }

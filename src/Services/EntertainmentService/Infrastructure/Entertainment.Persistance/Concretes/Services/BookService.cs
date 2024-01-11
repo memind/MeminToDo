@@ -2,12 +2,14 @@
 using AutoMapper;
 using Common.Caching.Services;
 using Common.Logging.Logs.EntertainmentLogs;
+using Common.Messaging.RabbitMQ.Abstract;
 using Entertainment.API.Consts;
 using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.BookDTOs;
 using Entertainment.Application.Repositories.BookNoteRepositories;
 using Entertainment.Application.Repositories.BookRepositories;
 using Entertainment.Domain.Entities;
+using Entertainment.Persistance.Consts;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -22,8 +24,9 @@ namespace Entertainment.Persistance.Concretes.Services
         private readonly IMapper _mapper;
         private readonly ILogger<BookService> _logger;
         private readonly IDatabase _cache;
+        private readonly IMessageConsumerService _message;
 
-        public BookService(IBookWriteRepository bookWriteRepository, IBookReadRepository bookReadRepository, IMapper mapper, IBookNoteReadRepository bookNote, ILogger<BookService> logger)
+        public BookService(IBookWriteRepository bookWriteRepository, IBookReadRepository bookReadRepository, IMapper mapper, IBookNoteReadRepository bookNote, ILogger<BookService> logger, IMessageConsumerService message)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _write = bookWriteRepository;
@@ -31,6 +34,9 @@ namespace Entertainment.Persistance.Concretes.Services
             _mapper = mapper;
             _bookNote = bookNote;
             _logger = logger;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.BookServiceName());
         }
 
         public int CreateBook(BookDto entity)
@@ -246,5 +252,9 @@ namespace Entertainment.Persistance.Concretes.Services
                 return await _write.UpdateAsync(_mapper.Map<Book>(entity));
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
+
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
     }
 }

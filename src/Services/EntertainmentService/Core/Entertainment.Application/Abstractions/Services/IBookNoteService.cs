@@ -22,5 +22,8 @@ namespace Entertainment.Application.Abstractions.Services
 
         List<BookNoteDto> GetUsersAllBookNotes(string userId);
         Task<List<BookNoteDto>> GetUsersAllBookNotesAsync(string userId);
+
+        public void ConsumeBackUpInfo();
+        public void ConsumeTestInfo();
     }
 }

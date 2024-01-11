@@ -51,5 +51,14 @@ namespace Meal.API.Controllers
         [HttpDelete("/hardDelete")]
         [Authorize(Policy = "MealWrite")]
         public void HardDeleteMeal(MealHardDeleteDto meal) => _mealService.HardDeleteMeal(meal);
+
+
+        [HttpGet("/consumeBackup")]
+        [Authorize(Policy = "MealRead")]
+        public void ConsumeBackUpInfo() => _mealService.ConsumeBackUpInfo();
+
+        [HttpGet("/consumeTest")]
+        [Authorize(Policy = "MealRead")]
+        public void ConsumeTestInfo() => _mealService.ConsumeTestInfo();
     }
 }

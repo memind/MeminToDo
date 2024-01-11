@@ -43,5 +43,14 @@ namespace Entertainment.API.Controllers
         [HttpDelete("/{id}")]
         [Authorize(Policy = "EntertainmentWrite")]
         public int DeleteBook(string id) => _service.DeleteBook(id);
+
+
+        [HttpGet("/consumeBackup")]
+        [Authorize(Policy = "EntertainmentRead")]
+        public void ConsumeBackUpInfo() => _service.ConsumeBackUpInfo();
+
+        [HttpGet("/consumeTest")]
+        [Authorize(Policy = "EntertainmentRead")]
+        public void ConsumeTestInfo() => _service.ConsumeTestInfo();
     }
 }

@@ -12,6 +12,7 @@ using Common.Caching.Services;
 using StackExchange.Redis;
 using Meal.Application.Consts;
 using Newtonsoft.Json;
+using Common.Messaging.RabbitMQ.Abstract;
 
 namespace Meal.Application.Services.Concrete
 {
@@ -21,13 +22,17 @@ namespace Meal.Application.Services.Concrete
         private readonly ICustomMapper _mapper;
         private readonly ILogger<MealService> _logger;
         private readonly IDatabase _cache;
+        private readonly IMessageConsumerService _message;
 
-        public MealService(IUnitOfWork unitOfWork, ICustomMapper mapper, ILogger<MealService> logger)
+        public MealService(IUnitOfWork unitOfWork, ICustomMapper mapper, ILogger<MealService> logger, IMessageConsumerService message)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.MealServiceName());
         }
 
         public void CreateMeal(MealCreateDto meal, Guid userId)
@@ -519,5 +524,9 @@ namespace Meal.Application.Services.Concrete
             }
             catch (Exception error) { _logger.LogError(MealLogs.AnErrorOccured(error.Message)); throw error; }
         }
+
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
     }
 }

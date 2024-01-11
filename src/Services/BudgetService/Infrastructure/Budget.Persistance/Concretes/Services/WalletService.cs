@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using Newtonsoft.Json;
+using Common.Messaging.RabbitMQ.Abstract;
 
 namespace Budget.Persistance.Concretes.Services
 {
@@ -22,13 +23,17 @@ namespace Budget.Persistance.Concretes.Services
         private readonly IMapper _mapper;
         private readonly ILogger<WalletService> _logger;
         private readonly IDatabase _cache;
+        private readonly IMessageConsumerService _message;
 
-        public WalletService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<WalletService> logger)
+        public WalletService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<WalletService> logger, IMessageConsumerService message)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.WalletServiceName());
         }
 
         public int CreateWallet(WalletDto model)
@@ -200,5 +205,9 @@ namespace Budget.Persistance.Concretes.Services
             }
             catch (Exception error) { _logger.LogError(BudgetLogs.AnErrorOccured(error.Message)); throw error; }
         }
+
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
     }
 }

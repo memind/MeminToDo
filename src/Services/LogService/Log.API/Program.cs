@@ -1,6 +1,8 @@
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2;
 using Hangfire;
+using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,7 @@ builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonDynamoDB>();
 builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 
+builder.Services.AddScoped<IMessagePublisherService, MessagePublisherService>();
 
 builder.Services.AddHangfireServer();
 builder.Services.AddHangfire(configuration => configuration

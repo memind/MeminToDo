@@ -19,6 +19,8 @@ using Common.Logging;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Common.Logging.Handlers;
+using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Concrete;
 
 namespace Entertainment.Persistance
 {
@@ -106,6 +108,8 @@ namespace Entertainment.Persistance
 
             host.UseSerilog(SeriLogger.Configure);
             services.AddTransient<LoggingDelegatingHandler>();
+
+            services.AddScoped<IMessageConsumerService, MessageConsumerService>();
 
             services.AddHealthChecks().AddNpgSql(cfg.GetConnectionString("PostgreSql"));
             return services;

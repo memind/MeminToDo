@@ -60,5 +60,13 @@ namespace Meal.Application.Services.Abstract
         Task SoftDeleteMealAsync(MealDeleteDto meal);
 
         Task HardDeleteMealAsync(MealHardDeleteDto meal);
+
+
+
+
+
+        public void ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo();
     }
 }

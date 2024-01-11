@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Autofac.Core;
+using Common.Messaging.RabbitMQ.Abstract;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,8 @@ using Skill.Application.Features.Queries.ArtQueries.GetArtById;
 using Skill.Application.Features.Queries.ArtQueries.GetUsersAllArts;
 using Skill.Domain.Entities;
 using Skill.Domain.Entities.Common;
+using Skill.Persistance.Consts;
+using System.ServiceModel.Channels;
 
 namespace Skill.API.Controllers
 {
@@ -22,11 +26,15 @@ namespace Skill.API.Controllers
     {
         private IMediator _mediator;
         private IFileService _fileService;
+        private readonly IMessageConsumerService _message;
 
-        public ArtController(IMediator mediator, IFileService fileService)
+        public ArtController(IMediator mediator, IFileService fileService, IMessageConsumerService message)
         {
             _mediator = mediator;
             _fileService = fileService;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.ArtServiceName());
         }
 
         [HttpGet("/getOneArt")]
@@ -52,6 +60,12 @@ namespace Skill.API.Controllers
         [HttpDelete]
         [Authorize(Policy = "SkillWrite")]
         public async Task<DeleteArtCommandResponse> Delete([FromQuery] DeleteArtCommandRequest request) => await _mediator.Send(request);
+
+        [HttpGet("/consumeBackup")]
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        [HttpGet("/consumeTest")]
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
 
         [HttpPost("/file/{fileId}")]
         [Authorize(Policy = "SkillWrite")]

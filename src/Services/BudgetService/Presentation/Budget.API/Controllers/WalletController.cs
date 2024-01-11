@@ -38,5 +38,13 @@ namespace Budget.API.Controllers
         [HttpDelete("/{walletId}")]
         [Authorize(Policy = "BudgetWrite")]
         public int DeleteWallet(Guid walletId) => _wallet.DeleteWallet(walletId);
+
+        [HttpGet("/consumeBackup")]
+        [Authorize(Policy = "BudgetRead")]
+        public void ConsumeBackUpInfo() => _wallet.ConsumeBackUpInfo();
+
+        [HttpGet("/consumeTest")]
+        [Authorize(Policy = "BudgetRead")]
+        public void ConsumeTestInfo() => _wallet.ConsumeTestInfo();
     }
 }

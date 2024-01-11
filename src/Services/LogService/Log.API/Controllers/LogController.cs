@@ -2,6 +2,7 @@
 using Amazon.Runtime.Internal.Util;
 using Common.Caching.Services;
 using Common.Logging;
+using Common.Messaging.RabbitMQ.Abstract;
 using Hangfire;
 using Hangfire.Logging;
 using Log.API.Consts;
@@ -19,13 +20,15 @@ namespace Log.API.Controllers
     {
         readonly IDynamoDBContext _dynamoDBContext;
         private IDatabase _cache;
+        private readonly IMessagePublisherService _message;
         private List<LogBackUp> _logList = new List<LogBackUp>();
 
-        public LogController(IDynamoDBContext dynamoDBContext)
+        public LogController(IDynamoDBContext dynamoDBContext, IMessagePublisherService message)
         {
             _dynamoDBContext = dynamoDBContext;
             _cache = RedisService.GetRedisMasterDatabase();
             RecurringJob.AddOrUpdate(() => Job(), "0 0 * * *");
+            _message = message;
         }
 
         [HttpGet("{logId}")]
@@ -72,6 +75,8 @@ namespace Log.API.Controllers
         public async Task CreateLogBackUp(LogBackUp logBackUpRequest)
         {
             _logList.Add(logBackUpRequest);
+            _message.PublishBackUpInfo();
+
             await Job();
         }
 
@@ -100,6 +105,13 @@ namespace Log.API.Controllers
 
             return Ok(logBackUpRequest);
         }
+
+        [HttpGet("/checkConnected")]
+        public void CheckConnected() => _message.ConsumeConnectedInfo();
+
+        [HttpGet]
+        public void TestConnected() => _message.PublishStartTest();
+        
 
         [HttpGet("/job")]
         public async Task Job()

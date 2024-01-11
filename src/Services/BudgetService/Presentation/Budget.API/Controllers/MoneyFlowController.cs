@@ -38,5 +38,13 @@ namespace Budget.API.Controllers
         [HttpDelete("/{moneyFlowId}")]
         [Authorize(Policy = "BudgetWrite")]
         public int DeleteMoneyFlow(Guid moneyFlowId) => _moneyFlow.DeleteMoneyFlow(moneyFlowId);
+
+        [HttpGet("/consumeBackup")]
+        [Authorize(Policy = "BudgetRead")]
+        public void ConsumeBackUpInfo() => _moneyFlow.ConsumeBackUpInfo();
+
+        [HttpGet("/consumeTest")]
+        [Authorize(Policy = "BudgetRead")]
+        public void ConsumeTestInfo() => _moneyFlow.ConsumeTestInfo();
     }
 }

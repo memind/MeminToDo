@@ -22,5 +22,8 @@ namespace Entertainment.Application.Abstractions.Services
 
         List<GameDto> GetUsersAllGames(string userId);
         Task<List<GameDto>> GetUsersAllGamesAsync(string userId);
+
+        public void ConsumeBackUpInfo();
+        public void ConsumeTestInfo();
     }
 }

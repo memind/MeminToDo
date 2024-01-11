@@ -10,6 +10,7 @@ using Common.Caching.Services;
 using StackExchange.Redis;
 using Budget.Application.DTOs.WalletDTOs;
 using Newtonsoft.Json;
+using Common.Messaging.RabbitMQ.Abstract;
 
 namespace Budget.Persistance.Concretes.Services
 {
@@ -19,13 +20,17 @@ namespace Budget.Persistance.Concretes.Services
         private readonly IMapper _mapper;
         private readonly ILogger<BudgetAccountService> _logger;
         private readonly IDatabase _cache;
+        private readonly IMessageConsumerService _message;
 
-        public BudgetAccountService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<BudgetAccountService> logger)
+        public BudgetAccountService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<BudgetAccountService> logger, IMessageConsumerService message)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.BudgetAccountServiceName());
         }
 
         public int CreateBudgetAccount(BudgetAccountDto model)
@@ -143,5 +148,9 @@ namespace Budget.Persistance.Concretes.Services
             }
             catch (Exception error) { _logger.LogError(BudgetLogs.AnErrorOccured(error.Message)); throw error; }
         }
+
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
     }
 }

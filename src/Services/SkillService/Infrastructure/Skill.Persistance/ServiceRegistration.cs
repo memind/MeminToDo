@@ -33,6 +33,8 @@ using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Common.Logging.Handlers;
 using Amazon.S3;
+using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Concrete;
 
 namespace Skill.Persistance
 {
@@ -126,6 +128,8 @@ namespace Skill.Persistance
 
             host.UseSerilog(SeriLogger.Configure);
             services.AddTransient<LoggingDelegatingHandler>();
+
+            services.AddScoped<IMessageConsumerService, MessageConsumerService>();
 
             services.AddAWSService<IAmazonS3>();
 

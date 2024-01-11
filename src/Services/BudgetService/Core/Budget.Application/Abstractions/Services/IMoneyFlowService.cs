@@ -11,5 +11,8 @@ namespace Budget.Application.Abstractions.Services
         MoneyFlowDto GetMoneyFlowByIdAsNoTracking(Guid id);
         List<MoneyFlowDto> GetAllMoneyFlows();
         List<MoneyFlowDto> GetUsersAllMoneyFlows(Guid userId);
+
+        public void ConsumeBackUpInfo();
+        public void ConsumeTestInfo();
     }
 }

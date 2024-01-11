@@ -24,5 +24,8 @@ namespace Workout.Application.Abstractions.Services
 
         public WorkoutDto UpdateWorkout(WorkoutDto model, string id);
         public Task<WorkoutDto> UpdateWorkoutAsync(WorkoutDto model, string id);
+
+        public void ConsumeBackUpInfo();
+        public void ConsumeTestInfo();
     }
 }

@@ -33,6 +33,8 @@ using OpenTracing.Util;
 using OpenTracing.Contrib.NetCore.Configuration;
 using Budget.Application.Abstractions.Hubs;
 using Budget.Persistance.SignalR.HubService;
+using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Concrete;
 
 namespace Budget.Persistance
 {
@@ -141,6 +143,7 @@ namespace Budget.Persistance
             services.AddScoped(typeof(IMoneyFlowService), typeof(MoneyFlowService));
             services.AddScoped(typeof(IBudgetAccountService), typeof(BudgetAccountService));
             services.AddScoped(typeof(IWalletService), typeof(WalletService));
+            services.AddScoped(typeof(IMessageConsumerService), typeof(MessageConsumerService));
             #endregion
 
             return services;

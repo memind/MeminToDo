@@ -9,6 +9,7 @@
   <ItemGroup>
 	<ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Caching\Common.Caching\Common.Caching.csproj" />
 	<ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Logging\Common.Logging\Common.Logging.csproj" />
+	<ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Messaging\Common.Messaging.RabbitMQ\Common.Messaging.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\Core\Entertainment.Application\Entertainment.Application.csproj" />
   </ItemGroup>
 

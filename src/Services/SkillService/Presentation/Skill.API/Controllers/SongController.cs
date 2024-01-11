@@ -18,6 +18,8 @@ using Amazon.S3;
 using Skill.Application.Features.Commands.SongCommands.UploadSong;
 using Skill.Persistance.Configurations;
 using Microsoft.Extensions.Options;
+using Common.Messaging.RabbitMQ.Abstract;
+using Skill.Persistance.Consts;
 
 namespace Skill.API.Controllers
 {
@@ -29,12 +31,16 @@ namespace Skill.API.Controllers
         private IMediator _mediator;
         private IAmazonS3 _s3;
         private readonly SongConfigurations _songConfig;
+        private readonly IMessageConsumerService _message;
 
-        public SongController(IMediator mediator, IAmazonS3 s3, IOptions<SongConfigurations> songConfig)
+        public SongController(IMediator mediator, IAmazonS3 s3, IOptions<SongConfigurations> songConfig, IMessageConsumerService message)
         {
             _mediator = mediator;
             _s3 = s3;
             _songConfig = songConfig.Value;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.ArtServiceName());
         }
 
         [HttpGet("/getOneSong")]
@@ -60,6 +66,12 @@ namespace Skill.API.Controllers
         [HttpDelete]
         [Authorize(Policy = "SkillWrite")]
         public async Task<DeleteSongCommandResponse> Delete([FromQuery] DeleteSongCommandRequest request) => await _mediator.Send(request);
+
+        [HttpGet("/consumeBackup")]
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        [HttpGet("/consumeTest")]
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
 
         [HttpPost("/upload")]
         public async Task UploadSong([FromQuery] UploadSongCommandRequest request) => await _mediator.Send(request);

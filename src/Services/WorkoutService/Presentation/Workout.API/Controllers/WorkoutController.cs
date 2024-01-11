@@ -40,5 +40,11 @@ namespace Workout.API.Controllers
         [HttpDelete]
         [Authorize(Policy = "WorkoutWrite")]
         public void DeleteWorkout(string id) => _service.DeleteWorkout(id);
+
+        [HttpGet("/consumeBackup")]
+        public void ConsumeBackUpInfo() => _service.ConsumeBackUpInfo();
+
+        [HttpGet("/consumeTest")]
+        public void ConsumeTestInfo() => _service.ConsumeTestInfo();
     }
 }

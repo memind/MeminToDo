@@ -11,5 +11,8 @@ namespace Budget.Application.Abstractions.Services
         WalletDto GetWalletByIdAsNoTracking(Guid id);
         List<WalletDto> GetAllWallets();
         List<WalletDto> GetUsersAllWallets(Guid userId);
+
+        public void ConsumeBackUpInfo();
+        public void ConsumeTestInfo();
     }
 }

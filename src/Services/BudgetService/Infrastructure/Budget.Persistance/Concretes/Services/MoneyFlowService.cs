@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StackExchange.Redis;
+using System.ServiceModel.Channels;
+using Common.Messaging.RabbitMQ.Abstract;
 
 namespace Budget.Persistance.Concretes.Services
 {
@@ -22,14 +24,18 @@ namespace Budget.Persistance.Concretes.Services
         private readonly IMoneyFlowFactory _moneyFlowFactory;
         private readonly ILogger<MoneyFlowService> _logger;
         private readonly IDatabase _cache;
+        private readonly IMessageConsumerService _message;
 
-        public MoneyFlowService(IUnitOfWork unitOfWork, IMapper mapper, IMoneyFlowFactory factory, ILogger<MoneyFlowService> logger)
+        public MoneyFlowService(IUnitOfWork unitOfWork, IMapper mapper, IMoneyFlowFactory factory, ILogger<MoneyFlowService> logger, IMessageConsumerService message)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _moneyFlowFactory = factory;
             _logger = logger;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.MoneyFlowServiceName());
         }
 
         public int CreateMoneyFlow(MoneyFlowDto model)
@@ -179,5 +185,9 @@ namespace Budget.Persistance.Concretes.Services
             }
             catch (Exception error) { _logger.LogError(BudgetLogs.AnErrorOccured(error.Message)); throw error; }
         }
+
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
     }
 }

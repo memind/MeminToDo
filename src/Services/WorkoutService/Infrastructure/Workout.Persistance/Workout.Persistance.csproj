@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Caching\Common.Caching\Common.Caching.csproj" />
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Messaging\Common.Messaging.RabbitMQ\Common.Messaging.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\Core\Workout.Application\Workout.Application.csproj" />
 	<ProjectReference Include="..\..\..\..\BuildingBlocks\Common.Logging\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>

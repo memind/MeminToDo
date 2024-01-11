@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Common.Caching.Services;
 using Common.Logging.Logs.EntertainmentLogs;
+using Common.Messaging.RabbitMQ.Abstract;
 using Entertainment.API.Consts;
 using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.ShowDTOs;
 using Entertainment.Application.Repositories.ShowRepositories;
 using Entertainment.Domain.Entities;
+using Entertainment.Persistance.Consts;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -19,14 +21,18 @@ namespace Entertainment.Persistance.Concretes.Services
         private readonly IMapper _mapper;
         private readonly ILogger<ShowService> _logger;
         private readonly IDatabase _cache;
+        private readonly IMessageConsumerService _message;
 
-        public ShowService(IShowWriteRepository bookWriteRepository, IShowReadRepository bookReadRepository, IMapper mapper, ILogger<ShowService> logger)
+        public ShowService(IShowWriteRepository bookWriteRepository, IShowReadRepository bookReadRepository, IMapper mapper, ILogger<ShowService> logger, IMessageConsumerService message)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _write = bookWriteRepository;
             _read = bookReadRepository;
             _mapper = mapper;
             _logger = logger;
+            _message = message;
+
+            _message.PublishConnectedInfo(MessageConsts.ShowServiceName());
         }
 
         public int CreateShow(ShowDto entity)
@@ -214,5 +220,9 @@ namespace Entertainment.Persistance.Concretes.Services
             }
             catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
+
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo() => _message.ConsumeStartTest();
     }
 }

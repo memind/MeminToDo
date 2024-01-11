@@ -11,5 +11,8 @@ namespace Budget.Application.Abstractions.Services
         BudgetAccountDto GetBudgetAccountById(Guid id);
         List<BudgetAccountDto> GetAllBudgetAccounts();
         List<BudgetAccountDto> GetUsersAllBudgetAccounts(Guid id);
+
+        public void ConsumeBackUpInfo();
+        public void ConsumeTestInfo();
     }
 }

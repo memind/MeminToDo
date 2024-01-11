@@ -25,6 +25,8 @@ using Common.Logging;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Common.Logging.Handlers;
+using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Concrete;
 
 namespace Workout.Persistance
 {
@@ -119,6 +121,7 @@ namespace Workout.Persistance
 
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+            services.AddScoped(typeof(IMessageConsumerService), typeof(MessageConsumerService));
 
             return services;
         }

@@ -56,5 +56,9 @@ namespace Meal.Application.Services.Abstract
         Task SoftDeleteFoodAsync(FoodDeleteDto food);
 
         Task HardDeleteFoodAsync(FoodHardDeleteDto food);
+
+        public void ConsumeBackUpInfo();
+
+        public void ConsumeTestInfo();
     }
 }
