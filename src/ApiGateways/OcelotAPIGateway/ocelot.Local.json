@@ -42,7 +42,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Budget/user/{userId}",
+      "DownstreamPathTemplate": "/api/Budget/useraccounts/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -102,7 +102,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/wallet/user/{userId}",
+      "DownstreamPathTemplate": "/api/wallet/userwallets/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -162,7 +162,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/moneyflow/user/{userId}",
+      "DownstreamPathTemplate": "/api/moneyflow/userflows/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using StackExchange.Redis;
 using System.ServiceModel.Channels;
 using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Configurations;
+using Microsoft.Extensions.Options;
 
 namespace Budget.Persistance.Concretes.Services
 {
@@ -25,8 +27,9 @@ namespace Budget.Persistance.Concretes.Services
         private readonly ILogger<MoneyFlowService> _logger;
         private readonly IDatabase _cache;
         private readonly IMessageConsumerService _message;
+        private readonly IOptions<RabbitMqUri> _rabbitMqUriConfiguration;
 
-        public MoneyFlowService(IUnitOfWork unitOfWork, IMapper mapper, IMoneyFlowFactory factory, ILogger<MoneyFlowService> logger, IMessageConsumerService message)
+        public MoneyFlowService(IUnitOfWork unitOfWork, IMapper mapper, IMoneyFlowFactory factory, ILogger<MoneyFlowService> logger, IMessageConsumerService message, IOptions<RabbitMqUri> rabbitMqUriConfiguration)
         {
             _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
@@ -35,7 +38,8 @@ namespace Budget.Persistance.Concretes.Services
             _logger = logger;
             _message = message;
 
-            _message.PublishConnectedInfo(MessageConsts.MoneyFlowServiceName());
+            _message.PublishConnectedInfo(MessageConsts.MoneyFlowServiceName(), _rabbitMqUriConfiguration.Value.RabbitMqHost);
+            _rabbitMqUriConfiguration = rabbitMqUriConfiguration;
         }
 
         public int CreateMoneyFlow(MoneyFlowDto model)
@@ -186,8 +190,8 @@ namespace Budget.Persistance.Concretes.Services
             catch (Exception error) { _logger.LogError(BudgetLogs.AnErrorOccured(error.Message)); throw error; }
         }
 
-        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
-        public void ConsumeTestInfo() => _message.ConsumeStartTest();
+        public void ConsumeTestInfo() => _message.ConsumeStartTest(_rabbitMqUriConfiguration.Value.RabbitMqHost);
     }
 }

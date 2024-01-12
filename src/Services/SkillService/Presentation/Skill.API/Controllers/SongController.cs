@@ -20,6 +20,7 @@ using Skill.Persistance.Configurations;
 using Microsoft.Extensions.Options;
 using Common.Messaging.RabbitMQ.Abstract;
 using Skill.Persistance.Consts;
+using Common.Messaging.RabbitMQ.Configurations;
 
 namespace Skill.API.Controllers
 {
@@ -32,15 +33,17 @@ namespace Skill.API.Controllers
         private IAmazonS3 _s3;
         private readonly SongConfigurations _songConfig;
         private readonly IMessageConsumerService _message;
+        private readonly IOptions<RabbitMqUri> _rabbitMqUriConfiguration;
 
-        public SongController(IMediator mediator, IAmazonS3 s3, IOptions<SongConfigurations> songConfig, IMessageConsumerService message)
+        public SongController(IMediator mediator, IAmazonS3 s3, IOptions<SongConfigurations> songConfig, IMessageConsumerService message, IOptions<RabbitMqUri> rabbitMqUriConfiguration)
         {
             _mediator = mediator;
             _s3 = s3;
             _songConfig = songConfig.Value;
             _message = message;
+            _rabbitMqUriConfiguration = rabbitMqUriConfiguration;
 
-            _message.PublishConnectedInfo(MessageConsts.ArtServiceName());
+            _message.PublishConnectedInfo(MessageConsts.ArtServiceName(), _rabbitMqUriConfiguration.Value.RabbitMqHost);
         }
 
         [HttpGet("/getOneSong")]
@@ -68,10 +71,10 @@ namespace Skill.API.Controllers
         public async Task<DeleteSongCommandResponse> Delete([FromQuery] DeleteSongCommandRequest request) => await _mediator.Send(request);
 
         [HttpGet("/consumeBackup")]
-        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
         [HttpGet("/consumeTest")]
-        public void ConsumeTestInfo() => _message.ConsumeStartTest();
+        public void ConsumeTestInfo() => _message.ConsumeStartTest(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
         [HttpPost("/upload")]
         public async Task UploadSong([FromQuery] UploadSongCommandRequest request) => await _mediator.Send(request);

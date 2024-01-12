@@ -19,7 +19,7 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetRead")]
         public List<WalletDto> GetAllWallets() => _wallet.GetAllWallets();
 
-        [HttpGet("/user/{userId}")]
+        [HttpGet("/userWallets/{userId}")]
         [Authorize(Policy = "BudgetRead")]
         public List<WalletDto> GetUsersAllWallets(Guid userId) => _wallet.GetUsersAllWallets(userId);
 
@@ -39,11 +39,11 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetWrite")]
         public int DeleteWallet(Guid walletId) => _wallet.DeleteWallet(walletId);
 
-        [HttpGet("/consumeBackup")]
+        [HttpGet("/flow/consumeBackup")]
         [Authorize(Policy = "BudgetRead")]
         public void ConsumeBackUpInfo() => _wallet.ConsumeBackUpInfo();
 
-        [HttpGet("/consumeTest")]
+        [HttpGet("/flow/consumeTest")]
         [Authorize(Policy = "BudgetRead")]
         public void ConsumeTestInfo() => _wallet.ConsumeTestInfo();
     }

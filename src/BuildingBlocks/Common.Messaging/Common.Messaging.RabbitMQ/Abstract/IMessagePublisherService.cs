@@ -2,8 +2,8 @@
 {
     public interface IMessagePublisherService
     {
-        public void ConsumeConnectedInfo();
-        public void PublishBackUpInfo();
-        public void PublishStartTest();
+        public void ConsumeConnectedInfo(string factoryUri);
+        public void PublishBackUpInfo(string factoryUri);
+        public void PublishStartTest(string factoryUri);
     }
 }

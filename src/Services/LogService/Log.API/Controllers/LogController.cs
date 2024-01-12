@@ -3,11 +3,14 @@ using Amazon.Runtime.Internal.Util;
 using Common.Caching.Services;
 using Common.Logging;
 using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Configurations;
 using Hangfire;
 using Hangfire.Logging;
 using Log.API.Consts;
+using MassTransit.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Serilog;
 using StackExchange.Redis;
@@ -20,15 +23,18 @@ namespace Log.API.Controllers
     {
         readonly IDynamoDBContext _dynamoDBContext;
         private IDatabase _cache;
+        private readonly IOptions<RabbitMqUri> _rabbitMqUriConfiguration;
         private readonly IMessagePublisherService _message;
         private List<LogBackUp> _logList = new List<LogBackUp>();
 
-        public LogController(IDynamoDBContext dynamoDBContext, IMessagePublisherService message)
+        public LogController(IDynamoDBContext dynamoDBContext, IMessagePublisherService message, IConfiguration configuration, IOptions<RabbitMqUri> rabbitUri)
         {
             _dynamoDBContext = dynamoDBContext;
+            _message = message;
+            _rabbitMqUriConfiguration = rabbitUri;
+
             _cache = RedisService.GetRedisMasterDatabase();
             RecurringJob.AddOrUpdate(() => Job(), "0 0 * * *");
-            _message = message;
         }
 
         [HttpGet("{logId}")]
@@ -75,7 +81,7 @@ namespace Log.API.Controllers
         public async Task CreateLogBackUp(LogBackUp logBackUpRequest)
         {
             _logList.Add(logBackUpRequest);
-            _message.PublishBackUpInfo();
+            _message.PublishBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
             await Job();
         }
@@ -107,11 +113,14 @@ namespace Log.API.Controllers
         }
 
         [HttpGet("/checkConnected")]
-        public void CheckConnected() => _message.ConsumeConnectedInfo();
+        public void CheckConnected() => _message.ConsumeConnectedInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
-        [HttpGet]
-        public void TestConnected() => _message.PublishStartTest();
-        
+        [HttpGet("/startTest")]
+        public void StartTest() => _message.PublishStartTest(_rabbitMqUriConfiguration.Value.RabbitMqHost);
+
+        [HttpGet("/backUpInfo")]
+        public void BackUpInfo() => _message.PublishBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
+
 
         [HttpGet("/job")]
         public async Task Job()

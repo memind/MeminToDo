@@ -35,6 +35,12 @@ using Common.Logging.Handlers;
 using Amazon.S3;
 using Common.Messaging.RabbitMQ.Abstract;
 using Common.Messaging.RabbitMQ.Concrete;
+using Common.Messaging.MassTransit.Services.ApiServices.Connected;
+using MassTransit;
+using Common.Messaging.MassTransit.Services.ApiServices.Test;
+using Common.Messaging.MassTransit.Services.ApiServices.BackUp;
+using Common.Messaging.MassTransit.Consts;
+using Common.Messaging.RabbitMQ.Configurations;
 
 namespace Skill.Persistance
 {
@@ -42,6 +48,14 @@ namespace Skill.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration cfg, IHostBuilder host)
         {
+            #region Database
+            services.Configure<MongoSettings>(opt =>
+            {
+                opt.ConnectionString = cfg.GetSection("MongoConnection:ConnectionString").Value;
+                opt.Database = cfg.GetSection("MongoConnection:Database").Value;
+            });
+            #endregion
+
             #region IdentityServer
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -57,12 +71,6 @@ namespace Skill.Persistance
                 authOption.AddPolicy("SkillWrite", policy => policy.RequireClaim("scope", "Skill.Write"));
             });
             #endregion
-
-            services.Configure<MongoSettings>(opt =>
-            {
-                opt.ConnectionString = cfg.GetSection("MongoConnection:ConnectionString").Value;
-                opt.Database = cfg.GetSection("MongoConnection:Database").Value;
-            });
 
             #region Appmetrics - Prometheus - Grafana
             services.Configure<KestrelServerOptions>(options =>
@@ -126,16 +134,51 @@ namespace Skill.Persistance
             });
             #endregion
 
+            #region Serilog
             host.UseSerilog(SeriLogger.Configure);
             services.AddTransient<LoggingDelegatingHandler>();
+            #endregion
 
+            #region MassTransit
+            services.AddMassTransit(configurator =>
+            {
+                configurator.AddConsumer<ConsumeTestMessageService>();
+                configurator.AddConsumer<ConsumeBackUpMessageService>();
+
+                configurator.UsingRabbitMq((context, _configurator) =>
+                {
+                    _configurator.Host(cfg.GetSection("RabbitMqHost").Value);
+
+                    _configurator.ReceiveEndpoint(MessagingConsts.StartTestQueue(), e => e.ConfigureConsumer<ConsumeTestMessageService>(context));
+                    _configurator.ReceiveEndpoint(MessagingConsts.BackUpQueue(), e => e.ConfigureConsumer<ConsumeBackUpMessageService>(context));
+                });
+            });
+
+            services.AddHostedService<PublishConnectedMessageService>(provider =>
+            {
+                using IServiceScope scope = provider.CreateScope();
+                IPublishEndpoint publishEndpoint = scope.ServiceProvider.GetService<IPublishEndpoint>();
+
+                return new(publishEndpoint, cfg.GetSection("ServiceName").Value);
+            });
+            #endregion
+
+            #region RabbitMQ
             services.AddScoped<IMessageConsumerService, MessageConsumerService>();
+            services.Configure<RabbitMqUri>(cfg.GetSection("RabbitMqHost"));
+            #endregion
 
+            #region AWS
             services.AddAWSService<IAmazonS3>();
+            #endregion
 
-            services.AddSingleton<IFileService, FileService>();
-
+            #region HealthCheck
             services.AddHealthChecks().AddMongoDb(mongodbConnectionString: cfg.GetSection("MongoConnection:ConnectionString").Value, mongoDatabaseName: cfg.GetSection("MongoConnection:Database").Value);
+            #endregion
+
+            #region Project Services
+            services.AddSingleton<IFileService, FileService>();
+            #endregion
 
             return services;
         }

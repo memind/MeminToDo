@@ -18,6 +18,9 @@ services:
 
   redis.sentinel2:
     image: redis:latest
+    
+  rabbitmq:
+    image: rabbitmq:3.12.2-management-alpine
 
   consul:
     image: consul:1.15.4

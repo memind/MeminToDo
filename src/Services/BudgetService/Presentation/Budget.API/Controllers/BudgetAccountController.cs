@@ -19,7 +19,7 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetRead")]
         public List<BudgetAccountDto> GetAllBudgetAccounts() => _budgetAccount.GetAllBudgetAccounts();
 
-        [HttpGet("/user/{userId}")]
+        [HttpGet("/userAccounts/{userId}")]
         [Authorize(Policy = "BudgetRead")]
         public List<BudgetAccountDto> GetUsersAllBudgetAccounts(Guid userId) => _budgetAccount.GetUsersAllBudgetAccounts(userId);
 
@@ -39,11 +39,11 @@ namespace Budget.API.Controllers
         [Authorize(Policy = "BudgetWrite")]
         public int DeleteBudgetAccount(Guid budgetAccountId) => _budgetAccount.DeleteBudgetAccount(budgetAccountId);
 
-        [HttpGet("/consumeBackup")]
+        [HttpGet("/account/consumeBackup")]
         [Authorize(Policy = "BudgetRead")]
         public void ConsumeBackUpInfo() => _budgetAccount.ConsumeBackUpInfo();
 
-        [HttpGet("/consumeTest")]
+        [HttpGet("/account/consumeTest")]
         [Authorize(Policy = "BudgetRead")]
         public void ConsumeTestInfo() => _budgetAccount.ConsumeTestInfo();
     }

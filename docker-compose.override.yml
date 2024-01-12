@@ -53,8 +53,8 @@ services:
       - "C:/Users/rock_/OneDrive/Belgeler/PROJELER2/memind/MeminToDo/src/BuildingBlocks/Common.Caching/Common.Caching/sentinel.conf:/usr/local/etc/redis/sentinel.conf"
     networks:
       - MeminToDo.RedisNetwork
- 
 
+ 
 
 #////////////////////////////////////////////////////////////////////////////// GATEWAY
   ocelotapigateway:
@@ -162,6 +162,13 @@ services:
     depends_on:
       - prometheus
 
+  rabbitmq:
+    container_name: meminSells.rabbitmq
+    restart: always    
+    ports:
+      - 5672:5672
+      - 15672:15672
+
 #////////////////////////////////////////////////////////////////////////////// PROJECT SERVICES
   workout.api:
     container_name: MeminToDo.Workout.API
@@ -169,6 +176,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
       - "Seq:ServerUrl=http://MeminToDo.Seq:8013"
+      - "RabbitMqHost=amqp://guest:guest@rabbitmq:5672"
+      - "ServiceName=Workout Service"
     ports:
       - "8001:80"
     networks:
@@ -178,6 +187,7 @@ services:
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
+      - rabbitmq    
       
   meal.api:
     container_name: MeminToDo.Meal.API
@@ -186,6 +196,8 @@ services:
       - "ConnectionStrings:MsSqlDatabaseConnectionString=Server=MONSTER; Database=MealDB; Trusted_Connection=True; Encrypt=False;"
       - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
       - "Seq:ServerUrl=http://MeminToDo.Seq:8013"
+      - "RabbitMqHost=amqp://guest:guest@rabbitmq:5672"
+      - "ServiceName=Meal Service"
     ports:
       - "8006:80"
     networks:
@@ -195,6 +207,7 @@ services:
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
+      - rabbitmq
 
   skill.api:
     container_name: MeminToDo.Skill.API
@@ -211,6 +224,8 @@ services:
       - "Blob:Key="
       - "Blob:BlobContainerName="
       - "Blob:BlobUri="
+      - "RabbitMqHost=amqp://guest:guest@rabbitmq:5672"
+      - "ServiceName=Skill Service"
     ports:
       - "8002:80"
     networks:
@@ -220,6 +235,7 @@ services:
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
+      - rabbitmq
 
   entertainment.api:
     container_name: MeminToDo.Entertainment.API
@@ -228,6 +244,8 @@ services:
       - PostgreSql=
       - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
       - "Seq:ServerUrl=http://memintodo.seq:8013"
+      - "RabbitMqHost=amqp://guest:guest@rabbitmq:5672"
+      - "ServiceName=Entertainment Service"
     ports:
       - "8003:80"
     networks:
@@ -237,6 +255,7 @@ services:
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
+      - rabbitmq
 
   budget.api:
     container_name: MeminToDo.Budget.API
@@ -245,6 +264,8 @@ services:
       - "ConnectionStrings:MsSqlDatabaseConnectionString=Server="
       - "ElasticConfiguration:Uri=http://memintodo.elasticsearch:8012"
       - "Seq:ServerUrl=http://memintodo.seq:8013"
+      - "RabbitMqHost=amqp://guest:guest@rabbitmq:5672"
+      - "ServiceName=Budget Service"
     ports:
       - "8008:80"
     networks:
@@ -254,6 +275,7 @@ services:
       - MeminToDo.ElasticNetwork
     depends_on:
       - kibana
+      - rabbitmq
       
   dashboard.aggregator:
     container_name: MeminToDo.Dashboard.Aggregator
@@ -341,11 +363,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "AWS:Profile="
       - "AWS:Region="
+      - "RabbitMqHost=amqp://guest:guest@rabbitmq:5672"
     ports:
       - "8007:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - rabbitmq
 
 volumes:
   portainer_data:

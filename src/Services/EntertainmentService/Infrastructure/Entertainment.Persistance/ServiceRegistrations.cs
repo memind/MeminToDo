@@ -21,6 +21,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Common.Logging.Handlers;
 using Common.Messaging.RabbitMQ.Abstract;
 using Common.Messaging.RabbitMQ.Concrete;
+using MassTransit;
+using Common.Messaging.MassTransit.Services.ApiServices.BackUp;
+using Common.Messaging.MassTransit.Services.ApiServices.Test;
+using Common.Messaging.MassTransit.Consts;
+using Common.Messaging.MassTransit.Services.ApiServices.Connected;
+using Common.Messaging.RabbitMQ.Configurations;
 
 namespace Entertainment.Persistance
 {
@@ -28,6 +34,10 @@ namespace Entertainment.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration cfg, IHostBuilder host)
         {
+            #region HealthChecks
+            services.AddHealthChecks().AddNpgSql(cfg.GetConnectionString("PostgreSql"));
+            #endregion
+
             #region IdentityServer
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -106,12 +116,40 @@ namespace Entertainment.Persistance
             });
             #endregion
 
+            #region SeriLog
             host.UseSerilog(SeriLogger.Configure);
             services.AddTransient<LoggingDelegatingHandler>();
+            #endregion
 
+            #region MassTransit
+            services.AddMassTransit(configurator =>
+            {
+                configurator.AddConsumer<ConsumeTestMessageService>();
+                configurator.AddConsumer<ConsumeBackUpMessageService>();
+
+                configurator.UsingRabbitMq((context, _configurator) =>
+                {
+                    _configurator.Host(cfg.GetSection("RabbitMqHost").Value);
+
+                    _configurator.ReceiveEndpoint(MessagingConsts.StartTestQueue(), e => e.ConfigureConsumer<ConsumeTestMessageService>(context));
+                    _configurator.ReceiveEndpoint(MessagingConsts.BackUpQueue(), e => e.ConfigureConsumer<ConsumeBackUpMessageService>(context));
+                });
+            });
+
+            services.AddHostedService<PublishConnectedMessageService>(provider =>
+            {
+                using IServiceScope scope = provider.CreateScope();
+                IPublishEndpoint publishEndpoint = scope.ServiceProvider.GetService<IPublishEndpoint>();
+
+                return new(publishEndpoint, cfg.GetSection("ServiceName").Value);
+            });
+            #endregion
+
+            #region RabbitMQ
             services.AddScoped<IMessageConsumerService, MessageConsumerService>();
+            services.Configure<RabbitMqUri>(cfg.GetSection("RabbitMqHost"));
+            #endregion
 
-            services.AddHealthChecks().AddNpgSql(cfg.GetConnectionString("PostgreSql"));
             return services;
         }
     }

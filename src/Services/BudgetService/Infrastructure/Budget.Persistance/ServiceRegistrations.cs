@@ -35,6 +35,12 @@ using Budget.Application.Abstractions.Hubs;
 using Budget.Persistance.SignalR.HubService;
 using Common.Messaging.RabbitMQ.Abstract;
 using Common.Messaging.RabbitMQ.Concrete;
+using MassTransit;
+using Common.Messaging.MassTransit.Services.ApiServices.Connected;
+using Common.Messaging.MassTransit.Services.ApiServices.Test;
+using Common.Messaging.MassTransit.Services.ApiServices.BackUp;
+using Common.Messaging.MassTransit.Consts;
+using Common.Messaging.RabbitMQ.Configurations;
 
 namespace Budget.Persistance
 {
@@ -42,6 +48,11 @@ namespace Budget.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration cfg, IHostBuilder host)
         {
+            #region Database
+            services.AddDbContext<BudgetDbContext>(options =>
+                options.UseSqlServer(cfg.GetConnectionString("MsSqlDatabaseConnectionString")).EnableSensitiveDataLogging());
+            #endregion
+
             #region IdentityServer
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -57,9 +68,6 @@ namespace Budget.Persistance
                 authOption.AddPolicy("BudgetWrite", policy => policy.RequireClaim("scope", "Budget.Write"));
             });
             #endregion
-
-            services.AddDbContext<BudgetDbContext>(options =>
-                options.UseSqlServer(cfg.GetConnectionString("MsSqlDatabaseConnectionString")).EnableSensitiveDataLogging());
 
             #region Appmetrics - Prometheus - Grafana
             services.Configure<KestrelServerOptions>(options =>
@@ -132,7 +140,31 @@ namespace Budget.Persistance
             services.AddTransient<LoggingDelegatingHandler>();
             #endregion
 
-            #region ProjectServices
+            #region MassTransit
+            services.AddMassTransit(configurator =>
+            {
+                configurator.AddConsumer<ConsumeTestMessageService>();
+                configurator.AddConsumer<ConsumeBackUpMessageService>();
+
+                configurator.UsingRabbitMq((context, _configurator) =>
+                {
+                    _configurator.Host(cfg.GetSection("RabbitMqHost").Value);
+
+                    _configurator.ReceiveEndpoint(MessagingConsts.StartTestQueue(), e => e.ConfigureConsumer<ConsumeTestMessageService>(context));
+                    _configurator.ReceiveEndpoint(MessagingConsts.BackUpQueue(), e => e.ConfigureConsumer<ConsumeBackUpMessageService>(context));
+                });
+            });
+
+            services.AddHostedService<PublishConnectedMessageService>(provider =>
+            {
+                using IServiceScope scope = provider.CreateScope();
+                IPublishEndpoint publishEndpoint = scope.ServiceProvider.GetService<IPublishEndpoint>();
+
+                return new(publishEndpoint, cfg.GetSection("ServiceName").Value);
+            });
+            #endregion
+
+            #region Project Services
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
 
@@ -143,7 +175,11 @@ namespace Budget.Persistance
             services.AddScoped(typeof(IMoneyFlowService), typeof(MoneyFlowService));
             services.AddScoped(typeof(IBudgetAccountService), typeof(BudgetAccountService));
             services.AddScoped(typeof(IWalletService), typeof(WalletService));
+            #endregion
+
+            #region RabbitMQ
             services.AddScoped(typeof(IMessageConsumerService), typeof(MessageConsumerService));
+            services.Configure<RabbitMqUri>(cfg.GetSection("RabbitMqHost"));
             #endregion
 
             return services;

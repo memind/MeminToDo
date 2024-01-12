@@ -13,6 +13,8 @@ using StackExchange.Redis;
 using Meal.Application.Consts;
 using Newtonsoft.Json;
 using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Configurations;
+using Microsoft.Extensions.Options;
 
 namespace Meal.Application.Services.Concrete
 {
@@ -23,16 +25,18 @@ namespace Meal.Application.Services.Concrete
         private readonly ILogger<MealService> _logger;
         private readonly IDatabase _cache;
         private readonly IMessageConsumerService _message;
+        private readonly IOptions<RabbitMqUri> _rabbitMqUriConfiguration;
 
-        public MealService(IUnitOfWork unitOfWork, ICustomMapper mapper, ILogger<MealService> logger, IMessageConsumerService message)
+        public MealService(IUnitOfWork unitOfWork, ICustomMapper mapper, ILogger<MealService> logger, IMessageConsumerService message, IOptions<RabbitMqUri> rabbitMqUriConfiguration)
         {
-            _cache = RedisService.GetRedisMasterDatabase();
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
             _message = message;
+            _rabbitMqUriConfiguration = rabbitMqUriConfiguration;
 
-            _message.PublishConnectedInfo(MessageConsts.MealServiceName());
+            _message.PublishConnectedInfo(MessageConsts.MealServiceName(), _rabbitMqUriConfiguration.Value.RabbitMqHost);
+            _cache = RedisService.GetRedisMasterDatabase();
         }
 
         public void CreateMeal(MealCreateDto meal, Guid userId)
@@ -525,8 +529,8 @@ namespace Meal.Application.Services.Concrete
             catch (Exception error) { _logger.LogError(MealLogs.AnErrorOccured(error.Message)); throw error; }
         }
 
-        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
-        public void ConsumeTestInfo() => _message.ConsumeStartTest();
+        public void ConsumeTestInfo() => _message.ConsumeStartTest(_rabbitMqUriConfiguration.Value.RabbitMqHost);
     }
 }

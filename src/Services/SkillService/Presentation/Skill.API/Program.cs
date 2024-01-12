@@ -7,6 +7,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Prometheus;
 using Skill.Persistance.Configurations;
+using Common.Messaging.RabbitMQ.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
@@ -17,6 +18,7 @@ builder.Services.AddPersistanceServices(builder.Configuration, builder.Host);
 
 builder.Services.Configure<SongConfigurations>(builder.Configuration.GetSection("S3"));
 builder.Services.Configure<ArtConfigurations>(builder.Configuration.GetSection("Blob"));
+builder.Services.Configure<RabbitMqUri>(builder.Configuration.GetSection("RabbitMqHost"));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

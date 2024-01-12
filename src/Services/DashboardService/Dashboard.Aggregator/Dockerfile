@@ -5,17 +5,19 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Services/DashboardService/Dashboard.Aggregator/Dashboard.Aggregator.csproj", "src/Services/DashboardService/Dashboard.Aggregator/"]
 COPY ["src/BuildingBlocks/Common.Caching/Common.Caching/Common.Caching.csproj", "src/BuildingBlocks/Common.Caching/Common.Caching/"]
 COPY ["src/BuildingBlocks/Common.Logging/Common.Logging/Common.Logging.csproj", "src/BuildingBlocks/Common.Logging/Common.Logging/"]
-RUN dotnet restore "src/Services/DashboardService/Dashboard.Aggregator/Dashboard.Aggregator.csproj"
+RUN dotnet restore "./src/Services/DashboardService/Dashboard.Aggregator/./Dashboard.Aggregator.csproj"
 COPY . .
 WORKDIR "/src/src/Services/DashboardService/Dashboard.Aggregator"
-RUN dotnet build "Dashboard.Aggregator.csproj" -c Release -o /app/build
+RUN dotnet build "./Dashboard.Aggregator.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Dashboard.Aggregator.csproj" -c Release -o /app/publish /p:UseAppHost=false
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./Dashboard.Aggregator.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

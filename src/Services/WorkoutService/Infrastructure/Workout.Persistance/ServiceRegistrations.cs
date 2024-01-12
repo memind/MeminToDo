@@ -27,13 +27,24 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Common.Logging.Handlers;
 using Common.Messaging.RabbitMQ.Abstract;
 using Common.Messaging.RabbitMQ.Concrete;
+using MassTransit;
+using Common.Messaging.MassTransit.Services.ApiServices.Test;
+using Common.Messaging.MassTransit.Services.ApiServices.BackUp;
+using Common.Messaging.MassTransit.Consts;
+using Microsoft.Extensions.Configuration;
+using Common.Messaging.MassTransit.Services.ApiServices.Connected;
+using Common.Messaging.RabbitMQ.Configurations;
 
 namespace Workout.Persistance
 {
     public static class ServiceRegistration
     {
-        public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IHostBuilder host)
+        public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IHostBuilder host, IConfiguration cfg)
         {
+            #region Database
+            services.AddDbContext<WorkoutDbContext>(options => options.UseCosmos("", databaseName: ""));
+            #endregion
+
             #region IdentityServer
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -49,8 +60,6 @@ namespace Workout.Persistance
                 authOption.AddPolicy("WorkoutWrite", policy => policy.RequireClaim("scope", "Workout.Write"));
             });
             #endregion
-
-            services.AddDbContext<WorkoutDbContext>(options => options.UseCosmos("", databaseName: ""));
 
             #region Appmetrics - Prometheus - Grafana
             services.Configure<KestrelServerOptions>(options =>
@@ -114,14 +123,48 @@ namespace Workout.Persistance
             });
             #endregion
 
+            #region HealthCheck
             services.AddHealthChecks().AddDbContextCheck<WorkoutDbContext>("WorkoutDB Health Check", HealthStatus.Degraded, customTestQuery: PerformCosmosHealthCheck());
+            #endregion
 
+            #region SeriLog
             host.UseSerilog(SeriLogger.Configure);
             services.AddTransient<LoggingDelegatingHandler>();
+            #endregion
 
+            #region MassTransit
+            services.AddMassTransit(configurator =>
+            {
+                configurator.AddConsumer<ConsumeTestMessageService>();
+                configurator.AddConsumer<ConsumeBackUpMessageService>();
+
+                configurator.UsingRabbitMq((context, _configurator) =>
+                {
+                    _configurator.Host(cfg.GetSection("RabbitMqHost").Value);
+
+                    _configurator.ReceiveEndpoint(MessagingConsts.StartTestQueue(), e => e.ConfigureConsumer<ConsumeTestMessageService>(context));
+                    _configurator.ReceiveEndpoint(MessagingConsts.BackUpQueue(), e => e.ConfigureConsumer<ConsumeBackUpMessageService>(context));
+                });
+            });
+
+            services.AddHostedService<PublishConnectedMessageService>(provider =>
+            {
+                using IServiceScope scope = provider.CreateScope();
+                IPublishEndpoint publishEndpoint = scope.ServiceProvider.GetService<IPublishEndpoint>();
+
+                return new(publishEndpoint, cfg.GetSection("ServiceName").Value);
+            });
+            #endregion
+
+            #region RabbitMQ
+            services.AddScoped(typeof(IMessageConsumerService), typeof(MessageConsumerService));
+            services.Configure<RabbitMqUri>(cfg.GetSection("RabbitMqHost"));
+            #endregion
+
+            #region Project Services
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
-            services.AddScoped(typeof(IMessageConsumerService), typeof(MessageConsumerService));
+            #endregion
 
             return services;
         }

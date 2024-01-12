@@ -8,51 +8,57 @@ namespace Common.Messaging.RabbitMQ.Concrete
 {
     public class MessagePublisherService : IMessagePublisherService
     {
-        private readonly ConnectionFactory _factory;
-        private readonly IConnection _conn;
-        private readonly IModel _channel;
 
-        public MessagePublisherService(string factoryUri)
+        public void ConsumeConnectedInfo(string factoryUri)
         {
-            _factory = new ConnectionFactory();
-            _factory.Uri = new(factoryUri);
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.Uri = new(factoryUri);
 
-            _conn = _factory.CreateConnection();
-            _channel = _conn.CreateModel();
-        }
+            IConnection connection = factory.CreateConnection();
+            IModel channel = connection.CreateModel();
 
-        public void ConsumeConnectedInfo()
-        {
             string queue = MessagingConsts.GetConnectedInfoQueue();
-            EventingBasicConsumer consumer = new(_channel);
+            EventingBasicConsumer consumer = new(channel);
 
-            _channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
-            _channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);
+            channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
+            channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);
 
             consumer.Received += (sender, e) => Console.WriteLine(Encoding.UTF8.GetString(e.Body.Span));
         }
 
-        public void PublishBackUpInfo()
+        public void PublishBackUpInfo(string factoryUri)
         {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.Uri = new(factoryUri);
+
+            IConnection connection = factory.CreateConnection();
+            IModel channel = connection.CreateModel();
+
             string exchange = MessagingConsts.SendBackUpInfoExchange();
             string message = MessagingConsts.SendBackUpInfo();
             byte[] body = Encoding.UTF8.GetBytes(message);
 
-            _channel.ExchangeDeclare(exchange: exchange, type: ExchangeType.Fanout, durable: true, autoDelete: false, arguments: null);
-            _channel.BasicPublish(exchange: exchange, routingKey: string.Empty, body: body);
+            channel.ExchangeDeclare(exchange: exchange, type: ExchangeType.Fanout, durable: true, autoDelete: false, arguments: null);
+            channel.BasicPublish(exchange: exchange, routingKey: string.Empty, body: body);
         }
 
-        public void PublishStartTest()
+        public void PublishStartTest(string factoryUri)
         {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.Uri = new(factoryUri);
+
+            IConnection connection = factory.CreateConnection();
+            IModel channel = connection.CreateModel();
+
             string queueName = MessagingConsts.StartTestQueue();
-            _channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: true);
+            channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: true);
 
             for (int count = 1; count <= 100; count++)
             {
                 string message = MessagingConsts.StartTest(count);
                 byte[] body = Encoding.UTF8.GetBytes(message);
 
-                _channel.BasicPublish(exchange: string.Empty, routingKey: queueName, body: body);
+                channel.BasicPublish(exchange: string.Empty, routingKey: queueName, body: body);
             }
         }
     }

@@ -2,8 +2,8 @@
 {
     public interface IMessageConsumerService
     {
-        public void PublishConnectedInfo(string serviceName);
-        public void ConsumeBackUpInfo();
-        public void ConsumeStartTest();
+        public void PublishConnectedInfo(string serviceName, string factoryUri);
+        public void ConsumeBackUpInfo(string factoryUri);
+        public void ConsumeStartTest(string factoryUri);
     }
 }

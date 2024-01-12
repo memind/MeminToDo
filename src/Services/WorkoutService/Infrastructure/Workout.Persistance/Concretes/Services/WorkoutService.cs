@@ -12,6 +12,8 @@ using Workout.Application.DTOs.WorkoutDTOs;
 using w = Workout.Domain.Entities;
 using Workout.Persistance.Consts;
 using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Configurations;
+using Microsoft.Extensions.Options;
 
 namespace Workout.Persistance.Concretes.Services
 {
@@ -22,16 +24,18 @@ namespace Workout.Persistance.Concretes.Services
         private readonly ILogger<WorkoutService> _logger;
         private readonly IDatabase _cache;
         private readonly IMessageConsumerService _message;
+        private readonly IOptions<RabbitMqUri> _rabbitMqUriConfiguration;
 
-        public WorkoutService(IMapper mapper, IUnitOfWork uow, ILogger<WorkoutService> logger, IMessageConsumerService message)
+        public WorkoutService(IMapper mapper, IUnitOfWork uow, ILogger<WorkoutService> logger, IMessageConsumerService message, IOptions<RabbitMqUri> rabbitMqUriConfiguration)
         {
-            _cache = RedisService.GetRedisMasterDatabase();
             _mapper = mapper;
             _uow = uow;
             _logger = logger;
             _message = message;
+            _rabbitMqUriConfiguration = rabbitMqUriConfiguration;
 
-            _message.PublishConnectedInfo(MessageConsts.WorkoutServiceName());
+            _message.PublishConnectedInfo(MessageConsts.WorkoutServiceName(), _rabbitMqUriConfiguration.Value.RabbitMqHost);
+            _cache = RedisService.GetRedisMasterDatabase();
         }
 
         public WorkoutDto CreateWorkout(WorkoutDto model)
@@ -260,8 +264,8 @@ namespace Workout.Persistance.Concretes.Services
             } catch (Exception error) { _logger.LogError(WorkoutLogs.AnErrorOccured(error.Message)  ); throw; }
         }
 
-        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
-        public void ConsumeTestInfo() => _message.ConsumeStartTest();
+        public void ConsumeTestInfo() => _message.ConsumeStartTest(_rabbitMqUriConfiguration.Value.RabbitMqHost);
     }
 }

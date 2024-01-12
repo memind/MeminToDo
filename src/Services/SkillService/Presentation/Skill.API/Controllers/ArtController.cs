@@ -1,9 +1,11 @@
 ﻿using Autofac.Core;
 using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Configurations;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Skill.Application.Abstractions.Services;
 using Skill.Application.DTOs.ArtDTOs;
 using Skill.Application.Features.Commands.ArtCommands.CreateArt;
@@ -27,14 +29,16 @@ namespace Skill.API.Controllers
         private IMediator _mediator;
         private IFileService _fileService;
         private readonly IMessageConsumerService _message;
+        private readonly IOptions<RabbitMqUri> _rabbitMqUriConfiguration;
 
-        public ArtController(IMediator mediator, IFileService fileService, IMessageConsumerService message)
+        public ArtController(IMediator mediator, IFileService fileService, IMessageConsumerService message, IOptions<RabbitMqUri> rabbitMqUriConfiguration)
         {
             _mediator = mediator;
             _fileService = fileService;
             _message = message;
+            _rabbitMqUriConfiguration = rabbitMqUriConfiguration;
 
-            _message.PublishConnectedInfo(MessageConsts.ArtServiceName());
+            _message.PublishConnectedInfo(MessageConsts.ArtServiceName(), _rabbitMqUriConfiguration.Value.RabbitMqHost);
         }
 
         [HttpGet("/getOneArt")]
@@ -62,10 +66,10 @@ namespace Skill.API.Controllers
         public async Task<DeleteArtCommandResponse> Delete([FromQuery] DeleteArtCommandRequest request) => await _mediator.Send(request);
 
         [HttpGet("/consumeBackup")]
-        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
         [HttpGet("/consumeTest")]
-        public void ConsumeTestInfo() => _message.ConsumeStartTest();
+        public void ConsumeTestInfo() => _message.ConsumeStartTest(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
         [HttpPost("/file/{fileId}")]
         [Authorize(Policy = "SkillWrite")]

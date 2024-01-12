@@ -3,6 +3,7 @@ using AutoMapper;
 using Common.Caching.Services;
 using Common.Logging.Logs.EntertainmentLogs;
 using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Configurations;
 using Entertainment.API.Consts;
 using Entertainment.Application.Abstractions.Services;
 using Entertainment.Application.DTOs.BookDTOs;
@@ -11,6 +12,7 @@ using Entertainment.Application.Repositories.BookRepositories;
 using Entertainment.Domain.Entities;
 using Entertainment.Persistance.Consts;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -25,18 +27,20 @@ namespace Entertainment.Persistance.Concretes.Services
         private readonly ILogger<BookService> _logger;
         private readonly IDatabase _cache;
         private readonly IMessageConsumerService _message;
+        private readonly IOptions<RabbitMqUri> _rabbitMqUriConfiguration;
 
-        public BookService(IBookWriteRepository bookWriteRepository, IBookReadRepository bookReadRepository, IMapper mapper, IBookNoteReadRepository bookNote, ILogger<BookService> logger, IMessageConsumerService message)
+        public BookService(IBookWriteRepository bookWriteRepository, IBookReadRepository bookReadRepository, IMapper mapper, IBookNoteReadRepository bookNote, ILogger<BookService> logger, IMessageConsumerService message, IOptions<RabbitMqUri> rabbitMqUriConfiguration)
         {
-            _cache = RedisService.GetRedisMasterDatabase();
             _write = bookWriteRepository;
             _read = bookReadRepository;
             _mapper = mapper;
             _bookNote = bookNote;
             _logger = logger;
             _message = message;
+            _rabbitMqUriConfiguration = rabbitMqUriConfiguration;
 
-            _message.PublishConnectedInfo(MessageConsts.BookServiceName());
+            _cache = RedisService.GetRedisMasterDatabase();
+            _message.PublishConnectedInfo(MessageConsts.BookServiceName(), _rabbitMqUriConfiguration.Value.RabbitMqHost);
         }
 
         public int CreateBook(BookDto entity)
@@ -253,8 +257,8 @@ namespace Entertainment.Persistance.Concretes.Services
             } catch (Exception error) { _logger.LogError(EntertainmentLogs.AnErrorOccured(error.Message)); throw; }
         }
 
-        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo();
+        public void ConsumeBackUpInfo() => _message.ConsumeBackUpInfo(_rabbitMqUriConfiguration.Value.RabbitMqHost);
 
-        public void ConsumeTestInfo() => _message.ConsumeStartTest();
+        public void ConsumeTestInfo() => _message.ConsumeStartTest(_rabbitMqUriConfiguration.Value.RabbitMqHost);
     }
 }

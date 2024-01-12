@@ -26,6 +26,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Meal.Infrastructure.ExecutionStrategies;
 using Common.Logging.Handlers;
+using MassTransit;
+using Common.Messaging.MassTransit.Services.ApiServices.Test;
+using Common.Messaging.MassTransit.Services.ApiServices.BackUp;
+using Common.Messaging.MassTransit.Consts;
+using Common.Messaging.MassTransit.Services.ApiServices.Connected;
+using Common.Messaging.RabbitMQ.Configurations;
+using Common.Messaging.RabbitMQ.Abstract;
+using Common.Messaging.RabbitMQ.Concrete;
 
 namespace Meal.Infrastructure
 {
@@ -33,17 +41,26 @@ namespace Meal.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration, IHostBuilder host)
         {
+            #region Database
             services.AddDbContext<MealDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("MsSqlDatabaseConnectionString"), 
                     builder => builder.ExecutionStrategy(dependencies => new EFCoreCustomRetryExecutionStrategy(
                                                                              dependencies: dependencies, 
                                                                              maxRetryCount: 4,
                                                                              maxRetryDelay: TimeSpan.FromSeconds(30)))));
+            #endregion
 
+            #region Project Services
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
 
             services.AddScoped(typeof(uow.IUnitOfWork), typeof(uow.UnitOfWork));
+            #endregion
+
+            #region RabbitMQ
+            services.Configure<RabbitMqUri>(configuration.GetSection("RabbitMqHost"));
+            services.AddScoped<IMessageConsumerService, MessageConsumerService>();
+            #endregion
 
             #region OpenTracing/Jaeger
             services.AddSingleton<ITracer>(sp =>
@@ -86,6 +103,30 @@ namespace Meal.Infrastructure
 
             #region HealthCheck
             services.AddHealthChecks().AddSqlServer(configuration.GetConnectionString("MsSqlDatabaseConnectionString"));
+            #endregion
+
+            #region MassTransit
+            services.AddMassTransit(configurator =>
+            {
+                configurator.AddConsumer<ConsumeTestMessageService>();
+                configurator.AddConsumer<ConsumeBackUpMessageService>();
+
+                configurator.UsingRabbitMq((context, _configurator) =>
+                {
+                    _configurator.Host(configuration.GetSection("RabbitMqHost").Value);
+
+                    _configurator.ReceiveEndpoint(MessagingConsts.StartTestQueue(), e => e.ConfigureConsumer<ConsumeTestMessageService>(context));
+                    _configurator.ReceiveEndpoint(MessagingConsts.BackUpQueue(), e => e.ConfigureConsumer<ConsumeBackUpMessageService>(context));
+                });
+            });
+
+            services.AddHostedService<PublishConnectedMessageService>(provider =>
+            {
+                using IServiceScope scope = provider.CreateScope();
+                IPublishEndpoint publishEndpoint = scope.ServiceProvider.GetService<IPublishEndpoint>();
+
+                return new(publishEndpoint, configuration.GetSection("ServiceName").Value);
+            });
             #endregion
 
             #region Appmetrics - Prometheus - Grafana
