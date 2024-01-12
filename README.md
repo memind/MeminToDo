@@ -11,6 +11,9 @@ ASP.Net Core Microservices
 - Tracing: OpenTracing/JaegerUI
 - Service Discovery: Consul
 - Resiliency: Polly
+- Messaging: RabbitMQ/MassTransit
+- Real Time Communication: SignalR
+- Storage: Amazon S3 Storage, Azure Blob Storage
 
 Meal Service
 - ASP.NET Core Web API application
@@ -23,6 +26,7 @@ Meal Service
 - Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
+- Messaging done by RabbitMQ/MassTransit
 
 Skill Service
 - ASP.NET Core Web API application
@@ -34,6 +38,8 @@ Skill Service
 - Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
+- Amazon S3 Storage and Azure Blob Storage implementation
+- Messaging done by RabbitMQ/MassTransit
 
 Entertainment Service
 - ASP.NET Core Web API application
@@ -45,6 +51,7 @@ Entertainment Service
 - Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
+- Messaging done by RabbitMQ/MassTransit
 
 Workout Service
 - ASP.NET Core Web API application
@@ -54,6 +61,7 @@ Workout Service
 - Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
+- Messaging done by RabbitMQ/MassTransit
 
 Budget Service
 - ASP.NET Core Web API application
@@ -63,6 +71,8 @@ Budget Service
 - Caching was done by Redis Sentinel
 - Monitoring was done by AppMetrics/Prometheus/Grafana
 - Tracing was done by OpenTracing/JaegerUI
+- Real Time Communicatio done by SignalR
+- Messaging done by RabbitMQ/MassTransit
   
 Log Service
 - ASP.NET Core Web API application
@@ -70,6 +80,7 @@ Log Service
 - DynamoDB database connection
 - Caching was done by Redis Sentinel
 - Cron jobs for backup mechanism via Hangfire
+- Messaging done by RabbitMQ/MassTransit
 
 Dashboard Service
 - ASP.NET Core Web API application
