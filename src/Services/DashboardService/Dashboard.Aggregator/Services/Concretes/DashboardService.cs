@@ -8,12 +8,16 @@ namespace Dashboard.Aggregator.Services.Concretes
         private readonly IEntertainmentService _entertainmentService;
         private readonly ISkillService _skillService;
         private readonly IWorkoutService _workoutService;
+        private readonly IBudgetService _budgetService;
+        private readonly IMealService _mealService;
 
-        public DashboardService(IEntertainmentService entertainmentService, ISkillService skillService, IWorkoutService workoutService)
+        public DashboardService(IEntertainmentService entertainmentService, ISkillService skillService, IWorkoutService workoutService, IBudgetService budgetService, IMealService mealService)
         {
             _entertainmentService = entertainmentService;
             _skillService = skillService;
             _workoutService = workoutService;
+            _budgetService = budgetService;
+            _mealService = mealService;
         }
 
         public async Task<AdminDashboardModel> GetAdminDashboardInfos()
@@ -30,6 +34,13 @@ namespace Dashboard.Aggregator.Services.Concretes
 
                 WorkoutCount = await _workoutService.GetTotalWorkoutCount(),
                 ExerciseCount = await _workoutService.GetTotalExerciseCount(),
+
+                FoodCount = await _mealService.GetTotalFoodCount(),
+                MealCount = await _mealService.GetTotalMealCount(),
+
+                BudgetAccountCount = await _budgetService.GetTotalBudgetAccountCount(),
+                MoneyFlowCount = await _budgetService.GetTotalMoneyFlowCount(),
+                WalletCount = await _budgetService.GetTotalWalletCount()
             };
 
             return infos;
@@ -49,6 +60,13 @@ namespace Dashboard.Aggregator.Services.Concretes
 
                 MyWorkoutsCount = await _workoutService.GetUsersWorkoutsCount(id),
                 MyExercisesCount = await _workoutService.GetUsersExercisesCount(id),
+
+                MyFoodCount = await _mealService.GetUsersFoodCount(id),
+                MyMealCount = await _mealService.GetUsersMealCount(id),
+
+                MyBudgetAccountCount = await _budgetService.GetUsersBudgetAccountCount(id),
+                MyMoneyFlowCount = await _budgetService.GetUsersMoneyFlowCount(id),
+                MyWalletCount = await _budgetService.GetUsersWalletCount(id)
             };
 
             return infos;

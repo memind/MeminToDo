@@ -15,7 +15,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetTotalArtCount()
         {
-            var artResponse = await _client.GetAsync($"/getAllArts");
+            var artResponse = await _client.GetAsync($"/api/getAllArts");
             var arts = await artResponse.ReadContentAs<ArtResponseModel>();
 
             return arts.Result.Data.Count();
@@ -23,7 +23,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetTotalSongCount()
         {
-            var songResponse = await _client.GetAsync($"/getAllSongs");
+            var songResponse = await _client.GetAsync($"/api/getAllSongs");
             var songs = await songResponse.ReadContentAs<SongResponseModel>();
 
             return songs.Result.Data.Count();
@@ -31,7 +31,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetUsersArtCount(string id)
         {
-            var artResponse = await _client.GetAsync($"/getUsersAllArts?id={id}");
+            var artResponse = await _client.GetAsync($"/api/getUsersAllArts?id={id}");
             var arts = await artResponse.ReadContentAs<ArtResponseModel>();
 
             return arts.Result.Data.Count();
@@ -39,7 +39,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetUsersSongCount(string id)
         {
-            var songResponse = await _client.GetAsync($"/getUsersAllSongs?id={id}");
+            var songResponse = await _client.GetAsync($"/api/getUsersAllSongs?id={id}");
             var songs = await songResponse.ReadContentAs<SongResponseModel>();
 
             return songs.Result.Data.Count();

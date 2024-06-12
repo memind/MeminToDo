@@ -17,7 +17,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetTotalWorkoutCount()
         {
-            var response = await _client.GetAsync($"/getAllWorkouts");
+            var response = await _client.GetAsync($"/api/getAllWorkouts");
             var workouts = await response.ReadContentAs<List<WorkoutModel>>();
 
             return workouts.Count;
@@ -25,7 +25,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetTotalExerciseCount()
         {
-            var response = await _client.GetAsync($"/getAllExercises");
+            var response = await _client.GetAsync($"/api/getAllExercises");
             var exercises = await response.ReadContentAs<List<ExerciseModel>>();
 
             return exercises.Count;
@@ -33,7 +33,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetUsersWorkoutsCount(string id)
         {
-            var response = await _client.GetAsync($"/getUsersAllWorkouts?id={id}");
+            var response = await _client.GetAsync($"/api/getUsersAllWorkouts?id={id}");
             var workouts = await response.ReadContentAs<List<WorkoutModel>>();
 
             return workouts.Count;
@@ -41,7 +41,7 @@ namespace Dashboard.Aggregator.Services.Concretes
 
         public async Task<int> GetUsersExercisesCount(string id)
         {
-            var response = await _client.GetAsync($"/getUsersAllExercises?id={id}");
+            var response = await _client.GetAsync($"/api/getUsersAllExercises?id={id}");
             var exercises = await response.ReadContentAs<List<ExerciseModel>>();
 
             return exercises.Count;

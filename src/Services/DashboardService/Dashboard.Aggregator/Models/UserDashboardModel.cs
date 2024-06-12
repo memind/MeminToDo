@@ -12,5 +12,12 @@
                     
         public int? MyWorkoutsCount { get; set; }
         public int? MyExercisesCount { get; set; }
+
+        public int? MyBudgetAccountCount { get; set; }
+        public int? MyMoneyFlowCount { get; set; }
+        public int? MyWalletCount { get; set; }
+
+        public int? MyFoodCount { get; set; }
+        public int? MyMealCount { get; set; }
     }
 }

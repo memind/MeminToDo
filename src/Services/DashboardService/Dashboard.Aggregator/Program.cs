@@ -146,6 +146,18 @@ builder.Services.AddHttpClient<ISkillService, SkillService>(
                 .AddPolicyHandler(PollyPolicies.GetRetryPolicy())
                 .AddPolicyHandler(PollyPolicies.GetCircuitBreakerPolicy());
 
+builder.Services.AddHttpClient<IMealService, MealService>(
+    c => c.BaseAddress = new Uri(builder.Configuration["ApiSettings:MealUrl"]))
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(PollyPolicies.GetRetryPolicy())
+                .AddPolicyHandler(PollyPolicies.GetCircuitBreakerPolicy());
+
+builder.Services.AddHttpClient<IBudgetService, BudgetService>(
+    c => c.BaseAddress = new Uri(builder.Configuration["ApiSettings:BudgetUrl"]))
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(PollyPolicies.GetRetryPolicy())
+                .AddPolicyHandler(PollyPolicies.GetCircuitBreakerPolicy());
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
