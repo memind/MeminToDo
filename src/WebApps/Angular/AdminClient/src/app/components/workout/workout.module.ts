@@ -4,6 +4,7 @@ import { ExerciseComponent } from './exercise/exercise.component';
 import { WorkoutComponent } from './workout/workout.component';
 import { RouterModule } from '@angular/router';
 import { WorkoutHomeComponent } from './workout.home/workout.home.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 
 
@@ -16,9 +17,9 @@ import { WorkoutHomeComponent } from './workout.home/workout.home.component';
   imports: [
     CommonModule,
     RouterModule.forChild([
-      { path: "", component: WorkoutHomeComponent },
-      { path: "workouts", component: WorkoutComponent },
-      { path: "exercises", component: ExerciseComponent }
+      { path: "", component: WorkoutHomeComponent, canActivate: [AuthGuard] },
+      { path: "workouts", component: WorkoutComponent, canActivate: [AuthGuard] },
+      { path: "exercises", component: ExerciseComponent, canActivate: [AuthGuard] }
     ]),
   ]
 })

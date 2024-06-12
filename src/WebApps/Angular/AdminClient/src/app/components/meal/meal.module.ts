@@ -4,6 +4,7 @@ import { FoodComponent } from './food/food.component';
 import { MealComponent } from './meal/meal.component';
 import { RouterModule } from '@angular/router';
 import { MealHomeComponent } from './meal.home/meal.home.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 
 
@@ -16,9 +17,9 @@ import { MealHomeComponent } from './meal.home/meal.home.component';
   imports: [
     CommonModule,
     RouterModule.forChild([
-      { path: "", component: MealHomeComponent},
-      { path: "meals", component: MealComponent },
-      { path: "foods", component: FoodComponent}
+      { path: "", component: MealHomeComponent, canActivate: [AuthGuard]},
+      { path: "meals", component: MealComponent, canActivate: [AuthGuard]},
+      { path: "foods", component: FoodComponent, canActivate: [AuthGuard]}
     ]),
   ]
 })
