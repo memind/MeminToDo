@@ -1,1 +1,26 @@
-<p>navbar works!</p>
+<nav>
+    <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed nav-scroll': 'nav-scroll'">
+        <div class="logo-container">
+            <button class="logo" (click)="toggleCollapse()">
+                <i class="fa-solid fa-circle-dot"></i>
+            </button>
+        </div>
+        <ul class="sidenav-nav">
+            <li class="sidenav-nav-group align-center" *ngFor="let group of navData">
+                <h3 class="group-title" *ngIf="collapsed">{{ group.group }}</h3>
+                <ul class="group-items">
+                    <li class="sidenav-nav-item" *ngFor="let item of group.items">
+                        <a class="sidenav-nav-link" [routerLink]="[item.routeLink]" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}">
+                            <i class="sidenav-link-icon" [class]="item.icon"></i>
+                            <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                                {{item.label}}
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <hr class="custom-hr">
+            </li>
+        </ul>
+    </div>
+</nav>

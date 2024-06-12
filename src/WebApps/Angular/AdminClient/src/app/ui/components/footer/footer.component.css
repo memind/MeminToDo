@@ -1,0 +1,31 @@
+.footer {
+    background-color: #0f161d;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo-container {
+    color: #86040f;
+    transition: color .5s ease;
+    padding: 5px 10px;
+    cursor: pointer;
+    height: 60px;
+}
+
+.logo-text {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.logo-container:hover {
+    color: #4696e6;
+    transition: color .5s ease;
+}

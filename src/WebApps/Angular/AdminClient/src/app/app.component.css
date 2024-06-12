@@ -1,0 +1,13 @@
+.d-flex.row.flex-wrap.navbar-expanded>.col {
+    margin-left: 18rem;
+    margin-top: 1rem;
+}
+
+.d-flex.row.flex-wrap>.col {
+    margin-left: 7rem; 
+    margin-top: 1rem;
+}
+
+.col {
+    transition: margin-left 0.3s ease;
+}

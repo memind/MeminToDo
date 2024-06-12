@@ -5,8 +5,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 
-
-
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -16,6 +14,11 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule
+  ],
+  exports: [
+    HeaderComponent,
+    FooterComponent,
+    NavbarComponent
   ]
 })
 export class UiModule { }
